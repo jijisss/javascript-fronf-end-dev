@@ -619,3 +619,462 @@ for (변수 in 객체) {
 2.정수형 프로퍼티 네임
 객체는 정수형 프로퍼티 네임을 오름차순으로 먼저 정렬하고, 나머지 프로퍼티들은 추가한 순서대로 정렬하는 특징이 있다.
 
+*12. Date객체
+내장객체: 자바스크립트가 원래 갖고있는 객체
+Date객체: Date객체를 생성한 순간의 날짜를 가져온다. new Date();
+
+new Date(1000); -> 1970년 1월 1일 00:00:00 UTC + 1초!
+원하는 날짜를 문자열로 입력해서 객체를 생성할 수 있음 -> new Date('YYYY-MM-DD'); 
+ex) new Date('2017-05-18');
+시간까지 지정 가능 -> new Date('YYYY-MM-DDThh:mm:ss');
+
+Date.getTime(); -> 1970년 1월1일 00:00:00 UTC부터 몇 밀리초 지났는지..? -> 타임스탬프(time Stamp)
+
+*13. Date객체 Tip
+1.Date 객체 정보 수정하기
+set으로 시작하는 다양한 메서드를 활용하면, 생성된 Date객체의 정보를 수정할 수도 있다.
+(대괄호로 감싸진 요소들은 선택적인 요소이다.)
+-setFullYear(year, [month], [date])
+-setMonth(month, [date])
+-setDate(date)
+-setHours(hour, [min], [sec], [ms])
+-setMinutes(min, [sec], [ms])
+-setSeconds(sec, [ms])
+-setMilliseconds(ms)
+-setTime(milliseconds)(1970년 1월 1일 00:00:00 UTC부터 밀리초 이후를 나타내는 날짜를 설정)
+
+2.간단하게 시간 정보 알아내기!
+간단하게 시간 정보를 표현하고 싶다면 아레와 같은 메소드를 활용해 볼 수도 있다.
+
+let myDate = new Date();
+
+console.log(myDate.toLocaleDateString()); // myDate가 가진 날짜에 대한 정보 (년. 월. 일)
+console.log(myDate.toLocaleTimeString()); // myDate가 가진 시간에 대한 정보 (시:분:초)
+console.log(myDate.toLocaleString()); // myDate가 가진 날짜와 시간에 대한 정보 (년. 월. 일 시:분:초)
+
+3.똑똑한 Date?!
+Date 객체엔 자동으로 날짜를 수정해주는 유용한 기능이 있다. 범위를 벗어나는 값을 설정하려고 하면 자동으로 날짜를 수정해준다.
+
+let myDate = new Date(1988, 0, 32); // 1988년 1월 32일은 없습니다
+
+// 2월 1일로 자동고침 되는걸 확인할 수 있습니다.
+console.log(myDate) // Mon Feb 01 1988 00:00:00
+
+4.지금 이 순간..!?
+Date.now() 메소드는 이 메소드가 호출된 시점의 타임스탬프를 반환한다. 이렇게 하면 새로운 객체를 만들지 않아도 바로 현 시점의 날짜 값을 얻어낼 수 있는 것!
+
+let myDate = new Date();
+
+console.log(Date.now() === myDate.getTime()); // true
+
+5.Date객체의 형변환
+Date 객체를 number 타입으로 변환할 경우 단순한 숫자값이 아니라 getTime() 메소드를 활용한 것과 똑같은 수치의 타임스탬프 값으로 변환됨.
+다시 말해 Date 객체끼리 바로 사칙 연산도 충분히 가능하다는 뜻!
+
+6.날짜를 표현하는 문자열
+YYYY-MM-DDThh:mm:ss형식 말고도 날짜를 표현하는 다양한 방식의 문자열이 있다.
+let date1 = new Date('12/15/1999 05:25:30');
+let date2 = new Date('December 15, 1999 05:25:30');
+let date3 = new Date('Dec 15 1999 05:25:30');
+하지만 이런 방식을 사용하다보면 브라우저나, 컴퓨터를 사용하는 위치의 시간대에 따라 서로 다른 결과 값이 나올 수도 있기 때문에 적어도 IETF 호환 RFC 2822 타임스탬프와 ISO8601의 한 버전의 형식을 준수하는 문자열로 Date객체를 생성하는 것을 권장!
+
+#01. 배열 (Array)
+index === propertyName
+console.log(배열이름[index]);
+
+indexing (0~...)
+console.log(course[1]);
+
+#05. 배열 메소드 
+splice: 배열의 요소를 삭제하거나 수정하거나 추가할 수 있는 메소드
+splice(2, 1, '23', '25') 첫번쨰:삭제할 인덱스, 두번째:삭제할 갯수, 세번째:추가할 요소
+
+#07. 배열 메소드 II
+배열의 첫 요소를 삭제: shift()
+배열의 마지막 요소를 삭제: pop()
+배열의 첫 요소로 값 추가: unshift()
+배열의 마지막 요소로 값 추가: push()
+
+#09. 배열 메소드 Tip
+1.배열에서 특정 값 찾기 (indexOf / lastIndexOf)
+배열에서 특정 값을 찾으려면 indexOf 메소드를 사용하면 된다. 
+array.indexOf(item)을 하면 array 배열에 item이 포함되어 있는지 확인할 수 있다.lastIndexOf: indexOf와는 반대로 탐색을 뒤에서 부터 하게 된다.
+
+2.배열에서 특정 값이 있는지 확인하기 (includes)
+array.includes(item)을 하게되면 array배열에 item이 있을 경우 true를, 없을 경우 false를 리턴한다.
+
+3.배열 뒤집기 (reverse)
+reverse라는 메소드를 활용하면, 배열의 순서를 뒤집을 수도 있다.
+
+#10. for...of 반복문
+for (변수 of 배열) {
+  동작부분;
+}
+-for...in 문은 변수에 배열의 프로퍼티 네임이 할당됐었는데, for...of문은 변수에 배열의 요소가 할당된다. for (let 변수 of 배열) { 동작부분; }
+
+#12. 다차원 배열
+다차원 배열: 배열의 안에 배열이 들어가는 형태
+
+#01. 다양한 숫자 표기법 
+-let millionaire = 1000000000; === let myNumber = 1e9; 
+-지수 표기법 
+지수 표기법은 컴퓨터 뿐만 아니라 과학, 공학, 수학처럼 숫자를 다루는 다양한 분야에서 아주 큰 수나 작은 수를 표기하는 방법 중 하나이다. -알파벳 e 오른쪽 값이 음수가 되면 이 숫자만큼 10의 거듭제곱으로 나누라는 의미이다. -> (-9.1e-5 === -0.000091); 
+-숫자 표기법 
+-16진법 (Hexadecimal) let hex1 = 0xff; // 255 let hex2 = 0xFF; // 255 
+-8진법 (Octal) let octal = 0o377; // 255 // 2진법 (binary numeral system) let binary = 0b11111111; // 255
+
+#숫자형 메소드 
+// Number let myNumber = 0.3591;
+
+// toFixed(0 ~ 100) -소수를 다룰 때 사용하는 메소드. 파라미터로 숫자값을 전달해주면 그만큼 소숫점 아래의 자릿수를 고정해주는 메소드이다. 
+console.log(myNumber.toFixed(3)); 
+-파라미터로 전달하는 값이 숫자값의 자릿수를 초과하게되면 0으로 대체된다. 
+-주의해야할점 -> toFixed 메소드를 사용해 계산된 값은 문자열이다. 
+-이 메소드로 수정된 값을 숫자로 사용하고 싶을때는 number 함수를 이용해서 숫자로 형변환을 해줘야한다. console.log(typeof Number(myNumber.toFixed(3))); -자바스크립트에서는 어떤 값 앞에 +기호를 붙여주면 number 함수와 똑같은 결과를 얻을수 있다. console.log(+myNumber.toFixed(3));
+
+// toString(2 ~ 36) let myNumber = 0.3591;
+
+console.log(myNumber.toString(2)); -> 11111111 console.log(myNumber.toString(8)); -> 377 console.log(myNumber.toString(16)); -> ff -결과값은 '문자열'이다.
+
+-숫자형 메소드를 사용할 때 주의해야할 점 : 숫자에 바로 메소드를 사용할 수도 있는데, 숫자를 그냥 적으면 에러가 발생한다. 정수에 바로 점을 찍게되면 소숫점으로 인식하기 때문. -> 정수 형태의 숫자 값에는 메소드를 사용할 때
+1.반드시 점 두개를 사용하거나, 255.. 2.양 옆을 괄호()로 감싸준다.
+
+#04. Math 객체 
+-절댓값 (Absolute Number) : 어떤 값의 '양수(positive number)' 버전. console.log(Math.abs(-10)); -> 10 console.log(Math.abs(10)); -> 10
+
+-최댓값 (Maximum) : Math.max 함수에 파라미터로 여러 수를 넘겨주면, 그중 가장 큰 값이 리턴된다. console.log(Math.max(2, -1, 4, 5, 0)); -> 5
+
+-최솟값 (Minimum) : Math.min 함수에 파라미터로 여러 수를 넘겨주면, 그중 가장 작은 값이 리턴된다. console.log(Math.min(2, -1, 4, 5, 0)); -> -1
+
+-거듭제곱 (Exponentiation) : 자바스크립트에서 Math.pow(x, y)를 하면 x의 y승의 결괏값이 리턴된다. console.log(Math.pow(2, 3)); -> 8 console.log(Math.pow(5, 2)); -> 25
+
+-제곱근 (Square Root) : Math.sqrt(x)를 하면 x의 제곱근이 리턴된다. console.log(Math.sqrt(25)); -> 5 console.log(Math.sqrt(49)); -> 7
+
+-반올림 (Round) : Math.round(x)를 하면 x의 반올림된 값이 리턴된다. 소수점 부분이 0.5 이상이면 가장 가까운 정숫값으로 올라가고, 소수점 부분이 0.5 미만이면 가장 가까운 정숫값으로 내려간다. console.log(Math.round(2.3)); -> 2 console.log(Math.round(2.4)); -> 2 console.log(Math.round(2.49)); -> 2 console.log(Math.round(2.5)); -> 3 console.log(Math.round(2.6)); -> 3
+
+-버림과 올림 (Floor and Ceil) : Math.floor(x)을 하면 x의 버림 값이, Math.ceil(x)을 하면 x의 올림 값이 리턴됩니다. 이 경우, 소수 부분이 얼마 인지와는 상관이 없다. console.log(Math.floor(2.4)); -> 2 console.log(Math.floor(2.49)); -> 2 console.log(Math.floor(2.8)); -> 2 console.log('-'); -> - console.log(Math.ceil(2.4)); -> 3 console.log(Math.ceil(2.49)); -> 3 console.log(Math.ceil(2.8)); -> 3
+
+-난수 (Random) : Math.random을 하면 0 이상 1 미만의 값이 랜덤으로 리턴된다. console.log(Math.random()); -> 0.21458369059793236 console.log(Math.random()); -> 0.6622040803059857 console.log(Math.random()); -> 0.785172717569619 console.log(Math.random()); -> 0.9056556038884926
+
+#바보 자바스크립트? let sum = 0.1 + 0.2; console.log(sum); -> 0.30000000000004 ?! -사람과 컴퓨터가 숫자를 다루는 방식이 다르기 때문에 숫자를 계산할 때 오차가 발생한다. -오차를 해결하는 방법 
+1.toFixed() 메소드 사용하기 toFixed 값은 문자열이기 때문에 숫자로 형변환을 해주어야한다. -> console.log(Number(sum.toFixed(1))); Number 메소드 사용하기 -> console.log(+sum.toFixed(1)); + 붙여주기 
+2.Math.round() 메소드 사용하기 -> console.log(Math.round(sum * 10) / 10);
+
+#07. 문자열 심화 
+-자바스크립트에서는 문자열도 객체처럼 다룰 수 있다. 문자열은 배열과 비슷한 부분이 많다. // String myString = 'Hi codeit';
+
+// 부분 문자열 접근 
+-slice(start, end) console.log(myString.slice(0, 2)); // 0번 인덱스부터 1번 인덱스까지 가져옴. 
+-console.log(myString.slice(3)); // 3번 인덱스부터 끝까지 가져옴. 
+-console.log(myString.slice()); // 문자열 전체를 가져옴.
+
+// 양끝 공백 제거 console.log(myString.trim()); // trim 메소드
+
+// 대소문자 변환 
+-console.log(myString.toUpperCase()); // 대문자 
+-console.log(myString.toLowerCase()); // 소문자
+
+// 요소 탐색 
+-console.log(myString.indexOf('i')); // 앞 부터 
+-console.log(myString.lastIndexOf('i')); // 뒤 부터 -없는 문자열을 찾으려고 하면 -1이 출력된다.
+
+// 요소 접근 
+-console.log(myString.[3]); // 대괄호 표현법 
+-console.log(myString.charAt(3)); // charAt 메소드
+
+// 문자열 길이 
+-console.log(myString.length); // length 프로퍼티
+
+#문자열과 배열의 비슷한 점 
+-배열과 문자열 모두 length프로퍼티를 가지고 있고, 대괄호 표기법으로 각 요소에 접근할 수 있다. 꽤 많은 메소드들이 배열과 문자열 모두 동일하게 사용된다. 배열을 다룰 때 유용한 for..of문을 문자열에 활용할 수도 있다.
+
+let myString = 'Codeit';
+
+for (let str of myString) { console.log(str); } -> C o d e i t
+
+console.log(typeof myString); -> string (문자열은 string(문자)) console.log(typeof myArray); -> object (배열은 object(객체)) -typeof 연산자를 사용해서 두 값의 자료형을 비교해보면, string과 object, 확실히 서로 다른 자료형인걸 확인할 수 있고,
+
+console.log(myString === myArray); -> false console.log(myString == myArray); -> false -일치 비교뿐만 아니라, 느슨하게 비교하는 동등비교에서도 false가 출력되는걸 확인할 수 있다.
+
+-mutable vs immutable -가장 중요한 차이는 배열은 'mutable(바뀔 수 있는)' 자료형인 반면 문자열은 'immutable(바뀔 수 없는)' 자료형이라는 것이다. -베열은 요소에 접근해서 할당연산자를 통해 요소를 수정할 수 있지만, 문자열은 한 번 할당된 값을 수정할 수 없다. 다르게 표현해서, 변수에 할당된 문자열을 바꾸고 싶다면, 일부를 바꾸는 게 아니라 새로운 문자열을 지정해주어야 한다.
+
+// 배열은 mutable let myArray = ['C', 'o', 'd', 'e', 'i', 't']; myArray[0] = 'B'; console.log(myArray); -> (6) ["B", "o", "d", "e", "i", "t"]
+
+// 문자열은 immutable let myString = 'Codeit'; myString[0] = 'B'; console.log(myString); -> Codeit
+
+#기본형과 참조형 
+-자료형 (Date Type) : 기본형, 참조형 
+-Number String Null Bollean undefined 
+기본형 (Primitive Type) : 변수에 기본형 값을 다루는 방식은 모두 똑같다. 
+ex) let x = 3; 
+-Object 
+참조형 (Reference Type) : 변수에 객체를 할당하면 변수에 객체가 담기는 것이 아니라 그 객체를 가지고 있는 주소값이 담기는 것이다. ex) let x = {name: "codeit"}; -> 기본형 값을 변수에 담아 사용할 때는 값이 그대로 할당되고, 참조형 값을 변수에 담아 사용할 때는 해당 객체를 가리키는 주소값이 할당된다.
+
+#참조형 복사하기 
+-참조형 값은 변수에 할당될 때 값 자체가 아니라 '주소값'이 할당된다.
+
+// 참조형 복사하기 (Reference Type Copy) 
+// 배열일 때 let numbers1 = [1, 2, 3]; let numbers2 = numbers1.silce(); -> silce() : 괄호 안에 아무 숫자도 넣지 않으면 배열의 처음부터 끝까지 리턴 값으로 받아온다.
+
+numbers2.push(4);
+
+conosle.log(numbers1); -> (3) [1, 2, 3] conosle.log(numbers2); -> (4) [1, 2, 3, 4]
+
+-> slice 메소드를 활용하면 배열을 복사하는 것과 같은 효과를 얻을 수 있다.
+
+// 객체일 때
+
+1. Object.assign(객체를 복사할 수 있는 메소드)를 활용하여 복사하기
+let course1 = { title: '파이썬 프로그래밍 기초', language: 'Python' };
+
+let course2 = Object.assign({}, course1); -> Object.assign 객체를 복사할 수 있는 메소드
+
+course2.title = '알고리즘의 정석';
+
+console.log(course1); -> {title: "파이썬 프로그래밍 기초", language: "Python"} console.log(course2); -> {title: "알고리즘의 정석", language: "Python"}
+
+2. for...in문을 함수로 만들어 사용하여 복사하기
+function cloneObject(object) { let temp = {};
+
+for (let key in object) {
+temp[key] = object[key]; 
+}
+
+return temp;
+};
+
+let course1 = { title: '파이썬 프로그래밍 기초', language: 'Python' };
+
+let course2 = cloneObject(course1); let course3 = cloneObject(course1);
+
+course2.title = '자료 구조'; course3.title = '객체 지향 프로그래밍';
+
+console.log(course1); -> {title: "파이썬 프로그래밍 기초", language: "Python"} console.log(course2); -> {title: "자료 구조", language: "Python"}
+
+#14. const, 변수와 상수 사이
+변수 선언 var 변수 : var 변수는 let 이나 const 처럼 똑같이 키워드 다음에 변수이름을 써서 선언할 수 있고, var myVariable;
+
+myVariable = 'codeit';
+
+혹은 키워드와 변수이름, 그리고 할당연산자와 값으로 선언과 동시에 값을 할당해 줄 수도 있다. var myVariable = 'codeit';
+
+#중복 선언 허용 
+-var 키워드로 선언한 변수의 첫 번째 문제는, let과 const와는 다르게 중복 선언이 가능하다. 
+똑같은 이름으로 변수를 한 번 더 선언하게 되면, 에러가 발생하는 것이 아니라 그냥 기존의 변수를 덮어써 버리는 것. 
+let키워드로 선언한 변수에 값을 재할당하는 것과는 엄연히 다르다. 
+var myVariable = 'codeit'; 
+console.log(myVariable); -> codeit 
+var myVariable = 'Codeit!'; 
+console.log(myVariable); -> Codeit! 
+이렇게 변수가 중복선언이 되면, 길고 복잡한 코드를 작성할 때 실수를 할 가능성이 커지고, 상황에 따라서는 치명적인 오류가 발생할 수 있다.
+
+#함수 스코프 var 키워드 변수가 사라진 두 번째 문제는 Scope의 문제이다. let과 const 키워드로 선언한 변수는 if, for, function 등등 어떤 키워드와 관계없이 코드 블록, 즉 {} 중괄호로 감싸진 부분을 기준으로 scope를 갖게 되지만, var 키워드로 선언한 변수는 scope가 function에서만 구분되어 있다. // let, const { let x = 3; }
+
+function myFunction() { let y = 4; }
+
+console.log(x); console.log(y);
+
+-> Uncaught ReferenceError: x is not defined : let이나 const 키워드의 경우에는 중괄호로 감싸진 경우라면 모두 중괄호 밖에서는 지역 변수에 접근할 수 없다.
+
+// var { var x = 3; }
+
+function myFunction() { var y = 4; }
+
+console.log(x); -> 2 console.log(y); -> Uncaught ReferenceError: y is not defined : 하지만 var 변수는 지역변수의 구분이 함수에만 있기 때문에 if, for, while, switch 등 다양한 상황에서 선언한 변수가 자칫, 전역변수의 역할을 하게 될 수도 있는 것.
+
+*참고 : 이렇게 함수를 기준으로만 적용되는 스코프는 함수 스코프, 코드 블록을 기준으로 적용되는 스코프는 블록 스코프라는 용어를 사용한다.
+
+#끌어올림 (Hoisting) // let, const console.log(myVariable); -> Uncaught ReferenceError: Cannot access 'myVariable' before initialization let myVariable;
+
+: let과 const로 선언한 변수는 선언되기 이전에 사용될 수 없다. 하지만, var 변수는 함수 스코프를 기준으로 선언되기 이전에도 변수에 접근이 가능하다.
+
+// var console.log(myVariable); -> undefined var myVariable;
+
+: 변수의 선언이 끌려 올라가서 마치, 2번째 줄과 첫 번째 줄이 바뀐 것처럼 동작한다. var myVariable; console.log(myVariable);
+
+이렇게 변수가 끌어올려 지는 현상을 '호이스팅(hoisting)'이라고 부른다. 다행히 호이스팅은 선언과 동시에 값을 할당하더라도, 선언문만 올려지기 때문에 값은 그대로 두 번째 줄에 남아있다. console.log(myVariable); -> undefined var myVariable = 2; console.log(myVariable); -> 2
+
+-한 가지 주의해야 될 부분은, 함수를 선언할 때도 이 호이스팅이 적용된다.
+
+sayHi();
+
+function sayHi() { console.log('hi'); }
+
+-> hi 당연한 듯 함수가 잘 실행되는 모습을 확인할 수 있다. 이런 현상은 함수를 한 번 선언하고 나면 어디서든 유연하게 사용할 수 있다는 장점이 있지만, 코드의 흐름에는 부정적인 영향을 끼칠 수 있다. 그래서 함수를 선언할 때는 가급적 코드 윗부분에 선언하거나, 호출을 항상 아래쪽에서 한다거나 나름대로 규칙을 세워서 코드를 작성하는것이 좋다.
+
+#STEP 3 웹 퍼블리싱
+*02. 기본 HTML 태그 정리
+
+1. <!DOCTYPE> 선언
+HTML 파일을 쓸 때는 가장 먼저 <!DOCTYPE> 선언을 써야 한다. 
+이전의 html 버전을 사용하려면 <!DOCTYPE>을 복잡하게 써야 하지만, 그냥 최신 버전인 HTML 5를 사용하기 위해서는 이렇게만 쓰면 된다.
+<!DOCTYPE html>
+
+2. <title> 태그
+페이지의 제목은 <title> 태그에 써주면 된다. 
+브라우저의 탭이나 방문 기록에 나와 있는 바로 그 제목이 이 곳에 들어간다.
+<title>My First Website</title>
+
+3. <h1>~<h6> 태그
+한 페이지에 여러 개의 머리말이 있을 수 있다. 그 중 가장 중요한 머리말은 <h1>(heading 1), 그 다음으로 중요한 머리말은 <h2>(heading 2). 이런 식으로 <h6>(heading 6)까지 작성할 수 있다.
+<h1>머리말 1</h1>
+<h2>머리말 2</h2>
+<h3>머리말 3</h3>
+<h4>머리말 4</h4>
+<h5>머리말 5</h5>
+<h6>머리말 6</h6>
+
+<p> 태그
+보통 문단은 <p>(paragraph) 태그 안에 넣는다. 물론 직접 설정할 수도 있지만 <p> 태그 위, 아래에는 기본적으로 여백이 조금씩 있다.
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+*04. <b> 태그, <i> 태그 정리
+<b> 태그
+텍스트를 굵게 쓰고 싶으면 'bold'의 약자인 <b> 태그를 사용하면 된다.
+Hello <b>World</b>!
+
+<i> 태그
+텍스트를 날려 쓰고 싶으면 'italics'의 약자인 <i> 태그를 사용하면 된다.
+Hello <i>World</i>!
+
+Phrase Tags
+<b> 태그는 그냥 텍스트를 '볼드체'로 만들어주고, 마찬가지로 <i> 태그는 그냥 텍스트를 '이탤릭체'로 만들어준다. 둘 다 '시각적인 특징'만 갖고 있는 태그인데, HTML에서는 시각적인 특징 뿐만 아니라 의미도 담고 있는 phrase tag가 있다.
+
+<strong> 태그
+Hello <strong>World</strong>!
+
+<strong> 태그는 감싸고 있는 텍스트가 중요하다고 표시하는 것이 목적이다. 지금 겉보기에는 두 태그가 똑같지만, 스크린리더(컴퓨터의 화면 낭독 소프트웨어: 시각 장애인, 학습/인지 장애인, 노인, 다문화 가정의 웹 접근성을 지원해주는 목적)가 글을 읽어줄 때 <strong>은 강조해서 읽을 수 있다.
+
+<em> 태그
+Hello <em>World</em>!
+<i> 태그는 그냥 시각적으로 날려쓰는 것이 목적이라면, <em> 태그는 강조하는 것이 목적이다. em은 'emphasized'의 줄임말이다.
+
+*04. 도움되는 웹사이트
+1.구글
+2.스택오버플로우
+3.jsfiddle.net
+
+Serif - 끝이 구부러진 것이 특징
+San-Serif - 끝이 구부러진게 없이 깔끔함.
+Monospace - 모든 글자가 같은 넓이를 차지한다. 
+Cursive - 필기체
+Fantasy - 그 외의 특이한 폰트
+
+*background-repeat
+/* 반복하지 않음 */
+background-repeat: no-repeat;
+
+/* 가로 방향으로만 반복 */
+background-repeat: repeat-x;
+
+/* 세로 방향으로만 반복 */
+background-repeat: repeat-y;
+
+/* 가로와 세로 모두 반복 */
+background-repeat: repeat;
+
+/* 반복할 수 있는 만큼 반복한 뒤, 남는 공간은 이미지 간의 여백으로 배분 */
+background-repeat: space;
+
+/* 반복할 수 있는 만큼 반복한 뒤, 남는 공간은 이미지 확대를 통해 배분 */
+background-repeat: round;
+
+
+*background-size
+/* 원래 이미지 사이즈대로 출력 */
+background-size: auto;
+
+/* 화면을 꽉 채우면서, 사진 비율을 유지 */
+background-size: cover;
+
+/* 가로, 세로 중 먼저 채워지는 쪽에 맞추어서 출력 */
+background-size: contain;
+
+/* 픽셀값 지정 (가로: 30px, 세로: 50px로 설정) */
+background-size: 30px 50px;
+
+/* 퍼센트값 지정 (가로: 부모 요소 width의 60%, 세로: 부모 요소 height의 70%로 설정) */
+background-size: 60% 70%;
+
+
+*background-position
+/* 단어로 지정해주기 (가로: left, center, right, 세로: top, center, bottom) */
+/* 아래와 같은 총 9개의 조합이 가능 */
+background-position: left top;
+background-position: left center;
+background-position: left bottom;
+background-position: right top;
+background-position: right center;
+background-position: right bottom;
+background-position: center top;
+background-position: center center;
+background-position: center bottom;
+
+/* 퍼센트로 지정해주기 (가로: 전체 width의 25% 지점, 세로: 전체 height의 75% 지점 ) */
+background-position: 25% 75%;
+
+/* 픽셀로 지정하기 (가로: 가장 왼쪽 가장자리에서부터 오른쪽으로 100px 이동한 지점, 세로: 가장 상단 가장자리에서 아래로 200px 이동한 지점) */
+background-position: 100px 200px;
+
+*display의 종류
+1. inline
+2. block
+3. inline-block
+4. flex
+5. list-item
+6. none
+
+다음 요소들은 기본 display 값이 inline이다.
+1. <span>
+2. <a>
+3. <b>
+4. <i>
+5. <img>
+6. <button>
+
+다음 요소들은 기본 display 값이 block이다.
+1. <div>
+2. <h1>, <h2>, <h3>, <h4>, <h5>, <h6>
+3. <p>
+4. <nav>
+5. <ul>
+6. <li>
+
+*inline-block
+만약 inline 요소처럼 다른 요소들과 같은 줄에 머무르면서 block 요소처럼 가로, 세로 길이도 설정해주고 싶으면 inline-block을 사용하면 된다.
+
+*<img> 태그의 비밀
+<img> 태그는 인라인이기 때문에 글자처럼 정렬이 된다.
+
+*가로 가운데 정렬
+1. inline 요소
+inline 또는 inline-block 요소면 부모 태그에 text-align: center;를 써주면 된다.
+
+2. block 요소
+block 요소면 margin-left: auto;, margin-right: auto;를 써주면 된다.
+
+*01. relative 포지션
+Static position: 원래 있어야 할 자리에 있는 것 (기본)
+Relative position: 상대적인 포지션. 원래 있어야할 곳에서 이동
+
+*04. fixed 포지션
+Fixed position: 브라우저를 기준으로 포지셔닝을 해주는 것. 스크롤을 움직여도 똑같은 자리에 고정되어 있다. fixed로 위치를 바꿔주면 원래 있던 곳에서 빠져나온다.
+
+*04. absolute 포지션
+Absolute position: 가장 가까운 포지셔닝이 된 요소가 기준.
+
+*01. float
+float를 적용하면 붕뜨면서 그 공간은 공백이 된다. 인라인 요소나 인라인 블록 요소는 float 공간에 갈 수 없다.
+
+*03. multiple floats
+
+*05. clear
+clear: 요소의 옆에 떠있는 요소가 없도록 함.
+
+*01. 리스트
+ol: <ol> 정렬된 목록을 나타낸다. 보통 숫자 목록으로 표현한다.
+li: <li> 목록의 항목을 나타낸다. 반드시 정렬 목록(<ol>), 비정렬 목록(<ul>, 혹은 메뉴(<menu>) 안에 위치해야 한다. 
+
