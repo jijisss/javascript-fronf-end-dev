@@ -1694,11 +1694,212 @@ metaKey	이벤트가 발생할 때 meta키를 눌렀는지 (window는 window키,
 브라우저의 기본 동작을 막는 메소드 -> event.preventDefault();
 브라우저의 기본동작을 막고 원하는 대로 동작하게 할 수 있다.
 
+*14. 종합 정리
+1. 이벤트 핸들러 등록하기
+HTML의 속성이나 DOM 프로퍼티를 활용해 이벤트를 등록하는 방법 외에 Element.addEventListener('type', 'handler')를 통해서 이벤트 핸들러를 등록할 수 있다.
+
+2. 이벤트 핸들러 삭제하기
+addEventListener 메소드를 활용해서 이벤트 핸들러를 등록했다면, Element.removeEventListner('type', 'handler')를 통해서 이벤트 핸들러를 삭제할 수 있다.
+
+3. 이벤트 객체 (Event Object)
+이벤트가 발생하면 이벤트 핸들러의 첫 번째 파라미터에는 자동으로 이벤트 객체가 전달된다.
+이벤트 객체는 이벤트 종류마다 가지고 있는 프로퍼티가 다르며, 이벤트에 대한 유용한 정보들을 프로퍼티로 가지고 있다.
+
+4. 이벤트 버블링 (Event Bubbling)
+이벤트는 전파가 된다. 
+어떤 요소에서 이벤트가 발생하면 해당 요소에 등록된 이벤트 핸들러가 동작하는 것뿐만 아니라 부모 요소로 이벤트가 계속해서 전파되면서 각 요소에도 등록된 이벤트 핸들러가 있다면 차례로 이벤트 핸들러가 동작하는데,
+
+자식 요소에서 부모 요소로 이벤트가 전파되는 것을 이벤트 버블링(Event Bubbling)이라고 부른다.
+
+참고로 이벤트 버블링은 이벤트 객체의 stopPropagation 메소드로 전파를 막을 수 있다.
+
+5. 이벤트 위임 (Event Delegation)
+버블링 개념을 활용하면 훨씬 효과적인 이벤트 관리를 할 수 있다. 예를 들어 자식 요소 각각에 이벤트 핸들러를 하나씩 등록할 필요 없이 부모 요소에서 한 번에 자식 요소들에 발생한 이벤트를 관리할 수도 있는데,
+
+이렇게 이벤트를 다루는 방식을 자식 요소의 이벤트를 부모 요소에 위임한다고 해서 이벤트 위임(Event Delegation)이라고 부른다.
+이벤트 위임을 잘 활용하면 훨씬 더 효율적으로 이벤트를 다룰 수 있다.
+
+6. 브라우저의 기본 동작
+브라우저에는 각 태그별 혹은 상황별로 기본적으로 약속된 동작들이 있다.
+
+예를 들어 마우스 오른쪽 버튼을 클릭하면 상황에 맞는 메뉴 창이 뜬다거나, input 태그에 커서를 두고 키보드 키를 누르면 해당 값이 입력된다거나..
+
+그런데 만약 이러한 동작들을 막고 싶다면 이벤트 객체의 preventDefault 메소드를 통해 막을 수가 있다.
+
+하지만 각 HTML 태그들이 가지고 있는 고유한 역할과 의미를 훼손하게 될 수도 있기 때문에 꼭 필요한 경우에만 주의해서 사용해야 한다는 점.
 
 
+#4-4. 다양한 이벤트 알아보기
+*01. 마우스 버튼 이벤트
+MouseEvent.button
+0: 마우스 왼쪽 버튼
+1: 마우스 휠
+2: 마우스 오른쪽 버튼
+
+MouseEvent.type
+click	왼쪽 버튼을 클릭한 순간
+contextmenu	오른쪽 버튼을 클릭한 순간
+mousedown	마우스 버튼을 누르는 순간
+mouseup	마우스 버튼을 눌렀다 떼는 순간
+dblclick	왼쪽 버튼을 빠르게 두 번 클릭한 순간
+
+*03. 마우스 이동 이벤트 I
+MouseEvent.type
+mousemove:	마우스 포인터가 이동할 때
+mouseover:	마우스 포인터가 요소 밖에서 안으로 이동할 때
+mouseout:	마우스 포인터가 요소 안에서 밖으로 이동할 때
+
+MouseEvent.clientX, clientY
+: 화면에 표시되는 창 기준 마우스 포인터 위치
+
+MouseEvent.pageX, pageY
+: 웹 문서 전체 기준 마우스 포인터 위치
+
+MouseEvent.offsetX, offsetY
+: 이벤트가 발생한 요소 기준 마우스 포인터 위치
+
+*04. client, page, offset 차이
+1. clientX, clientY
+client 프로퍼티는 말 그대로 클라이언트 영역 내에서 마우스의 좌표 정보를 담고있다. 클라이언트 영역이란 이벤트가 발생한 순간에 브라우저가 콘텐츠를 표시할 수 있는 영역을 뜻합니다.
+
+clientX : 브라우저가 표시하는 화면 내에서 마우스의 X좌표 위치를 담고 있다.
+clientY : 브라우저가 표시하는 화면 내에서 마우스의 Y좌표 위치를 담고 있다.
+
+client 값은 그 순간 보여지는 화면을 기준으로 계산하기 때문에 스크롤 위치와는 무관하게 항상 보여지는 화면의 좌측 상단의 모서리 위치를 (0, 0)으로 계산합니다.
+
+2. offsetX, offsetY
+offset 프로퍼티는 이벤트가 발생한 target이 기준이 된다.
+
+offsetX : 이벤트가 발생한 target 내에서 마우스의 X좌표 위치를 담고 있다.
+offsetY : 이벤트가 발생한 target 내에서 마우스의 Y좌표 위치를 담고 있다.
+
+offset 값도 이벤트가 발생한 대상을 기준으로 계산하기 때문에 스크롤 위치와는 무관하게 항상 대상의 좌측 상단의 모서리 위치를 (0, 0)으로 계산합니다.
+
+3. pageX, pageY
+page 프로퍼티는 전체 문서를 기준으로 마우스 좌표 정보를 담고 있다. 그렇기 때문에 스크롤로 인해서 보이지 않게된 화면의 영역까지 포함해서 측정한다는 점이 앞의 두 프로퍼티와의 차이점이다.
+
+pageX : 전체 문서 내에서 마우스의 X좌표 위치를 담고 있다.
+pageY : 전체 문서 내에서 마우스의 Y좌표 위치를 담고 있다.
+
+자칫 client 값과 혼동하기 쉬우니 잘 구분해 두는 것이 좋다.
 
 
+*05. 마우스 이동 이벤트 II
+MouseEvent.type
+mousemove:	마우스 포인터가 이동할 때
+mouseover:	마우스 포인터가 요소 밖에서 안으로 이동할 때
+mouseout:	마우스 포인터가 요소 안에서 밖으로 이동할 때
+
+MouseEvent.target
+: 이벤트가 발생한 요소
+
+MouseEvent.relatedTarget
+: 이벤트가 발생하기 직전(또는 직후)에 마우스가 위치해 있던 요소
+
+*06. mouseenter / mouseleave
+마우스 이벤트 타입에는 mouseover, mouseout과 비슷한 mouseenter와 mouseleave라는 타입이 있다.
+mouseenter는 mouseover처럼 마우스 포인터가 요소 바깥에서 안쪽으로 들어갈 때, mouseleave는 mouseout처럼 마우스 포인터가 요소 안쪽에서 바깥으로 나갈 때 발생한다.
+
+mouseover, mouseout과 어떤 차이가 있을까?
+
+1. 버블링이 일어나지 않는다.
+mouseenter와 mouseleave는 버블링이 일어나지 않는다.
+
+2. 자식 요소의 영역을 계산하지 않는다.
+mouseenter와 mouseleave는 자식 요소의 영역을 계산하지 않는다.
+
+정리
+mouseover/mouseout과 비교하면서 mouseenter/mouseleave에 대해 살펴봤는데,
+간단하게 정리하면, 이벤트가 자식 요소에 영향을 끼치는지가 둘의 가장 큰 차이라고 할 수 있다.
+
+그래서 이벤트 핸들러가 자식 요소에까지 영향을 끼치게 하고싶은 경우에는 mouseover/mouseout을, 자식 요소에는 영향을 끼치지 않고 해당 요소에만 이벤트 핸들러를 다루고자 한다면 mouseenter/mouseleave를 활용하면 좋겠다.
 
 
+*08. 키보드 이벤트
+KeyboardEvent.type
+keydown: 키보드 버튼을 누른 순간
+keypress: 키보드 버튼을 누른 순간
+keyup: 키보드 버튼을 눌렀다 뗀 순간
 
+KeyboardEvent.key
+: 이벤트가 발생한 버튼의 값
+
+KeyboardEvent.code
+: 이벤트가 발생한 버튼의 키보드에서 물리적인 위치
+
+*10. input 태그 다루기
+
+-포커스 이벤트
+focusin: 요소에 포커스가 되었을 때
+focusout: 요소에 포커스가 빠져나갈 때
+focus: 요소에 포커스가 되었을 때 (버블링 x)
+blur: 요소에 포커스가 빠져나갈 때 (버블링 x)
+
+-입력 이벤트
+input: 사용자가 입력을 할 때
+change: 요소의 값이 변했을 때
+
+*12. 스크롤 이벤트
+window.addEventListener('scroll', function);
+
+*13. 종합 정리
+1. MouseEvent.button
+마우스 이벤트 객체의 버튼 프로퍼티를 활용하면, 마우스 버튼을 눌렀을 때 일어난 이벤트에 대해서 어떤 버튼을 눌러서 일어난 이벤트인지를 정확하게 알아낼 수 있다.
+0	마우스 왼쪽 버튼
+1	마우스 휠
+2	마우스 오른쪽 버튼
+3	X1 (일반적으로 브라우저 뒤로 가기 버튼)
+4	X2 (일반적으로 브라우저 앞으로 가기 버튼)
+
+참고로 mouseenter, mouseleave, mouseover, mouseout, mousemove 처럼 마우스 이동과 관련된 이벤트에서는 이 값이 null이나 undefined가 아니라 0이라는 점.
+
+2. MouseEvent.type
+마우스 이벤트의 타입에는 아래와 같은 타입들이 있다.
+mousedown	마우스 버튼을 누르는 순간
+mouseup	마우스 버튼을 눌렀다 떼는 순간
+click	왼쪽 버튼을 클릭한 순간
+dblclick	왼쪽 버튼을 빠르게 두 번 클릭한 순간
+contextmenu	오른쪽 버튼을 클릭한 순간
+mousemove	마우스를 움직이는 순간
+mouseover	마우스 포인터가 요소 위로 올라온 순간
+mouseout	마우스 포인터가 요소에서 벗어나는 순간
+mouseenter	마우스 포인터가 요소 위로 올라온 순간 (버블링이 일어나지 않음)
+mouseleave	마우스 포인터가 요소에서 벗어나는 순간 (버블링이 일어나지 않음)
+
+3. MouseEvent.위치프로퍼티
+마우스 이벤트 객체에는 마우스 포인터의 위치와 관련된 다양한 프로퍼티들이 있는데, 주로 아래와 같은 프로퍼티들이 자주 사용된다.
+
+clientX, clientY	마우스 포인터의 브라우저 표시 영역에서의 위치
+pageX, pageY	마우스 커서의 문서 영역에서의 위치
+offsetX, offsetY	마우스 포인터의 이벤트 발생한 요소에서의 위치
+screenX, screenY	마우스 포인터의 모니터 화면 영역에서의 위치
+
+4. MouseEvent.relatedTarget
+mouseenter, mouseleave, mouseover, mouseout 이벤트에는 relatedTarget이라는 프로퍼티가 존재하는데,
+target 프로퍼티가 이벤트가 발생한 요소를 담고 있다면, relatedTarget 프로퍼티는 이벤트가 발생하기 직전(또는 직후)에 마우스가 위치해 있던 요소를 담고 있다.
+
+5. KeyboardEvent.type
+키보드 이벤트의 타입에는 아래와 같은 타입들이 있다.
+keydown	키보드의 버튼을 누르는 순간
+keypress	키보드의 버튼을 누르는 순간 ('a', '5' 등 출력이 가능한 키에서만 동작하며, Shift, Esc 등의 키에는 반응하지 않음)
+keyup	키보드의 버튼을 눌렀다 떼는 순간
+
+6. KeyboardEvent.key vs KeyboardEvent.code
+키보드 이벤트 객체에는 key와 code 프로퍼티가 자주 사용되는데,
+key는 사용자가 누른 키가 가지고 있는 값을 나타내고 code는 누른 키의 물리적인 위치를 나타낸다는 점!
+
+7. input태그 다루기
+input 태그는 말 그대로 입력의 역할을 하는 태그이다. 타입에 따라 조금씩 차이가 있을 수 있지만, input 태그를 다룰 때는 아래와 같은 이벤트 타입들이 활용될 수 있다.
+focusin	요소에 포커스가 되는 순간
+focusout	요소에 포커스가 빠져나가는 순간
+focus	요소에 포커스가 되는 순간 (버블링이 일어나지 않음)
+blur	요소에 포커스가 빠져나가는 순간 (버블링이 일어나지 않음)
+change	입력된 값이 바뀌는 순간
+input	값이 입력되는 순간
+select	입력 양식의 하나가 선택되는 순간
+submit	폼을 전송하는 순간
+
+8. 스크롤 이벤트
+scroll 이벤트는 보통 window 객체에 이벤트 핸들러를 등록하고 window 객체의 프로퍼티와 함께 자주 활용되는데.
+특히 scrollY 프로퍼티를 활용하면 스크롤된 특정한 위치를 기준으로 이벤트 핸들러가 동작하게 하거나 혹은 스크롤 방향(위로 스크롤 중인지/아래로 스크롤 중인지)을 기준으로 이벤트 핸들러가 동작하게끔 활용할 수도 있다.
 
