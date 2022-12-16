@@ -1078,3 +1078,627 @@ clear: 요소의 옆에 떠있는 요소가 없도록 함.
 ol: <ol> 정렬된 목록을 나타낸다. 보통 숫자 목록으로 표현한다.
 li: <li> 목록의 항목을 나타낸다. 반드시 정렬 목록(<ol>), 비정렬 목록(<ul>, 혹은 메뉴(<menu>) 안에 위치해야 한다. 
 
+*03. 부트스트랩 그리드
+-기본 구성원
+1. 컨테이너 (container)
+2. 행 (row)
+3. 열 (column)
+
+-부트스트랩 사이트에 자세히 설명되어 있지만 많은 분들이 무시하는 몇 가지 규칙입니다:
+
+행(<div class="row">)은 꼭 컨테이너(<div class="container">) 안에 넣어주세요.
+열(<div class="col">)은 꼭 행(<div class="row">) 안에 넣어주세요. 오직 열만 행의 직속 자식이 될 수 있습니다.
+콘텐츠(우리가 그리드에 넣고 싶은 내용)는 꼭 열(<div class="col">) 안에 넣어주세요.
+이 규칙들만 지켜도 예상치 못한 레이아웃이 나오지는 않을 것입니다!
+
+-기본 사용법
+구성원들과 규칙을 알았으면 이제 사용법을 알아봅시다.
+
+부트스트랩 그리드에는 한 줄에 기본적으로 12칸의 열(column)이 있다고 생각하시면 됩니다. 예를 들어서 한 줄을 정확히 3등분하고 싶으면 네 칸을 차지하는 열 세 개를 쓰면 되는 거죠. 네 칸을 사용하는 열은 <div class="col-4">입니다.
+
+아래의 코드에서는 다양한 방식으로 12칸을 나누어보았습니다.
+
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <!-- 정확히 3등분 -->
+      <div class="col-4 first">first</div>
+      <div class="col-4 second">second</div>
+      <div class="col-4 third">third</div>
+    </div>
+
+    <div class="row">
+      <!-- 정확히 2등분 -->
+      <div class="col-6 first">first</div>
+      <div class="col-6 second">second</div>
+    </div>
+
+    <div class="row">
+      <!-- 1대 5 비율 -->
+      <div class="col-2 first">first</div>
+      <div class="col-10 second">second</div>
+    </div>
+
+    <div class="row">
+      <!-- 1대 2대 1 비율 -->
+      <div class="col-3 first">first</div>
+      <div class="col-6 second">second</div>
+      <div class="col-3 third">third</div>
+    </div>
+  </div>
+</body>
+
+-12칸을 넘어가면?
+만약 한 행에 12칸이 넘는 열이 들어간다면, 새로운 줄로 넘어가게 됩니다.
+
+-Why 12?
+부트스트랩을 만든 분들은 왜 하필 12라는 숫자로 정했을까요?
+
+12는 상당히 많은 숫자들(1, 2, 3, 4, 6, 12)로 나누어지기 때문에 굉장히 유연합니다!
+
+예를 들어서 8칸으로 나누고 싶더라도 12라는 숫자의 유연함 덕분에 쉽게 할 수 있습니다. col-6를 두 개 쓰면 2등분 할 수 있고, 그 안에서 또 col-3로 4등분을 하면 8칸이 생기겠죠?
+
+이런식으로 열을 또 여러 열로 나누는 것을 '중첩(nesting)'한다고 부릅니다. 중첩을 하기 위해서는 우선 열(<div class="col-6">) 안에 새로운 행(<div class="row">)을 쓰셔야 합니다.
+
+*04. 부트스트랩 반응형 그리드
+부트스트랩의 그리드 시스템은 반응형 웹 디자인을 할 때 가장 빛을 발합니다.
+
+다음은 부트스트랩에서 정해둔 구간들입니다.
+
+1.Extra Small (< 576px): 모바일
+2.Small (≥ 576px): 모바일
+3.Medium (≥ 768px): 타블릿
+4.Large (≥ 992px): 데스크탑
+5.Extra Large (≥ 1200px): 와이드 데스크탑
+
+-컨테이너 (container)
+기본적으로 컨테이너는 가운데 정렬이 되어 있고, 그리드의 행들을 감싸주는 역할을 합니다 (행들은 열들을 감싸주고 있고요!). 컨테이너의 종류는 두 가지인데요.
+
+<div class="container">: 구간별로 그리드에 고정된 width를 설정해줍니다.
+<div class="container-fluid">: 그리드는 항상 width: 100%;입니다.
+<div class="container">
+만약 구간별로 그리드에 고정된 가로값을 설정해주고 싶으면 "container" 클래스를 사용하세요. 구간별로 그리드가 고정되어 있으면 레이아웃이 더 예상 가능합니다. 따라서 저는 개인적으로 "container" 클래스를 사용하는 것을 선호하고, 디자이너에게 이렇게 구간별로 고정되는 방식으로 만들기를 부탁합니다!
+
+<div class="container-fluid">
+저는 많은 경우에 "container" 클래스를 선호하지만, 상황에 따라 그리드가 항상 100%의 가로 길이를 갖는 것이 좋을 때가 있습니다. 그럴 때는 "container-fluid" 클래스를 사용하면 됩니다.
+
+"container"클래스를 사용하면 아래의 CSS 코드가 적용됩니다.
+
+.container {
+  width: 100%; /* extra small */
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* small */
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+/* medium */
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+/* large */
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+/* extra large */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+<div class="container-fluid">
+저는 많은 경우에 "container" 클래스를 선호하지만, 상황에 따라 그리드가 항상 100%의 가로 길이를 갖는 것이 좋을 때가 있습니다. 그럴 때는 "container-fluid" 클래스를 사용하면 됩니다.
+
+"container-fluid"클래스를 사용하면 아래의 CSS 코드가 적용됩니다.
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+-열 (column)
+반응형 구간별로 (총 12칸 중) 열이 차지하는 칸의 개수도 다르게 할 수 있습니다.
+
+예시를 몇 가지 봅시다.
+
+예시 1 (구간별로 모두 설정되어 있는 경우)
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+1.Extra Small (< 576px): 12칸을 모두 차지
+2.Small (≥ 576px): 6칸 차지
+3.Medium (≥ 768px): 4칸 차지
+4.Large (≥ 992px): 3칸 차지
+5.Extra Large (≥ 1200px): 2칸 차지
+
+예시 2 (특정 구간만 설정되어 있는 경우)
+아래와 같이 특정 구간에만 열 수가 설정되어 있는 경우도 있습니다. 그렇다면 그 구간부터 새로운 설정이 있는 상위 구간까지는 같은 칸 수를 차지합니다.
+
+<div class="col-12 col-lg-3">
+1.Extra Small (< 576px): 12칸을 모두 차지
+2.Small (≥ 576px): 12칸을 모두 차지
+3.Medium (≥ 768px): 12칸을 모두 차지
+4.Large (≥ 992px): 3칸 차지
+5.Extra Large (≥ 1200px): 3칸 차지
+
+<div class="col-6">
+1.Extra Small (< 576px): 6칸 차지
+2.Small (≥ 576px): 6칸 차지
+3.Medium (≥ 768px): 6칸 차지
+4.Large (≥ 992px): 6칸 차지
+5.Extra Large (≥ 1200px): 6칸 차지
+
+#STEP4. JavaScript 중급
+#4-1.인터랙티브 자바스크립트 시작하기
+
+*03. id로 태그 선택하기
+getElmentById
+존재하지 않는 id를 선택하려고하면 null 값이 나온다.
+
+*05. class로 태그 선택하기
+getElmentsByClassName - 여러 태그를 한꺼번에 선택 가능
+getElmentsByClassName으로 클래스가 하나 밖에 없는 태그를 선택하려고하면 요소 한개가 들어있는 HTMLCollection이 선택된다.
+존재하지 않는 클래스를 선택하려고하면 빈 HTMLCollection이 출력된다.
+
+*06. 유사 배열(Array-Like Object)이란..?
+-유사 배열(Array-Like Object)이란?
+앞에서도 설명한 것처럼 이름 그대로 배열과 유사(類似)한 객체를 유사 배열, 영어로는 Array-Like Object라고 부른다.
+하지만 마냥 모양만 비슷하다고 해서 모두 유사 배열이라고 부르진 않는다. 유사 배열에도 최소한 갖춰야 할 조건과 특징들이 있다.
+
+1. 숫자 형태의 indexing이 가능하다.
+유사 배열도 마찬가지로 배열이라는 이름에 걸맞게 각 요소에 0부터 시작하는 숫자 형태의 index가 있어야 한다.
+
+2. length 프로퍼티가 있다.
+유사 배열 역시 length 프로퍼티가 있어야 비로소 유사 배열이라고 할 수 있다. 
+
+3. 배열의 기본 메소드를 사용할 수 없다.
+상황에 따라서 직접 구현할 수도 있겠지만, 유사 배열이 완전한 배열이 아닌 가장 큰 이유는 바로 기본적인 배열의 메소드를 사용할 수 없다는 점 때문이다. 
+
+4. Array.isArray(유사배열)은 false다.
+Array 객체의 isArray 메소드는 파라미터로 전달한 값이 배열인지 아닌지를 평가해서 그 결과를 불린 형태의 값으로 리턴해주는 메소드이다.
+유사 배열은 배열과 비슷하지만 배열은 아니기 때문에 결괏값이 false 이다.
+
+주의사항: 유사 배열은 다양하다!
+
+*08. 태그 이름으로 태그 선택하기
+document.getElementsByTagName('태그이름')메소드를 활용하면 태그 이름으로 태그를 선택할 수 있다.
+const btns = document.getElementsByTagName('button');
+이렇게 하면 HTML 문서 내에 있는 모든 button 태그를 선택하게 된다.
+
+document.getElementsByClassName('class')메소드와 마찬가지로 태그 이름으로 요소를 찾는 경우에 여러 개의 요소가 선택될 수 있기 때문에 메소드 이름에 Element(s), s가 있고, 실행결과 역시 HTMLCollection을 리턴한다는 점도 기억해야한다.
+참고로 css 선택자처럼 '*' 값을 전달하게 되면 모든 태그를 선택할 수도 있다.
+
+*09. css 선택자로 태그 선택하기
+querySelector - 한개의 태그를 선택할 때 사용
+querySelectorAll - 여려개의 태그를 선택할 때 사용
+querySelector 메소드를 활용해 존재하지 않는 요소를 선택할 경우에는 null 값을 리턴한다.
+
+*11. 이벤트와 버튼 클릭
+이벤트 핸들링: 이벤트가 발생했을 때 어떤 특별한 동작을 하도록 이벤트를 다루는 것.
+이벤트 핸들러: 이벤트를 다루는 구체적인 함수 부분.
+
+*13. 종합 정리
+1. 자바스크립트로 태그 선택하기
+-메소드
+1. document.getElementById('id') 
+2. document.getElementsByClassName('class')
+3. document.getElementsByTagName('tag')	
+4. document.querySelector('css')
+5. document.querySelectorAll('css')
+
+-의미
+1. HTML id속성으로 태그 선택하기
+2. HTML class속성으로 태그 선택하기
+3. HTML 태그 이름으로 태그 선택하기
+4. css 선택자로 태그 선택하기
+5. css 선택자로 태그 선택하기
+
+-결과
+1. id에 해당하는 태그 하나
+2. class에 해당하는 태그 모음(HTMLCollection)
+3. tag에 해당하는 태그 모음(HTMLCollection)
+4. css 선택자에 해당하는 태그 중 가장 첫번째 태그 하나
+5. css 선택자에 해당하는 태그 모음(NodeList)
+
+2. 유사 배열이란?
+배열과 유사한 객체 ex) HTMLCollection, NodeList, DOMTokenList, ...
+
+특징
+1. 숫자 형태의 indexing이 가능하다.
+2. length 프로퍼티가 있다.
+3. 배열의 기본 메소드를 사용할 수 없다.
+4. Array.isArray(유사배열)의 리턴값은 false다.
+
+3. 이벤트와 이벤트 핸들링, 그리고 이벤트 핸들러
+-이벤트 : 웹 페이지에서 발생하는 대부분의 일(사건)들
+  ex) 버튼 클릭, 스크롤, 키보드 입력, ...
+
+-이벤트 핸들링 : 자바스크립트를 통해 이벤트를 다루는 일
+
+-이벤트 핸들러 : 이벤트가 발생했을 때 일어나야하는 구체적인 동작들을 표현한 코드. 이벤트 리스너(Event Listener)라고도 부른다.
+
+4. 이벤트 핸들러를 등록하는 2가지 방법
+4-1. 자바스크립트로 해당 DOM 객체의 onclick 프로퍼티에 등록하기
+const btn = document.querySelector('#myBtn');
+
+btn.onclick = function() {
+  console.log('Hello Codeit!');
+};
+
+4-2. HTML 태그의 onclick 속성에 바로 표시하기
+<button id="myBtn" onclick="console.log('Hello Codeit!')">클릭!</button>
+
+
+#4-2. 브라우저와 자바스크립트
+
+*01. 브라우저도 객체다?
+window : 전역객체 (Global Object)
+window 객체: 자바스크립트로 브라우저가 가지고 있는 다양한 정보를 얻거나 브라우저를 제어할 수 있다.
+
+*02. DOM
+DOM (Document Object Model) 문서 객체 모델: 웹페이지에 나타나는 html 문서 전체를 객체로 표현한 것
+document 객체을 활용하면 웹페이지의 내부에 무엇이든 수정할 수 있고 새로운 컨텐츠를 만들어낼 수 있다.
+
+객체형태로 보기: console.dir()
+
+*03. console.dir?
+console.log와 console.dir의 차이
+
+1. 출력하는 자료형이 다르다.
+먼저 문자열, 숫자, 불린 부분을 봅시다.
+각 값을 출력할 때 두 번째 dir 부분에서 출력되는 값의 색이 다른 게 보이시나요? dir 메소드는 문자열 표시 형식으로 콘솔에 출력합니다.
+
+2. log는 값 자체에, dir은 객체의 속성에!
+log 메소드는 파라미터로 전달받은 값을 위주로 출력하는 반면, dir 메소드는 객체의 속성을 좀 더 자세하게 출력합니다.
+
+dir 메소드가 출력한 부분을 자세히 보면 객체의 유형이 먼저 출력되고, 특히 함수 부분에서는 클릭해서 펼쳤을 때 함수가 가진 속성들을 더 보여주는 모습을 확인할 수 있습니다. (log 메소드는 펼쳐지지 않음)
+
+3. log는 여러 개, dir은 하나만!
+둘 사이의 차이는 파라미터로 전달할 수 있는 값의 개수에도 있는데요.
+log 메소드는 여러 값을 쉼표로 구분해서 전달하면 전달받은 모든 값을 출력하는 반면, dir 메소드는 여러 값을 전달하더라도 첫 번째 값만 출력합니다.
+
+4. DOM 객체를 다룰 때..
+지난 시간에도 확인했듯 log와 dir 메소드의 가장 큰 차이는 DOM 객체를 다룰 때 나타납니다.
+값에 좀 더 중점을 둔 log 메소드는 대상을 HTML 형태로 출력하고, 객체의 속성에 좀 더 중점을 둔 dir 메소드는 대상을 객체 형태로 출력합니다.
+
+*04. DOM 트리
+DOM 트리
+부모 노드
+자식 노드
+형제 노드
+텍스트 노드 (잎 노드)
+
+*05. DOM 트리 여행하기
+-부모 요소 노드
+console.log(myTag.parentElement);
+
+-자식 요소 노드
+console.log(myTag.children);
+console.log(myTag.firstElementChild); // 첫번째 자식 선택
+console.log(myTag.lastElementChild); //마지막 자식 선택
+
+-형제 요소 노드
+console.log(myTag.previousElementSibling);
+console.log(myTag.nextElementSibling);
+
+-이어서 선택하는 것도 가능
+console.log(myTag.parentElement.nextElementSibling);
+
+*06. DOM 트리 여행하기: 부록
+
+-요소 노드에 대한 이동 프로퍼티
+프로퍼티
+1. element.children	(자식 요소 노드) -element의 자식 요소 모음(HTMLCollection)
+2. element.firstElementChild (자식 요소 노드) -element의 첫 번째 자식 요소 하나
+3. element.lastElementChild (자식 요소 노드) -element의 마지막 자식 요소 하나
+4. element.parentElement (부모 요소 노드) -element의 부모 요소 하나
+5. element.previousElementSibling	(형제 요소 노드) -element의 이전(previous) 혹은 좌측(left)에 있는 요소 하나
+6. element.nextElementSibling (형제 요소 노드) -element의 다음(next) 혹은 우측(right)에 있는 요소 하나
+
+-모든 노드에 대한 이동 프로퍼티
+만약 요소 노드가 아닌 다른 노드들을 이동하고 싶은 경우에는 아래와 같은 프로퍼티를 활용할 수도 있다.
+
+프로퍼티
+1. node.childNodes (자식 노드) -node의 자식 노드 모음(NodeList)
+2. node.firstChild (자식 노드) -node의 첫 번째 자식 노드 하나
+3. node.lastChild	(자식 노드) -node의 마지막 자식 노드 하나
+4. node.parentNode (부모 노드) -node의 부모 요소 하나
+5. node.previousSibling (형제 노드) -node의 이전(previous) 혹은 좌측(left)에 있는 노드 하나
+6. node.nextSibling (형제 노드) -node의 다음(next) 혹은 우측(right)에 있는 노드 하나
+
+*08. 요소 노드 프로퍼티
+요소 노드 주요 프로퍼티
+-innerHTML: 요소안에 있는 html 자체를 문자열로 리턴해준다.
+-myTag.innerHTML += '<li>리스트 추가</li> : 덧셈 할당 연산자를 통해서 기존 html의 마지막 부분에 요소를 추가할 수도 있다.
+
+-outerHTML: 해당 요소를 포함한 전체 HTML코드를 문자열로 리턴해준다.
+outerHTML에 새로운 값을 할당하게 되면 처음 선택한 요소는 사라진다.
+
+-textContent: 요소 안에 있는 내용들 중에서 html을 제외한 텍스트만 가져온다.
+새로운 값을 할당할 수 있다. 요소 안의 내용이 완전히 수정된다.
+
+*09. inner/outerHTML, textContent 비교
+
+1. element.innerHTML
+요소 노드 내부의 HTML 코드를 문자열로 리턴해 줍니다. (내부에 있는 줄 바꿈이나 들여쓰기 모두 포함합니다.)
+요소 안의 정보를 확인할 수도 있지만, 내부의 HTML 자체를 수정할 때 좀 더 자주 활용됩니다. (내부에 있던 값을 완전히 새로운 값으로 교체하기 때문에 주의해서 사용해야해요!)
+
+2. element.outerHTML
+요소 노드 자체의 전체적인 HTML 코드를 문자열로 리턴해줍니다. (내부에 있는 줄 바꿈이나 들여쓰기 모두 포함합니다.)
+outerHTML은 새로운 값을 할당할 경우 요소 자체가 교체되어 버리기 때문에 주의해야 합니다.
+
+3. element.textContent
+요소 안의 내용들 중에서 HTML 태그 부분은 제외하고 텍스트만 가져옵니다. (내부에 있는 줄 바꿈이나 들여쓰기 모두 포함합니다.)
+새로운 값을 할당하면 innerHTML과 마찬가지로 내부의 값을 완전히 새로운 값으로 교체 합니다.
+하지만 textContent는 말그대로 텍스트만 다루기 때문에, 특수문자도 그냥 텍스트로 처리한다는 점, 꼭 기억해주세요!
+
+*11. 요소 노드 추가하기
+1. 요소 노드 만들기: document.createElement('태그이름')
+const first = document.createElement('li');
+
+2. 요소 노드 꾸미기: textContent, innerHTML, ...
+first.textContent = '처음';
+
+3. 요소 노드 추가하기: NODE.prepend, append, after, before
+tomorrow.prepend(first);
+
+
+*12. 노드 삭제와 이동하기
+-노드 삭제하기: NODE.remove();
+tomorrow.remove();
+today.children[2].remove();
+
+-노드 이동하기: prepend, append, before, after
+today.append(tomorrow.children[1]);
+tomorrow.children[1].after(today.children[1]);
+
+*14. HTML 속성 다루기
+-HTML 속성 (HTML attribute)
+
+1. elem.getAttribute('속성'): 속성에 접근하기
+console.log(tomorrow.getAttribute('href'));
+console.log(item.getAttribute('class'));
+
+2. elem.setAttribute('속성', '값'): 속성 추가(수정)하기
+tomorrow.setAttribute('class', 'list'); // 추가
+tomorrow.setAttribute('href', 'https://www.codeit.kr'); // 수정
+
+3. elem.removeAttribute('속성'): 속성 제거하기
+tomorrow.removeAttribute('class'); 
+tomorrow.removeAttribute('href');
+
+*16. 스타일 다루기
+
+-elem.classList: add, remove, toggle
+const item = tomorrow.children[1];
+item.classList.add('done', 'other');
+item.classList.remove('done', 'other');
+item.classList.toggle('done'); // 있으면 제거하고 없으면 추가. 클래스 하나만.
+item.classList.toggle('done', true); // 추가하는 역할만 함.
+item.classList.toggle('done', false); // 제거하는 역할만 함.
+
+- elem.className
+today.children[1].className = 'done'; 
+
+-style 프로퍼티
+today.children[0].style.textDecoration = 'line-through';
+today.children[0].style.backgroundColor = '#eee';
+
+*18. 비표준 속성 다루기
+-비표준 속성 활용하기
+1. 선택자로 활용
+가장 간단하게는 아래와 같이 querySelector로 태그를 선택할 때 css 선택자를 활용해서 태그를 선택하는 데에 활용할 수도 있습니다.
+
+2. 값을 표시할 태그를 구분할 때 활용
+비표준 속성은 객체 형태의 데이터가 있을 때, 각 프로퍼티 값들이 들어갈 태그를 구분하는데 활용할 수도 있습니다.
+
+3. 스타일이나 데이터 변경에 활용
+getAttribute 메소드를 활용해서 속성값을 가져오고, setAttribute 메소드를 활용해서 속성값을 설정해주는 원리로 이벤트를 통해 실시간으로 스타일을 변경하거나 데이터를 변경하는데 활용할 수 있습니다.
+
+때로는 class를 다루는 것보다 setAttribute로 비표준 속성을 변경하는게 스타일을 다루기에 오히려 편리한 경우도 있습니다.
+
+-좀 더 안전하게, dataset 프로퍼티
+다양한 방식으로 활용되는 비표준 속성에는 한 가지 문제가 있습니다.
+비표준 속성을 사용해 코드를 작성했을 때 시간이 지나서 나중에 그 속성이 표준으로 등록되면 문제가 발생할 수 있다는 건데요.
+HTML은 아직까지도 개발자들의 요구를 반영하기 위해 계속해서 발전하는 언어입니다. 그래서 이런 경우 예기치 못한 부작용이 발생할 수 있는 것이죠.
+
+예를 들어서, 만약 glitter라는 비표준 속성을 만들어서 glitter 속성값이 true면 마우스를 올렸을 때 주변에 별이 반짝이는 애니메이션이 동작하도록 프로그램를 설계했다고 가정해봅시다.
+그런데 갑자기 glitter라는 속성이 true일 때 태그가 계속 깜빡거리는 기능을 하는 표준으로 생겨나버리면 우리가 처음에 설계한 방식대로 동작하지 않을 수 있겠죠?
+
+그래서 비표준 속성을 사용하기 위해 미리 약속된 방식이 존재하는데요. 바로 data-* 속성입니다.
+
+data-로 시작하는 속성은 모두 dataset이라는 프로퍼티에 저장되는데요. 예를 들어서 data-status라는 속성이 있다면, element.dataset.status라는 프로퍼티에 접근해서 그 값을 가져올 수 있는 것이죠.
+
+data-*형태와 dataset프로퍼티를 사용하는 것이 조금 더 안전하다는 점도 꼭 잊지 말고 기억해두시면 좋을 것 같습니다.
+
+
+*19. 종합 정리
+1. window 객체
+window 객체는 브라우저 창을 대변하면서 자바스크립트에서 최상단에 존재하는 객체이다.
+자바스크립트 코드 어느 곳에서나 항상 접근할 수 있는 객체이기 때문에 전역 객체, 영어로는 Global Object라고 부른다.
+어떤 프로퍼티나 메소드를 사용하든 결국 전역 객체 내부의 것이기 때문에 앞에 window.을 생략할 수도 있다.
+
+2. DOM
+DOM이란 Document Object Model의 약자로, 한국어로는 문서 객체 모델이다.
+간단하게 표현하면 웹 페이지에 나타나는 HTML 문서 전체를 객체로 표현한 것으로 생각하면 됩니다.
+이때 각 객체를 노드(Node)라는 용어로 표현하고, 태그는 요소 노드, 문자는 텍스트 노드로 구분된다.
+
+3. DOM 트리
+HTML의 계층 구조는 DOM에서도 반영되는데 이러한 계층구조를 나무에 비유해서 DOM 트리라고 부른다.
+각 노드 간의 관계는 부모, 자식, 형제라는 용어로 표현한다.
+
+4. DOM 이동 시 활용 가능한 프로퍼티
+ 1. element.children - 자식 요소 노드	 - element의 자식 요소 모음(HTMLCollection)
+ 2. element.firstElementChild -	자식 요소 노드 -	element의 첫 번째 자식 요소 하나
+ 3. element.lastElementChild	- 자식 요소 노드	- element의 마지막 자식 요소 하나
+ 4. element.parentElement	- 부모 요소 노드 -	element의 부모 요소 하나
+ 5. element.previousElementSibling	- 형제 요소 노드 -	element의 이전(previous) 혹은 좌측(left)에 있는 요소 하나
+ 6. element.nextElementSibling	- 형제 요소 노드 -	element의 다음(next) 혹은 우측(right)에 있는 요소 하나
+ 7. node.childNodes	- 자식 노드	- node의 자식 노드 모음(NodeList)
+ 8. node.firstChild	- 자식 노드	- node의 첫 번째 자식 노드 하나
+ 9. node.lastChild -	자식 노드	- node의 마지막 자식 노드 하나
+ 10. node.parentNode	- 부모 노드	- node의 부모 요소 하나
+ 11. node.previousSibling	- 형제 노드	- node의 이전(previous) 혹은 좌측(left)에 있는 노드 하나
+ 12. node.nextSibling	- 형제 노드	- node의 다음(next) 혹은 우측(right)에 있는 노드 하나
+ 
+5. 주요 요소 노드 프로퍼티
+ 1. element.innerHTML	- 요소 노드 내부의 HTML코드 문자열로 리턴	- 요소 안의 정보를 확인할 수도 있지만,
+내부의 HTML 자체를 수정할 때 좀 더 자주 활용
+ 2. element.outerHTML - 요소 노드 자체의 전체적인 HTML 코드를 문자열로 리턴 -	outerHTML은 새로운 값을 할당하면
+요소 자체가 교체되어 버리기 때문에 주의
+ 3. element.textContent -	요소 노드 내부의 내용들 중에서 HTML을 제외하고 텍스트만 리턴	- textContent는 말그대로 텍스트만 다루기 때문에
+HTML태그를 쓰더라도 모두 텍스트로 처리됨
+
+6. 요소 노드 다루기
+ 1. 요소 노드 만들기: document.createElement('태그이름')
+ 2. 요소 노드 꾸미기: element.textContent, element.innerHTML, ...
+ 3. 요소 노드 추가 혹은 이동하기: element.prepend, element.append, element.after, element.before
+ 4. 요소 노드 삭제하기: element.remove()
+
+7. HTML 속성 다루기
+대부분의 HTML 속성은 DOM 객체의 프로퍼티로 변환이 된다.
+하지만, 표준 속성이 아닌 경우에는 프로퍼티로 변환이 안 된다. 아래 메소드를 활용하면 표준이 아닌 HTML 속성들도 다룰 수 있다.
+ 1. 속성에 접근하기: element.getAttribute('속성')
+ 2. 속성 추가(수정)하기: element.setAttribute('속성', '값')
+ 3. 속성 제거하기: element.removeAttribute('속성')
+
+8. 스타일 다루기
+자바스크립트로 태그의 스타일을 다루는 방법에는 크게 두 가지가 있다.
+ 1. style 프로퍼티 활용하기: element.style.styleName = 'value';
+ 2. class 변경을 통해 간접적으로 스타일 적용하기: element.className, element.classList
+
+8-1. classList의 유용한 메소드
+
+1.classList.add	:클래스 추가하기 -	여러 개의 값을 전달하면 여러 클래스 추가 가능
+2.classList.remove: 클래스 삭제하기 -	여러 개의 값을 전달하면 여러 클래스 삭제 가능
+3.classList.toggle: 클래스 없으면 추가, 있으면 삭제하기	- 하나의 값만 적용 가능하고,
+두 번째 파라미터로 추가 또는 삭제 기능을 강제할 수 있음
+
+
+#4-3. 이벤트 살펴보기
+*01. 이벤트 핸들러 등록하기
+1. 이벤트 등록하기 elem.addEventListener(event, handler);
+2. 이벤트 삭제하기 elem.removeEventListener(event, handler);
+
+*02. 다양한 이벤트
+-마우스 이벤트
+mousedown	마우스 버튼을 누르는 순간
+mouseup	마우스 버튼을 눌렀다 떼는 순간
+click	왼쪽 버튼을 클릭한 순간
+dblclick	왼쪽 버튼을 빠르게 두 번 클릭한 순간
+contextmenu	오른쪽 버튼을 클릭한 순간
+mousemove	마우스를 움직이는 순간
+mouseover	마우스 포인터가 요소 위로 올라온 순간
+mouseout	마우스 포인터가 요소에서 벗어나는 순간
+mouseenter	마우스 포인터가 요소 위로 올라온 순간 (버블링이 일어나지 않음)
+mouseleave	마우스 포인터가 요소에서 벗어나는 순간 (버블링이 일어나지 않음)
+
+-키보드 이벤트
+keydown	키보드의 버튼을 누르는 순간
+keypress	키보드의 버튼을 누르는 순간 ('a', '5' 등 출력이 가능한 키에서만 동작하며, Shift, Esc 등의 키에는 반응하지 않음)
+keyup	키보드의 버튼을 눌렀다 떼는 순간
+
+-포커스 이벤트
+focusin	요소에 포커스가 되는 순간
+focusout	요소로부터 포커스가 빠져나가는 순간
+focus	요소에 포커스가 되는 순간 (버블링이 일어나지 않음)
+blur	요소로부터 포커스가 빠져나가는 순간 (버블링이 일어나지 않음)
+
+-입력 이벤트
+change	입력된 값이 바뀌는 순간
+input	값이 입력되는 순간
+select	입력 양식의 하나가 선택되는 순간
+submit	폼을 전송하는 순간
+
+-스크롤 이벤트
+scroll	스크롤 바가 움직일 때
+
+-윈도우 창 이벤트
+resize	윈도우 사이즈를 움직일 때 발생
+
+*04. 이벤트 객체
+이벤트 핸들러가 되는 함수의 첫번째 파라미터는 무조건 이벤트 객체가 전달된다. event 또는 e
+이벤트 객체의 currentTarget프로퍼티는 이벤트가 발생했을 때, 이벤트 핸들러가 등록된 요소를 담고 있다.
+
+*05. 이벤트 객체 프로퍼티
+1. 공통 프로퍼티
+아래의 프로퍼티들은 이벤트 타입과 상관없이 모든 이벤트 객체들이 공통적으로 가지고 있는 프로퍼티이다.
+type	이벤트 이름 ('click', 'mouseup', 'keydown' 등)
+target	이벤트가 발생한 요소
+currentTarget	이벤트 핸들러가 등록된 요소
+timeStamp	이벤트 발생 시각(페이지가 로드된 이후부터 경과한 밀리초)
+bubbles	버블링 단계인지를 판단하는 값
+
+2. 마우스 이벤트
+마우스와 관련된 이벤트의 경우에는 아래와 같은 이벤트 객체의 프로퍼티들을 가지고 있다.
+button	누른 마우스의 버튼 (0: 왼쪽, 1: 가운데(휠), 2: 오른쪽)
+clientX, clientY	마우스 커서의 브라우저 표시 영역에서의 위치
+pageX, pageY	마우스 커서의 문서 영역에서의 위치
+offsetX, offsetY	마우스 커서의 이벤트 발생한 요소에서의 위치
+screenX, screenY	마우스 커서의 모니터 화면 영역에서의 위치
+altKey	이벤트가 발생할 때 alt키를 눌렀는지
+ctrlKey	이벤트가 발생할 때 ctrl키를 눌렀는지
+shiftKey	이벤트가 발생할 때 shift키를 눌렀는지
+metaKey	이벤트가 발생할 때 meta키를 눌렀는지 (window는 window키, mac은 cmd키)
+
+3. 키보드 이벤트
+키보드와 관련된 이벤트의 경우에는 아래와 같은 이벤트 객체의 프로퍼티들을 가지고 있다.
+key	누른 키가 가지고 있는 값
+code	누른 키의 물리적인 위치
+altKey	이벤트가 발생할 때 alt키를 눌렀는지
+ctrlKey	이벤트가 발생할 때 ctrl키를 눌렀는지
+shiftKey	이벤트가 발생할 때 shift키를 눌렀는지
+metaKey	이벤트가 발생할 때 meta키를 눌렀는지 (window는 window키, mac은 cmd키)
+
+*07. 이벤트 버블링
+버블링 멈추기 -> e.stopPropagation();
+
+*08. 캡쳐링
+이벤트엔 버블링 이외에도 ‘캡처링(capturing)’ 이라는 흐름이 존재한다. 
+
+먼저, 표준 DOM 이벤트에서 정의한 이벤트 흐름에는 3가지 단계가 있다.
+
+1.캡처링 단계: 이벤트가 하위 요소로 전파되는 단계
+2.타깃 단계: 이벤트가 실제 타깃 요소에 전달되는 단계
+3.버블링 단계: 이벤트가 상위 요소로 전파되는 단계
+
+이벤트가 발생하면 가장 먼저 window 객체에서부터 target 까지 이벤트 전파가 일어난다. (캡쳐링 단계)
+그리고 나서 타깃에 도달하면 타깃에 등록된 이벤트 핸들러가 동작하고, (타깃 단계)
+이후 다시 window 객체로 이벤트가 전파된다. (버블링 단계)
+
+캡쳐링 단계에서 이벤트 핸들러를 동작시키려면, addEventListener에 세번째 프로퍼티에 true 또는 { capture:true }를 전달하면 된다.
+
+*10. 이벤트 위임
+자식 요소에서 발생하는 이벤트를 부모 요소에서 다루는 방식을 이벤트 위임이라고 한다.
+
+*12. 브라우저의 기본 동작
+브라우저의 기본 동작을 막는 메소드 -> event.preventDefault();
+브라우저의 기본동작을 막고 원하는 대로 동작하게 할 수 있다.
+
+
+
+
+
+
+
+
+
