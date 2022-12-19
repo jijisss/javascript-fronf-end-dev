@@ -1248,7 +1248,7 @@ li: <li> 목록의 항목을 나타낸다. 반드시 정렬 목록(<ol>), 비정
 5.Extra Large (≥ 1200px): 6칸 차지
 
 #STEP4. JavaScript 중급
-#4-1.인터랙티브 자바스크립트 시작하기
+#4-1.인터랙티브 자바스크립트
 
 *03. id로 태그 선택하기
 getElmentById
@@ -1902,4 +1902,528 @@ submit	폼을 전송하는 순간
 8. 스크롤 이벤트
 scroll 이벤트는 보통 window 객체에 이벤트 핸들러를 등록하고 window 객체의 프로퍼티와 함께 자주 활용되는데.
 특히 scrollY 프로퍼티를 활용하면 스크롤된 특정한 위치를 기준으로 이벤트 핸들러가 동작하게 하거나 혹은 스크롤 방향(위로 스크롤 중인지/아래로 스크롤 중인지)을 기준으로 이벤트 핸들러가 동작하게끔 활용할 수도 있다.
+
+
+#4-2. 모던 자바스크립트
+*01. 모던 자바스크립트란?
+ECMAScript: 자바스크립트 표준 명세서
+ECMA international: 국제 표준화 기구
+ECMA-262: 자바스크립트를 사용할 떄 준수해야 하는 규칙, 세부사항 -> ECMAScript
+모던 자바스크립트: 현시점에 사용하기 적합한 범위 내에서 최신 버전의 표준을 준수하는 자바스크립트
+
+*03. ECMAScript 더 알아보기
+1. 공식 문서
+ECMAScript의 공식 문서가 궁금하다면 아래 링크를 참고해 보세요.
+
+ECMA-International 공식 ECMA-262문서
+
+2. 진행 현황
+지금까지 제정된 ECMAScript 표준 사항이나 과거 역사가 궁금하다면 아래 링크들을 참고해 보세요.
+
+위키백과 - ECMA스크립트
+MDN 문서
+
+3. 브라우저 지원 현황
+각각의 문법별로 브라우저의 지원 여부를 확인하고 싶다면 아래 링크들을 참고해 보세요.
+
+한눈에 확인하는 호환성 테이블
+문법 검색으로 확인하는 호환성 테이블
+
+4. 버전의 정식 표기
+개발자들 사이에서는 짧고 빠르게 소통하기 위해서 ES6, ES7이라는 용어를 사용하지만, 실제로 ECMA International에서 버전을 발표할 때 표기하는 정식 명칭은 연호를 사용해서 ECMAScript 2015라고 표기한다는 점!
+
+5. JavaScript vs ECMAScript
+간혹 JavaScript와 ECMAScript가 똑같다고 오해하는 경우가 있는데, 둘 사이에는 명확한 차이가 있다!
+일단 첫 번째 차이점은, JavaScript는 프로그래밍 언어이고, ECMAScript는 프로그래밍 언어의 표준이다. 
+쉽게 생각하면 ECMAScript는 JavaScript가 갖추어야 할 내용을 정리해둔 '설명서'이고, JavaScript는 ECMAScript를 준수해서 만들어낸 '결과물' 이라고 생각할 수 있는데요. 참고로 ECMAScript가 JavaScript화 하기 위해 등장하긴 했지만, ECMAScript는 JavaScript 뿐만아니라 모든 스크립트 언어(scripting languages)가 지켜야 하는 표준이다. 만약 여러분이 자바스크립트와 같은 언어를 직접 만들고자 한다면, 이 ECMAScript를 준수해야 한다!
+
+그리도 두 번째 차이점은 JavaScript는 ECMAScript를 기반으로 하지만 ECMAScript에 정의된 내용뿐만 아니라, 다른 부가적인 기능도 있다는 것이다. 
+특히, 우리가 자바스크립트로 HTML 코드를 제어하기 위해 사용하는 DOM(Document Object Model)을 다루는 문법들은 ECMAScript에 표준화된 문법이 아니라 WebIDL에서 표준화된 기술이라고 할 수 있다.
+
+*01. 데이터 타입의 특징과 종류
+자바스크립트의 데이터 타입 특징: 데이터 타입이 유연하다! -> 데이터 타입이 상황에 따라 변할 수 있다!
+
+*8가지 데이터 타입의 종류
+기본형: Number String Boolean Symbol: 유일한 값을 만들 때! BigInt: 엄청 큰 숫자를 다룰 때! Null Undefined
+참조형: 오브젝트
+
+*02. Symbol과 BigInt
+-Symbol
+심볼(symbol)은 기본형 데이터 타입(primitive data type) 중 하나이다. 심볼은 코드 내에서 유일한 값을 가진 변수 이름을 만들 때 사용한다.
+
+const user = Symbol();
+일단, 이렇게 Symbol이라는 함수를 통해서 심볼 값을 만들어 낼 수 있다.
+const user = Symbol('this is a user');
+그리고 괄호 안에 심볼에 대한 설명을 붙일 수도 있다. 이렇게 Symbol 값을 담게 된 user라는 이름의 변수는 다른 어떤 값과 비교해도 true가 될 수 없는 고유한 변수가 된다.
+
+const user = Symbol('this is a user');
+
+user === 'this is user'; // false
+user === 'user'; // false
+user === 'Symbol'; // false
+user === true; // false
+user === false; // false
+user === 123; // false
+user === 0; // false
+user === null; // false
+user === undefined; // false
+...
+
+심지어는 똑같은 설명을 붙인 심볼을 만들더라도 두 값을 비교하면 false가 반환된다.
+
+const symbolA = Symbol('this is Symbol');
+const symbolB = Symbol('this is Symbol');
+
+console.log(symbolA === symbolB); // false
+
+-BigInt
+BigInt는 자바스크립트에서 아주 큰 정수(Integer)를 표현하기 위해 등장한 데이터 타입이다.
+사실 자바스크립트의 숫자에는 안전한 정수 표현의 한계가 있는데, 안전한 정수 표현이라는 게 조금 이상하죠? 자바스크립트에서 안전한 최대 정수는 2**53 - 1, 안전한 최소 정수는 -(2**53 - 1) 이다. 2**53 - 1은 구체적으로 9007199254740991이라는 숫자로 약 9,000조 정도의 숫자인데, 안전한 정수 표현이라는 의미는 자바스크립트에서 이 숫자 범위를 초과하는 정숫값을 사용하려고 하면 연산에 미세한 오류가 발생한다는 뜻이다.
+
+예를 들면, 9007199254740991 + 1과 9007199254740991 + 2를 비교하면 true라는 결과가 리턴된다. 실제로 콘솔에 9007199254740991 + 2과 심지어 9007199254740993을 출력해봐도 9007199254740993이 아니라 9007199254740992가 출력되는 모습을 확인할 수 있다.
+
+console.log(9007199254740991 + 1 === 9007199254740991 + 2); // true
+console.log(9007199254740991 + 2); /// 9007199254740992
+console.log(9007199254740993); /// 9007199254740992
+
+이 숫자 범위는 JavaScript가 IEEE 754에 기술된 배정밀도 부동소수점 형식 숫자체계를 사용하기 때문이다. 혹시 용어가 너무 어색하다거나 개념이 조금 어렵다면, 일단은 자바스크립트의 숫자형(number type) 값에는 9000조 정도의 정수 표현의 한계가 존재한다. 정도만 이해하면된다!
+사실 9,000조라는 숫자도 꽤 큰 숫자기 때문에 대부분 상황에서는 큰 문제가 되지 않는데, 그래도 암호 관련 작업이나 계산기 관련 작업을 할 때, 아주 큰 숫자를 다루거나 혹은 굉장히 정확한 연산이 필요한 상황에서 이보다 더 큰 숫자가 필요할 수도 있겠죠?
+
+그럴 때 바로 BigInt라는 데이터 타입의 값을 사용하면 된다. BigInt 타입의 값은 일반 정수 마지막에 알파벳 n을 붙이거나 BinInt라는 함수를 사용하면 되는데,
+console.log(9007199254740993n); // 9007199254740993n
+console.log(BigInt(9007199254740993)); // 9007199254740993
+
+이렇게 BigInt 타입을 사용하면 2**53 - 1 보다 큰 정숫값도 안전하게 표현할 수가 있다. 단, BigInt 타입에는 몇 가지 주의사항이 있는데, 일단 BigInt 타입은 말 그대로 큰 정수를 표현하기 위한 데이터 타입이기 때문에 소수 표현에는 사용할 수가 없다.
+1.5n; // SyntaxError
+
+그래서 소수 형태의 결과가 리턴되는 연산은 소수점 아랫부분은 버려지고 정수 형태로 리턴된다.
+10n / 6n; // 1n
+5n / 2n; // 2n
+
+그리고 BigInt 타입끼리만 연산할 수 있고, 서로 다른 타입끼리의 연산은 명시적으로 타입 변환을 해야 한다.
+3n * 2; // TypeError
+3n * 2n; // 6n
+Number(3n) * 2; // 6
+
+*03. typeof 연산자
+*typeof 연산자
+우리가 사용하는 값이 어떤 데이터 타입을 가지고 있는지 확인하려면 typeof 연산자를 사용해야 한다.
+typeof 연산자는 키워드 다음에 공백(띄어쓰기)을 두고 값을 작성해도 되고, 함수를 사용하듯 괄호로 감싸서 사용할 수도 있다.
+
+typeof 'Codeit'; // string
+typeof Symbol(); // symbol
+typeof {}; // object
+typeof []; // object
+typeof true; // boolean
+typeof(false); // boolean
+typeof(123); // number
+typeof(NaN); // number
+typeof(456n); // bigint
+typeof(undefined); // undefined
+
+하지만 한 가지 주의해야 할 점은 typeof 연산자의 결과가 모든 타입과 1:1로 매칭되지 않는다는 점이다.
+
+-null이 object라고?
+일단, typeof null을 하면 문자열 null이 리턴되는 게 아니라 문자열 object가 리턴되는데.
+typeof null; // object
+
+이건 자바스크립트가 처음 구현될 때의 특별한 문법 설계 때문이다. 나중에 ECMAScript에서 수정이 제안되었었지만, 이미 개발된 많은 프로젝트에 버그가 생기는 우려로 인해 반영되지 않고 있다.
+
+-function?
+그리고 함수에 typeof 연산자를 사용하면 function이라는 값을 리턴하는데.
+function sayHi() {
+  console.log('Hi!?');
+}
+
+typeof sayHi; // function
+
+자바스크립트에서 함수는 객체로 취급됩니다. 그래서 간혹 object를 리턴할거라 예상하는 실수를 하기도 하는데. typeof 연산자를 함수에 사용하면 function이 리턴된다는 점도 꼭 기억해 두면 좋을 것 같다.
+
+*04. 자바스크립트 데이터 타입의 특징 익히기
+자바스크립트는 연산할 때 상황에 따라 데이터 타입이 유연하게 변하는 특징이 있다.
+곱셈의 경우에는 연산 대상을 모두 숫자 형으로 형 변환을 한 다음 연산을 수행한다. 
+
+*05. 불린인 듯 불린 아닌 불린같은 값
+Falsy값(False로 평가되는 값): false, null, indefined, NaN, 0, ''
+Truthy 값(True로 평가되는 값): 나머지 값들! [], {}
+Boolean 함수를 사용했을 때 false로 나오는 값은 모두 false, 나머지 값은 모두 true를 반환한다!
+
+*06. 불린인 듯 불린 아닌 불린같은 값 익히기
+if, for, while 등 불린 타입의 값이 요구되는 맥락에서 truthy와 falsy 개념은 특히나 중요한 역할을 하는데, for 문의 안에서 조건을 평가하는 부분이 반드시 false가 되는 것이 아니라 0이나 ''(빈 문자)가 되는 순간에도 반복은 충분히 멈출 수 있기 때문이다.
+
+*07. AND와 OR의 연산 방식
+자바스크립트에서 논리연산자는 매번 true 혹은 false를 리턴하는게 아니라 상황에 따라서 양쪽 값들 중 한쪽을 선택하는 방식으로 동작한다.
+
+AND 연산자 &&
+-왼쪽값이 truth면 오른쪽 값을 리턴하고, 왼쪽 값이 false면 그대로 왼쪽 값을 리턴한다.
+
+OR 연산자 ||
+-왼쪽 값이 truth면 그대로 왼쪽 값을 리턴하고, 왼쪽 값이 false면 오른쪽 값을 리턴한다.
+
+*08. AND와 OR의 연산 우선순위
+
+function checkAnswer(value) {
+  if (value < 10 && value > 0 && value !== 3) {
+    return '정답입니다!';
+  } 
+
+  return '틀렸습니다!';
+}
+
+console.log(checkAnswer(4)); // 정답입니다!
+
+한 가지 조심해야 할 부분이 있다. 위에 있는 코드처럼 AND 연산자나 OR 연산자 중 하나만 계속해서 사용할 때는 문제 없지만, 만약 AND 연산자와 OR 연산자를 섞어서 사용할 때는 연산의 우선순위가 존재한다는 것이다. 쉽게 설명해서 1 + 2 + 3 처럼 계속해서 더하기 연산자만 사용한다면 왼쪽부터 차례대로 더하면 되지만, 1 + 2 * 3 처럼 더하기와 곱하기 연산자가 섞여 있다면 연산자 우선순위를 고려해야 한다는 것이다.
+곱하기 연산자가 더하기 연산자보다 연산 우선순위가 높다는 사실 모두 알고 계시죠? AND 와 OR 연산자 사이에서는 AND 연산자의 우선순위가 더 높다.
+
+console.log(true || false && false); // true
+console.log((true || false) && false); // false
+
+console.log('Codeit' || NaN && false); // Codeit
+console.log(('Codeit' || NaN) && false); // false
+
+위 코드처럼 OR 연산자 뒤에 AND 연산자를 사용한다면, 소괄호로 OR 연산을 감쌀 때와 감싸지 않았을 때 서로 다른 결과를 보여주는 걸 확인할 수 있다. 프로그래밍을 하다 보면 AND와 OR 연산자뿐만 아니라 다양한 연산자들을 복합적으로 사용하게 될 텐데, 연산의 우선순위를 명확하게 하지 않으면 예상치 못한 결과를 얻을 수 있으니 잘 구분해두는 것이 중요하다.
+
+하지만 여러분이 코드를 작성할 때, 특히 여러 사람과 함께 협업하는 상황에서 다양한 연산자들을 복합적으로 사용해야 한다면 소괄호를 활용해서 의도에 맞는 연산 우선순위를 명확하게 표기하는 것이 좋은 습관이라는 점도 잘 기억해 두면 좋을 것 같다.
+console.log(true || (false && false)); // true
+console.log((true || false) && false); // false
+
+console.log('Codeit' || (NaN && false)); // Codeit
+console.log(('Codeit' || NaN) && false); // false
+
+*10. null 병합 연산자 ??
+ES2020에서 새롭게 추가된 null 병합 연산자에 대해 살펴보겠다. 영어로는 'Nullish coalescing operator' 라고 한다.
+
+-null 병합 연산자 ??
+물음표 두 개(??)를 사용해서 null 혹은 undefined 값을 가려내는 연산자 이다.
+아래 코드.
+const example1 = null ?? 'I';
+const example2 = undefined ?? 'love';
+const example3 = 'Codeit' ?? 'JavaScript';
+
+console.log(example1, example2, example3); // ?
+
+example1과 2를 보면, 지금 null 병합 연산자 왼편에 각각 null과 undefined가 있다. 이렇게 연산자 왼편의 값이 null 이나 undefined라면 연산자 오른편의 값이 리턴되고, example3처럼 연산자 왼편의 값이 null 이나 undefined가 아니라면 연산자 왼편의 값이 리턴되는 원리로 동작한다. 결과적으로 마지막 줄에서 콘솔에 출력되는 값은 I love Codeit이 되겠다.
+
+const example1 = null ?? 'I'; // I
+const example2 = undefined ?? 'love'; // love
+const example3 = 'Codeit' ?? 'JavaScript'; // Codeit
+
+console.log(example1, example2, example3); // I love Codeit
+
+-OR 연산자(||)와 비교
+그런데 이렇게 보니깐 이전에 앞서 OR 연산자 (||)와 동작하는 방식이 비슷해 보인다. 실제로도 다음과 같은 상황이라면 똑같이 동작을 하게 된다.
+const title1 = null || 'codeit';
+const title2 = null ?? 'codeit';
+
+console.log(title1); // codeit
+console.log(title2); // codeit
+
+하지만 null 병합 연산자(??)는 왼편의 값이 null이나 undefined인지 확인하고 OR 연산자(||)는 왼편의 값이 falsy인지를 확인하기 때문에 아래 코드와 같이 null이나 undefined가 아닌 falsy 값을 활용할 때 결과가 서로 다르니깐, 이 부분은 꼭 기억해 둬야한다!
+
+const title1 = false || 'codeit';
+const title2 = false ?? 'codeit';
+
+console.log(title1); // codeit
+console.log(title2); // false
+
+const width1 = 0 || 150;
+const width2 = 0 ?? 150;
+
+console.log(width1); // 150
+console.log(width2); // 0
+
+*11. 변수와 스코프
+변수: 변수는 이름을 통해서 어떤 값에 특별한 의미를 부여할 수 있다. 프로그래밍에서 초상화의 가장 기본적인 수단.
+
+var // 함수 스코프 (fucntion scope)
+let // 블록 스코프 (block scope)
+const // 블록 스코프 (block scope)
+
+*13. 종합 정리
+
+-자바스크립트의 데이터 타입
+자바스크립트에는 8가지 데이터 타입이 있다.
+
+number
+string
+boolean
+undefined
+null
+object
+symbol
+bigint
+
+-자바스크립트의 유연한 데이터 타입
+자바스크립트는 데이터 타입이 유연한 프로그래밍 언어다. 맥락에 유연하게 변하는 데이터 타입의 특징은 처음엔 생소하고 혼란스러울 수 있지만, 잘 이해하고 활용한다면 좀 더 간결한 코드를 작성하고 빠르게 개발할 수 있는 장점이 될 수 있다!
+
+-Truthy 값과 Falsy 값
+if, for, while 등 불린 타입의 값이 요구되는 맥락에서는 조건식이나 불린 타입의 값 뿐만아니라 다른 타입의 값도 불린 값처럼 평가될 수 있다. 이 때, false 처럼 평가되는 값을 falsy 값, true 처럼 평가되는 값을 truthy값이라고 부른다. falsy값에는 false, null, undefined, 0, NaN, ''(빈 문자열)이 있고, falsy값을 제외한 값들은 모두 truthy값이 된다.
+
+만약 falsy와 truthy값을 명확하게 확인하고 싶다면 Boolean 함수를 사용해서 직접 boolean 타입으로 형 변환 해볼 수도 있다.
+
+// falsy
+Boolean(false);
+Boolean(null);
+Boolean(undefined);
+Boolean(0);
+Boolean(NaN);
+Boolean('');
+
+// truthy
+Boolean(true);
+Boolean('codeit');
+Boolean(123);
+Boolean(-123);
+Boolean({});
+Boolean([]);
+truthy와 falsy의 개념은 자바스크립트에서 불린 타입으로의 형 변환을 이해할 때 핵심이되는 개념이 잘 기억해야한다.
+
+-독특한 방식으로 동작하는 논리 연산자
+자바스크립트에서 AND와 OR연산자는 무조건 불린 값을 리턴하는게 아니라, 왼쪽 피연산자 값의 유형에 따라서 두 피연산자 중 하나를 리턴하는 방식으로 동작한다.
+AND 연산자는 왼쪽 피연산자가 falsy값일 때 왼쪽 피연산자를, 왼쪽 피연산자가 truthy값일 때 오른쪽 피연산자를 리턴하고 반대로, OR 연산자는 왼쪽 피연산자가 falsy 일 때 오른쪽 피연산자를, 왼쪽 피연산자가 truthy 일 때 왼쪽 피연산자를 리턴한다.
+
+console.log(null && undefined); // null
+console.log(0 || true); // true
+console.log('0' && NaN); // NaN
+console.log({} || 123); // {}
+
+-자바스크립트의 다양한 변수 선언 방식
+자바스크립트에는 다양한 변수 선언 키워드가 있다. 자바스크립트가 처음 등장할 때부터 사용되던 var와, 그리고 var의 부족함을 채우기위해 ES2015에서 새롭게 등장한 let과 const가 있다.
+
+var 변수는 아래와 같은 특징이 있었다.
+
+-변수 이름 중복선언 가능,
+-변수 선언 전에 사용 가능(호이스팅),
+-함수 스코프 
+특히나 중복된 이름으로 선언이 가능했던 특징은 여러 사람이 협업할 때 생각보다 자주 문제가 되곤 했었다. 
+이런 문제를 개선하기 위해 ES2015에서 let과 const가 등장했고, 다음과 같은 특징이 있다.
+
+-변수 이름 중복선언 불가 (SyntaxError 발생)
+-변수 선언 전에 사용 불가 (ReferenceError 발생)
+-블록 스코프
+덧붙여 const 키워드는 let 키워드와 다르게 값을 재할당할 수 없다는 특징도 있다.
+그래서 ES2015 이후부터는 var보다 let과 const 키워드 사용이 권장된다는 사실도 참고해 두면 좋을 것 같다.
+
+-함수 스코프(function scope)와 블록 스코프(block scope)
+var 키워드로 선언한 변수는 함수 스코프 let과 const 키워드로 선언한 변수는 블록 스코프를 가진다.
+
+함수 스코프란 말 그대로 함수를 기준으로 스코프를 구분한다는 뜻이다. 그렇기 때문에 아래 코드처럼 함수 안에서 선언한 변수는 함수 안에서만 유효하게 된다.
+
+function sayHi() {
+  var userName = 'codeit';
+  console.log(`Hi ${userName}!`);
+}
+
+console.log(userName); // ReferenceError
+하지만 함수를 제외한 for, if, while 등과 같은 문법 안에서 선언한 변수는 그 문법 밖에서도 계속 유효했었기 때문에 때로는 중복선언등의 문제가 생겨나기도 했다.
+이런 문제를 해결하기 위해 let과 const 키워드와 함께 블록 스코프가 등장하게 된 것이다.
+
+for (var i = 0; i < 5; i++) {
+  console.log(i);
+}
+
+console.log(i); // 5
+블록 스코프는 중괄호로 감싸진 코드 블록에 따라 유효 범위를 구분하게 된다. 아래 코드에서 볼 수 있듯이 함수와 다른 문법들 뿐만아니라, 그냥 중괄호로 감싸진 코드 블록으로도 유효 범위가 구분되는 모습을 확인할 수 있다.
+
+function sayHi() {
+  const userName = 'codeit';
+  console.log(`Hi ${userName}!`);
+}
+
+for (let i = 0; i < 5; i++) {
+  console.log(i);
+}
+
+{
+  let language = 'JavaScript';
+}
+
+console.log(userName); // ReferenceError
+console.log(i); // ReferenceError
+console.log(language); // ReferenceError
+
+*01. 함수를 만드는 방법
+-함수를 만드는 방법
+1. 함수 선언 
+function 함수이름(파라미터){
+  동작
+  return 리턴값
+}
+
+2. 함수 표현식: 함수 선언을 값처럼 사용하는 방식
+const printCodeit = function () {
+  console.log('Codeit');
+}
+
+printCodeit();
+
+
+*03. 이름이 있는 함수 표현식
+-Named Function Expression (기명 함수 표현식)
+함수 표현식으로 함수를 만들 때는 선언하는 함수에 이름을 붙여줄 수도 있다.
+이름이 있는 함수 표현식, 즉 기명 함수 표현식이라고 부른다.
+함수 표현식으로 함수가 할당된 변수에는 자동으로 name이라는 프로퍼티를 가지게 된다.
+
+const sayHi = function () {
+  console.log('Hi');
+};
+
+console.log(sayHi.name); // sayHi
+
+이렇게 이름이 없는 함수를 변수에 할당할 때는 변수의 name 프로퍼티는 변수 이름 그 자체를 문자열로 가지게 된다. 하지만 함수에 이름을 붙여주게 되면, name 속성은 함수 이름을 문자열로 갖게 된다.
+
+const sayHi = function printHiInConsole() {
+  console.log('Hi');
+};
+
+console.log(sayHi.name); // printHiInConsole
+
+이 함수 이름은 함수 내부에서 함수 자체를 가리킬 때 사용할 수 있고 함수를 외부에서 함수를 호출할 때 사용할 수는 없다.
+
+const sayHi = function printHiInConsole() {
+  console.log('Hi');
+};
+
+printHiInConsole(); // ReferenceError
+
+기명 함수 표현식은 일반적으로 함수 내부에서 함수 자체를 가리킬 때 사용된다. 아래 코드.
+
+let countdown = function(n) {
+  console.log(n);
+
+  if (n === 0) {
+    console.log('End!');
+  } else {
+    countdown(n - 1);
+  }
+};
+
+countdown(5);
+
+아규먼트로 숫자 값을 전달하고 전달받은 그 값이 0이 될 때까지 하나씩 값을 줄이면서 자기 자신을 호출하는 countdown이라는 함수를 함수 표현식으로 작성해봤다. 이런 식으로 자기 자신을 부르는 함수를 재귀 함수(Recursive function)라고 부른다.
+그런데 만약 이 함수를 복사하려고 다른 변수에 똑같이 담았다가, countdown 변수에 담긴 값이 변하게 되면 문제가 발생한다.
+
+let countdown = function(n) {
+  console.log(n);
+  if (n === 0) {
+    console.log('End!');
+  } else {
+    countdown(n - 1);
+  }
+};
+
+let myFunction = countdown;
+
+countdown = null;
+
+myFunction(5); // TypeError
+
+마지막 줄에서 myFunction 함수를 호출했을 때, 함수가 실행되긴 하지만, 6번줄 동작을 수행할 때 호출하려는 countdown 함수가 이미 12번에서 null 값으로 변경되었기 때문에 함수가 아니라는 TypeError가 발생한 것이다!
+이런 상황을 방지하기 위해서 함수 내부에서 함수 자신을 사용하려고 하면 함수표현식에서는 반드시 기명 함수 표현식을 사용하는 것이 좋다.
+
+let countdown = function printCountdown(n) {
+  console.log(n);
+  if (n === 0) {
+    console.log('End!');
+  } else {
+    printCountdown(n - 1);
+  }
+};
+
+let myFunction = countdown;
+
+countdown = null;
+
+myFunction(5); // 정상적으로 동작
+
+함수 표현식을 작성할 때, 함수에 이름을 지정할 수 있다는 점과 특히 이렇게 함수 내에서 함수를 가리켜야 할 때는 꼭 함수 이름을 작성해주는 것이 안전하다는 점. 잘 기억해 두면 좋을 것 같다.
+
+*04. 즉시 실행 함수 (IIFE)
+-즉시 실행 함수
+(function () {
+  console.log('Hi!');
+})();
+
+보이는 것처럼 함수선언 부분을 소괄호로 감싼 다음에 바로 뒤에 함수를 실행하는 소괄호를 한 번 더 붙여주는 방식이다.
+이렇게 하면 함수가 선언된 순간 바로 실행이 되는 것이다.
+
+이렇게 함수 선언과 동시에 즉시 실행되는 함수를 가리켜 즉시 실행 함수 (표현)이라고 부른다.
+영어로는 Immediately Invoked Function Expression, 줄여서 IIFE라고 부릅니다.
+
+(function (x, y) {
+  consoel.log(x + y);
+})(3, 5);
+
+그리고 즉시 실행 함수도 일반 함수처럼 파라미터를 작성하고, 함수를 호출할 때 아규먼트를 전달할 수도 있다.
+한 가지 주의할 점은 즉시 실행 함수는 함수에 이름을 지어주더라도 외부에서 재사용할 수 없다는 것이다.
+
+(function sayHi() {
+  console.log('Hi!');
+})();
+
+sayHi(); // ReferenceError
+
+그래서 일반적으로는 이름이 없는 익명 함수를 사용한다.
+다만, 이름이 있는 함수 표현식 레슨에서도 살펴봤던 것처럼 함수 내부에서 자기 자신을 호출하는 재귀적인 구조를 만들고자 할 땐 이름이 필요할 수도 있으니까 이 부분은 참고해라!
+
+-즉시 실행 함수의 활용
+즉시 실행 함수는 말 그대로 선언과 동시에 실행이 이뤄지기 때문에 일반적으로 프로그램 초기화 기능에 많이 활용된다.
+
+(function init() {
+  // 프로그램이 실행 될 때 기본적으로 동작할 코드들..
+})();
+
+혹은 재사용이 필요 없는, 일회성 동작을 구성할 때 활용하기도 한다.
+
+const firstName = Young;
+const lastName = Kang;
+
+const greetingMessage = (function () {
+  const fullName = `${firstName} ${lastName} `;
+
+  return `Hi! My name is ${fullName}`;
+})();
+
+이렇게 함수의 리턴값을 바로 변수에 할당하고 싶을 때 활용할 수 있다.
+
+즉시 실행 함수에서 사용하는 변수들은 함수 내에서만 유효하기 때문에 이런 점을 활용하면, 일시적으로 사용할 변수의 이름들을 조금 자유롭게 작성할 수도 있다는 점. 잘 기억해라!
+
+
+*05. 값으로서 함수
+자바스크립트는 함수를 특별한 종류의 값으로 취급한다. 때문에 함수표현식이 가능
+typeOf 연산자를 사용해보면 함수는 객체 타입의 값으로 평가된다.
+배열의 요소로 함수를 선언하고, 호출할 수도 있음.
+
+파라미터로 함수를 선언할 수도 있다.
+
+콜백 함수(Callback Function): 다른 함수의 파라미터로 전달된 함수
+
+고차 함수(Higher Order Function): 함수를 리턴하는 함수. 이중 괄호를 활용해서 고차 함수로 활용되는 함수를 바로 호출할수도 있다. 프로그래밍에서 이런 특징을 가진 함수를 일급 함수(Frist Class Function)라고 한다.
+
+*07. Parameter
+파라미터: 함수를 호출할 때 함수 밖에서 안쪽으로 값을 전달하는 것. 파라미터를 활용하면 같은 함수라도 전달하는 값에 따라서 다양한 결과로 동작한다. 함수 선언 부분에서 소괄호 안에 작성되는 것.
+
+함수를 호출할 때 파라미터로 전달하는 값: 아규먼트(Argument)
+
+파라미터의 기본 값: undefined
+파라미터에 할당 연산자를 활용해서 기본 값을 설정해줄 수 있다. 그러면 함수를 호출할 때 아규먼트를 적지 않아도 기본 값을 사용한다. ex) function greeting (name = 'Codeit', interest)
+
+아규먼트가 파라미터로 전달될 때는 파라미터의 기본 값과는 전혀 관계없이 함수를 호출할 때 작성한 순서 그래도 전달된다.
+
+함수를 호출할 때 undefined를 전달해서 기본 값을 사용할 수도 있다.
+
+두개의 파라미터가 있는데 하나의 아규먼트만을 전달했을 때, 값을 전달받은 파라미터가 다른 파라미터의 기본값에 활용될 수도 있다.
+
+파라미터의 기본값 정의는 ES6에서 정의된 것이라서, ES6를 지원하지 않으면 사용할 수 없다.
+
+*09. Arguments
+Arguments: 함수를 호출할 때 전달하는 값
+
+-아규먼트 갯수에 따라 유연하게 동작하는 함수 만들기
+argumets: 특별한 객체. 파라미터의 갯수와 관계없이 모든 아규먼트를 배열처럼 출력해준다. 배열과 모양이 비슷하지만 배열의 메소드는 사용할 수 없는 유사 배열이다.
+
+
+*11. Rest Parameter
+Rest Parameter: 일반 파라미터 앞에 ...을 붙여준 것. 배열이기 때문에 배열의 메소드를 자유롭게 사용할 수 있다.
+일반 파라미터와 함께 사용할 때는 반드시 가장 마지막에 작성되어야한다.
 
