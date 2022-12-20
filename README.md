@@ -687,7 +687,7 @@ console.log(course[1]);
 
 #05. 배열 메소드 
 splice: 배열의 요소를 삭제하거나 수정하거나 추가할 수 있는 메소드
-splice(2, 1, '23', '25') 첫번쨰:삭제할 인덱스, 두번째:삭제할 갯수, 세번째:추가할 요소
+splice(2, 1, '23', '25') 첫번째:삭제할 인덱스, 두번째:삭제할 갯수, 세번째:추가할 요소
 
 #07. 배열 메소드 II
 배열의 첫 요소를 삭제: shift()
@@ -2426,4 +2426,823 @@ argumets: 특별한 객체. 파라미터의 갯수와 관계없이 모든 아규
 *11. Rest Parameter
 Rest Parameter: 일반 파라미터 앞에 ...을 붙여준 것. 배열이기 때문에 배열의 메소드를 자유롭게 사용할 수 있다.
 일반 파라미터와 함께 사용할 때는 반드시 가장 마지막에 작성되어야한다.
+
+
+*13. Arrow Function
+Arrow Function: 이름이 없는 익명 함수
+const elem = (number) => {
+  return number * 2;
+};
+
+
+파라미터가 하나만 있을 때는 소괄호를 생략해도 된다. + return 문만 있을 때는 return을 생략해도 된다.
+파라미터가 여러개일 때는 소괄호를 생략할 수 없다.
+ex) const elem = number => number * 2;
+
+return 문 하나밖에 없지만 return 값이 '객체'일 때 무작정 중괄호를 생략해 버리면, 객체를 표현하는 중괄호를 함수의 동작 부분을 구분하는 중괄호로 해석해 버려서 오류가 발생한다.
+또, arguments 객체를 활용하는 함수라면 Arrow Function을 사용할 수 없다.
+
+*15. What is this?
+// this
+console.log(this); -> window 객체가 기본 값으로 출력됨.
+자바스크립트에서 this => 함수를 호출한 객체를 가리키는 키워드
+
+arrow function에서 this의 값은 일반함수처럼 호출한 대상에 따라 상대적으로 변하지 않고, arrow function이 선언되기 직전에 유효한 this 값과 똑같은 값을 가지고서 동작하게 된다.
+
+*17. 종합 정리
+
+1.함수 선언
+자바스크립트에서 함수는 다양한 방식으로 선언할 수 있습니다.
+가장 일반적인 방법은 function 키워드를 통해 함수를 선언하는 방식인데요.
+
+// 함수 선언
+function sayHi() {
+  console.log('Hi!');
+}
+이렇게 작성하는 방식을 함수 선언(function declaration)이라고 합니다.
+
+2.함수 표현식
+그리고 자바스크립트에서 함수는 값으로 취급될 수도 있기 때문에 변수에 할당해서 함수를 선언할 수도 있습니다.
+
+// 함수 표현식
+const sayHi = function () {
+  console.log('Hi!');
+};
+이렇게 함수를 값으로 다루는 방식을 함수 표현식 (function expression)이라고 합니다.
+
+3.다양한 함수의 형태
+자바스크립트에서 함수는 값으로 취급되는데요. 이런 특징은 코드를 작성할 때 다양한 형태로 활용될 수 있습니다.
+
+// 변수에 할당해서 활용
+const printJS = function () {
+  console.log('JavaScript');
+};
+
+// 객체의 메소드로 활용
+const codeit = {
+  printTitle: function () {
+    console.log('Codeit');
+  }
+}
+
+// 콜백 함수로 활용
+myBtn.addEventListener('click', function () {
+  console.log('button is clicked!');
+});
+
+// 고차 함수로 활용
+function myFunction() {
+  return function () {
+    console.log('Hi!?');
+  };
+};
+
+
+4.파라미터의 기본값
+자바스립트에서 함수의 파라미터는 기본값을 가질 수가 있는데요. 기본값이 있는 파라미터는 함수를 호출할 때 아규먼트를 전달하지 않으면, 함수 내부의 동작은 이 파라미터의 기본값을 가지고 동작하게 됩니다.
+
+function sayHi(name = 'Codeit') {
+  console.log(`Hi! ${name}`);
+}
+
+sayHi('JavaScript'); // Hi! JavaScript
+sayHi(); // Hi! Codeit
+
+
+5.arguments 객체
+자바스크립트 함수 안에는 arguments라는 독특한 객체가 존재합니다.
+arguments 객체는 함수를 호출할 때 전달한 아규먼트들을 배열의 형태로 모아둔 유사 배열 객체인데요. 특히, 함수를 호출할 때 전달되는 아규먼트의 개수가 불규칙적일 때 유용하게 활용될 수 있습니다.
+
+function printArguments() {
+  // arguments 객체의 요소들을 하나씩 출력
+  for (const arg of arguments) {
+    console.log(arg); 
+  }
+}
+
+printArguments('Young', 'Mark', 'Koby');
+참고로 arguments라는 객체를 활용하고자 한다면 함수 안에서 사용할 파라미터나 변수, 함수의 이름을 arguments라고 짓는 것은 피하는게 좋겠죠?
+
+
+6.Rest Parameter
+arguments 객체를 이용하는 것 말고도 불규칙적으로 전달되는 아규먼트를 다루는 방법이 있는데요. 파라미터 앞에 마침표 세 개를 붙여주면, 여러 개로 전달되는 아규먼트들을 배열로 다룰 수가 있게 됩니다.
+그리고 arguments객체는 유사 배열이기 때문에 배열의 메소드를 활용할 수 없는 반면, rest parameter는 배열이기 때문에 배열의 메소드를 자유롭게 사용할 수 있다는 장점이 있습니다.
+
+function printArguments(...args) {
+  // args 객체의 요소들을 하나씩 출력
+  for (const arg of args) {
+    console.log(arg); 
+  }
+}
+
+printArguments('Young', 'Mark', 'Koby');
+rest parameter는 다른 일반 파라미터들과 함께 사용될 수도 있는데요.
+
+function printRankingList(first, second, ...others) {
+  console.log('코드잇 레이스 최종 결과');
+  console.log(`우승: ${first}`);
+  console.log(`준우승: ${second}`);
+  for (const arg of others) {
+    console.log(`참가자: ${arg}`);
+  }
+}
+
+printRankingList('Tommy', 'Jerry', 'Suri', 'Sunny', 'Jack');
+이름 그대로 앞에 정의된 이름 그대로 앞에 정의된 파라미터에 argument를 먼저 할당하고 나머지 argument를 배열로 묶는 역할을 하기 때문에 일반 파라미터와 함께 사용할 때는 반드시 가장 마지막에 작성해야 한다는 점을 꼭 기억해 주세요!
+
+7.Arrow Function
+arrow function은 익명 함수를 좀 더 간결하게 표현할 수 있도록 ES2015에서 새롭게 등장한 함수 선언 방식입니다.
+아래 코드와 같이 표현식으로 함수를 정의할 때 활용될 수도 있고 콜백 함수로 전달할 때 활용할 수도 있습니다.
+
+// 화살표 함수 정의
+const getTwice = (number) => {
+  return number * 2;
+};
+
+// 콜백 함수로 활용
+myBtn.addEventListener('click', () => {
+  console.log('button is clicked!');
+});
+화살표 함수는 다양한 상황에 따라 축약형으로 작성될 수 있는데요.
+아래 코드와 주석을 한 번 참고해 주세요!
+
+// 1. 함수의 파라미터가 하나 뿐일 때
+const getTwice = (number) => {
+  return number * 2;
+};
+
+// 파라미터를 감싸는 소괄호 생략 가능
+const getTwice = number => {
+  return number * 2;
+};
+
+// 2. 함수 동작 부분이 return문만 있을 때
+const sum = (a, b) => {
+  return a + b;
+};
+
+// return문과 중괄호 생략 가능
+const sum = (a, b) => a + b;
+그리고 Arrow function이 일반 함수와 몇 가지 차이점이 있는데요.
+가장 대표적인 차이점은 arguments 객체가 없고, this가 가리키는 값이 일반 함수와 다르다는 점입니다.
+arrow function을 사용할 땐 이런 부분을 잘 고려해야 된다는 점을 잊지 마세요!
+
+
+8.this
+자바스크립트에는 this라는 조금 특별한 키워드가 있습니다.
+웹 브라우저에서 this가 사용될 때는 전역 객체, Window 객체를 가지게 됩니다. 하지만 객체의 메소드를 정의하기 위한 함수 안에선 메소드를 호출한 객체를 가리키게 됩니다.
+
+const user = {
+  firstName: 'Tess',
+  lastName: 'Jang',
+  getFullName: function () {
+    return `${this.firstName} ${this.lastName}`;
+  },
+};
+
+console.log(user.getFullName()); // getFullName 안에서의 this는 getFullName을 호출한 user객체
+
+*01. 문장과 표현식
+
+1.문장 (statements)
+우리가 작성하는 모든 자바스크립트 코드는 모두 문장과 표현식으로 구성되어 있습니다. 
+먼저, 자바스크립트에서 문장은 어떤 동작이 일어나도록 작성된 최소한의 코드 덩어리를 가리킵니다.
+
+예를 들어서
+
+let x; 
+x = 3;
+
+if (x < 5) {
+  console.log('x는 5보다 작다');
+} else {
+  console.log('x는 5와 같거나 크다');
+}
+
+for (let i = 0; i < 5; i++) {
+  console.log(i);
+}
+이 코드의 첫 번째 줄도 x라는 변수를 선언하는 동작이 일어나는 하나의 문장이고, 두 번째 줄도 x에 3이라는 값을 할당하는 동작이 일어나는 하나의 문장입니다. 그리고 4번줄 부터 8번줄 까지도 하나의 문장이고 그리고 10번줄 부터 12번줄 까지도 반복 동작을 하는 문장의 예시라고 볼 수 있는데요.
+선언문, 할당문, 조건문, 반복문 .. 이렇게 끝에 문이라고 붙은 이유가 모두 동작을 수행하는 문장이기 때문입니다.
+
+2.표현식 (expressions)
+표현식은 결과적으로 하나의 값이 되는 모든 코드를 가리킵니다. 이게 무슨 말이냐면,
+
+5 // 5
+
+'string' // string
+어떤 하나의 값을 그대로 작성하는 것도 표현식이지만,
+
+5 + 7 // 12
+
+'I' + ' Love ' + 'Codeit' // I Love Codeit
+
+true && null // null
+이렇게 연산자를 이용한 연산식도 결국은 하나의 값이 되고,
+
+const title = 'JavaScript';
+const codeit = {
+  name: 'Codeit'
+};
+const numbers = [1, 2, 3];
+
+typeof codeit // object
+title // JavaScript
+codeit.name // Codeit
+numbers[3] // undefined
+위 코드의 마지막 네 줄처럼 선언된 변수를 호출하거나, 객체의 프로퍼티에 접근하는 것도 결국에는 하나의 값으로 평가되는데요. 그래서 길이와는 상관없이 결과적으로 하나의 값이 되는 코드를 모두 표현식이라고 할 수가 있습니다.
+
+3.표현식이면서 문장, 문장이면서 표현식
+표현식은 보통 문장의 일부로 쓰이지만, 그 자체로 문장일 수도 있습니다. 가장 대표적인 예시가 할당식과 함수 호출인데요.
+
+// 할당 연산자는 값을 할당하는 동작도 하지만, 할당한 값을 그대로 가지는 표현식이다.
+title = 'JavaScript'; // JavaScript
+
+// 함수 호출은 함수를 실행하는 동작도 하지만, 실행한 함수의 리턴 값을 가지는 표현식이다.
+sayHi(); // sayHi 함수의 리턴 값
+
+// console.log 메소드는 콘솔에 아규먼트를 출력하는 동작도 하지만, undefined 값을 가지는 표현식이다.
+console.log('hi'); // undefined
+사실은 할당연산자 자체가 할당한 값을 그대로 리턴하는 특징이 있기 때문에 연산 자체로 값이 되는 표현식이기도 합니다. 그런데 할당식은 왼쪽에 있는 피연산자에 오른쪽 피연산자 값을 할당하는 동작을 하기 때문에, 문장이 되기도 하죠?
+그리고 함수 호출도 함수를 호출한 자리가 결국에는 하나의 리턴하는 값을 가지기 때문에 표현식이라고 할 수도 있지만 함수 내부에 정의한 코드를 실행하는 동작이기 때문에 문장이 되기도 하는 것이죠.
+
+4.표현식인 문장 vs 표현식이 아닌 문장
+결과적으로 문장은 다시 표현식인 문장과, 표현식이 아닌 문장으로 나눌 수 있는데요.
+이 둘을 구분하는 가장 간단한 방법은 우리가 구분하고자 하는 문장을 변수에 할당하거나, 어떤 함수의 아규먼트로 전달해보는 겁니다.
+
+let x; 
+x = 3;
+
+console.log(if (x < 5) {
+  console.log('x는 5보다 작다');
+} else {
+  console.log('x는 5보다 크다');
+});
+
+const someloop = for (let i = 0; i < 5; i++) {
+  console.log(i);
+};
+console.log 메소드의 아규먼트로 if문을 전달하거나 someloop라는 변수에 for 반복문을 할당하게 되면, Error가 발생하게 되는데요.
+조건문이나 반복문은 값으로 평가되지 않고 오로지 문장으로만 평가되기 때문입니다.
+
+5.마무리
+이번 시간에는 문장과 표현식에 대해서 살펴봤는데요. 처음 프로그래밍을 공부할 때는 여러 문법들 속에 이 둘의 개념이 코드 속에 너무나도 자연스럽게 녹아있기 때문에 별로 중요하게 생각하지 않고 그냥 넘어가는 경우가 생각보다 많이 있는데요.
+다른 사람들이 작성한 코드의 맥락을 이해하는데에도 도움이 되지만, 자바스크립트의 문법을 좀 더 깊이 이해하고 능숙하게 다루기 위해서도 이 문장과 표현식에 대한 개념을 명확히 해 두는 것이 좋습니다.
+
+참고로 자바스크립트에서 특별한 경우를 제외하면 일반적으로 표현식인 문장은 세미콜론으로, 표현식이 아닌 문장은 문장 자체의 코드 블록(중괄호)로 그 문장의 범위가 구분되는데요.
+
+(3 + 4) * 2;
+console.log('Hi!');
+
+while(true) {
+  x++;
+}
+그래서 다른 사람들이 작성한 코드를 볼 때도 이 세미콜론과 중괄호를 따라가 보면 좀 더 쉽게 표현식인 문장과 표현식이 아닌 문장을 구분할 수가 있는데요. 물론 우리가 코드를 작성할 때도 이런 점을 잘 구분해서 세미콜론을 사용하는 게 좋겠죠!?
+
+*02. 조건을 다루는 표현식
+// 조건 연산자
+1. if문
+if (조건) {
+  // 조건이 true일 때 동작
+} else {
+  // 조건이 false일 때 동작
+}
+
+2. switch문
+switch (값) {
+  case A: 
+   // 값이 A와 일치할 떄 동작
+  break;
+  default:
+   // 값이 일치하는 case가 없을 때 동작
+}
+
+// 조건 ? truthy 할 때 표현식 : falsey 할 때 표현식
+// 삼항 연산자 (Ternary operator)
+
+*04. Spread 구문
+// Spread 구문 (Spread Syntax)
+
+1. 배열 펼치기
+const numbers = [1, 2, 3];
+
+console.log(...numbers); ->  1 2 3
+
+2. 배열 복사하기
+const aaa = ['a', 'b'];
+const bbb = [...aaa, 'c']
+
+
+3. 배열 합치기
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+
+const arr3 = [...arr1, ...arr2];
+console.log(arr3); -> [1, 2, 3 ,4 ,5 ,6]
+
+4. 함수 호출할 떄 아규먼트로 활용하기
+const introduce = (name, birth, job) => {
+  함수 동작 부분
+};
+
+const myArr = ['코드잇', 2017, '프로그래밍 강사'];
+introduce(...myArr);
+
+5. 객체로 만들기
+const members = ['지은', '지율', '하영'];
+
+const newObject = { ...members }
+console.log(newObject) -> {0:'지은', 1:'지율', 3:'하영' };
+
+*05. 객체 Spread하기
+지난 영상에서 Spread 구문에 대해서 살펴봤습니다. Spread 구문은 특히 배열을 다룰 때 유용하게 활용할 수 있었는데요. 그래서 사실 ES2015에서 Spread 구문이 처음 등장했을 땐 배열에서만 사용이 가능했고, 일반 객체에는 사용할 수가 없었습니다.
+그러다가 ES2018에서 일반 객체에도 Spread 구문을 사용할 수있는 표준이 등장하게 되었는데요. 2018년이 훨씬 지난 지금, 대부분의 브라우저에서는 객체를 복사하거나 기존의 객체를 가지고 새로운 객체를 만들 때 Spread 구문을 활용할 수가 있습니다.
+
+-객체 Spread하기
+아래 코드를 살펴봅시다.
+
+const codeit = { 
+  name: 'codeit', 
+};
+
+const codeitClone = { 
+  ...codeit, // spread 문법!
+};
+
+console.log(codeit); // {name: "codeit"}
+console.log(codeitClone); // {name: "codeit"}
+이렇게 중괄호 안에서 객체를 spread 하게되면, 해당 객체의 프로퍼티들이 펼쳐지면서 객체를 복사할 수가 있게 됩니다.
+
+const latte = {
+  esspresso: '30ml',
+  milk: '150ml'
+};
+
+const cafeMocha = {
+  ...latte,
+  chocolate: '20ml',
+}
+
+console.log(latte); // {esspresso: "30ml", milk: "150ml"}
+console.log(cafeMocha); // {esspresso: "30ml", milk: "150ml", chocolate: "20ml"}
+이런 식으로 다른 객체가 가진 프로퍼티에 다른 프로퍼티를 추가해서 새로운 객체를 만들 때 활용할 수도 있겠죠?
+
+
+-주의 사항
+배열을 Spread 하면 새로운 배열을 만들거나 함수의 아규먼트로 쓸 수 있었지만, 객체로는 새로운 배열을 만들거나 함수의 아규먼트로 사용할 수는 없습니다.
+
+const latte = {
+  esspresso: '30ml',
+  milk: '150ml'
+};
+
+const cafeMocha = {
+  ...latte,
+  chocolate: '20ml',
+}
+
+[...latte]; // Error
+
+(function (...args) {
+  for (const arg of args) {
+    console.log(arg);
+  }
+})(...cafeMocha); // Error
+그렇기 때문에 객체를 spread할 때는 반드시 객체를 표현하는 중괄호 안에서 활용해야 한다는 점. 잘 기억해 두시면 좋을 것 같습니다!
+
+
+*07. 모던한 프로퍼티 표기법
+const title = '코드잇';
+const birth = 2017;
+const job = '프로그래밍 강사';
+
+const user = {
+  title,
+  birth,
+  job
+}
+
+// 계산된 속성명(computed property name)
+const user = {
+  ['Code' + 'it']: 'value',
+};
+
+console.log(user); -> {Codeit: "value"}
+
+*09. 옵셔널 체이닝
+-옵셔널 체이닝 (Optional Chaining)
+ECMAScript2020에서 등장한 옵셔널 체이닝이라는 접근 방법입니다. 일반적으로 객체의 프로퍼티는 점 표기법을 통해서 접근하게 되는데요.
+
+아래 코드를 잠시 살펴봅시다.
+
+function printCatName(user) {
+  console.log(user.cat.name);
+}
+
+const user1 = {
+  name: 'Captain',
+  cat: {
+    name: 'Crew',
+    breed: 'British Shorthair',
+  }
+}
+
+printCatName(user1); // Crew
+객체를 활용해서 데이터를 표현하다 보면 이렇게 중첩된 객체를 작성하게 될 일이 빈번하고, 함수에서도 이런 중첩 객체의 프로퍼티를 활용할 일이 많은데요.
+중첩된 객체의 프로퍼티에 접근하는 방법은 이미 다 알고 계시죠? 함수 printCatName은 user 파라미터에 중첩된 cat객체의 name 프로퍼티를 콘솔에 출력해주는 함수입니다.
+
+그런데, 이렇게 중첩 객체를 다룰 때 한가지 조심해야 될 부분이 있습니다.
+
+const user2 = {
+  name: 'Young',
+}
+
+console.log(user2.cat); // undefined
+printCatName(user2); // TypeError: Cannot read property 'name' of undefined
+
+여러 가지 상황에 맞춰 데이터를 다루다 보면 때로는 우리가 예상한 프로퍼티를 가지고 있지 않을 수도 있는데요.
+cat 프로퍼티를 가지고 있지 않은 user2는 cat 프로퍼티가 undefined이기 때문에 user2.cat.name에 접근하려는 순간 에러가 발생하게 됩니다.
+
+그래서 printCatName과 같이 중첩된 객체의 프로퍼티를 다룰 때는 user.cat.name에 접근하기 전에 user.cat이 null 혹은 undefined가 아니라는 것을 검증하고 접근해야 에러를 방지할 수가 있는데요.
+
+function printCatName(user) {
+  console.log(user.cat && user.cat.name);
+}
+
+if문을 활용할 수도 있지만, 일반적으로는 간결하게 AND 연산자를 활용해서 이 문제를 해결하곤 했었습니다.
+그런데 이마저도 객체의 이름이나 프로퍼티의 이름이 길어질수록 가독성이 나빠지는 문제가 있는데요, 이런 상황에 훨씬 더 코드를 간결하게 사용할 수 있는 문법이 바로 옵셔널 체이닝(Optional Chaining)입니다.
+
+function printCatName(user) {
+  console.log(user.cat?.name);
+}
+
+위 코드에서 볼 수 있는 것처럼 물음표와 마침표를 붙여 사용하는 부분이 바로 옵셔널 체이닝 연산자(?.)인데요.
+만약 옵셔널 체이닝 연산자 왼편의 프로퍼티 값이 undefined 또는 null이 아니라면 그다음 프로퍼티 값을 리턴하고 그렇지 않은 경우에는 undefined를 반환하는 문법입니다.
+
+옵셔널 체이닝 연산자의 동작 원리를 삼항 연산자를 통해 구체적으로 표현하면 다음과 같이 작성할 수 있는데요.
+
+function printCatName(user) {
+  console.log((user.cat === null || user.cat === undefined) ? undefined : user.cat.name);
+}
+이렇게 보니 옵셔널 체이닝 연산자가 어떻게 동작하는지 이해가 되죠?
+이전에 배운 null 병합 연산자와 함께 활용하면 다음과 같이 응용할 수도 있습니다.
+
+function printCatName(user) {
+  console.log(user.cat?.name ?? '함께 지내는 고양이가 없습니다.');
+}
+
+const user2 = {
+  name: 'Young',
+}
+
+printCatName(user2); // 함께 지내는 고양이가 없습니다.
+이후 레슨에서 자세히 다루겠지만 자바스크립트에서 에러를 방지하는 일은 굉장히 중요한데요.
+중첩된 객체를 다룰 때 에러를 방지하기 위해 다양한 방식을 활용할 수 있지만 옵셔널 체이닝 연산자를 활용하면 훨씬 더 간결하게 코드를 작성할 수 있다는 점! 잘 기억해 두세요!
+
+*10. Destructuring (구조 분해)
+// 구조 분해 (Destructuring) (배열)
+
+const rank = ['유나', '효준', '민환', '재하', '규식'];
+
+const [macbook, ipad, airpods, coupon] = rank;  
+변수의 갯수보다 배열의 요소의 갯수가 더 많으면 넘치는 요소는 생략됨.
+
+const [macbook, ipad, airpods, ...coupon] = rank; 
+마지막 변수에 ...(Rest Parameter)를 활용하면 나머지 요소를 다 할당함.
+
+const [macbook, ipad, airpods, coupon = '없음'] = rank; 
+변수에 기본 값 할당 가능
+
+
+*12. Destructuring (구조 분해) II
+// 구조 분해 (Destructuring) (객체)
+
+const macbook = {
+  title: '맥북',
+  price: 369000,
+}
+
+const { title, price } = macbook;
+
+const { title, price, color = 'silver' } = macbook;
+
+const { title, price, ...rest } = macbook;
+
+const { title: product, price } = macbook;
+
+
+*14. 함수와 Destructuring
+// 구조 분해 (Destructuring) (함수)
+
+
+*16. 에러와 에러 객체
+// 에러와 에러 객체
+// name, message
+기본적으로 에러 객체에는 에러 이름을 담고 있는 name 프로퍼티와 에러 내용을 담고 있는 message 프로퍼티를 가지고 있다.
+
+// 에러의 대표적인 3가지 종류
+ReferenceError, TypeError, SyntaxError(문법 에러) 
+
+// 의도적으로 에러 객체 만들기
+const error = new TypeError('타입 에러가 발생했습니다.');
+
+throw error;
+
+*17. try catch 문
+// try catch 문
+try {
+  // 코드
+} catch (error) {
+  // 에러가 발생했을 때 동작할 코드
+}
+
+(error) -> error, err, e로 쓰기도 함 (맘대로 정할 수 있음)
+
+*18. try catch 활용하기
+// try catch 활용하기
+
+// 예외 (Exception)
+실행이 가능한 코드에서 발생한 에러
+
+
+*20. finally 문
+지난시간에 try catch문을 통해 에러를 다루는 방법에 대해서 살펴봤는데요.
+try catch는 사실 finally라는 코드 블록을 하나 더 가질 수 있습니다!
+
+finally문은 try catch문이 끝난 다음에 최종적으로 실행될 코드를 다룰 때 활용하는데요.
+
+-finally문
+try {
+  // 실행할 코드
+} catch (err) {
+  // 에러가 발생했을 때 실행할 코드
+} finally {
+  // 항상 실행할 코드
+}
+try문에서 에러가 발생하지 않는다면 try문의 코드가 모두 실행된 다음에,
+try문에서 에러가 발생한다면 catch문의 코드가 모두 실행된 다음 실행할 코드를 finally문에 작성하면 됩니다.
+
+다시 말해 try문에서 어떤 코드를 실행할 때 '에러 여부와 상관 없이 항상 실행할 코드'를 작성하는 것이죠!
+
+function printMembers(...members) {
+  for (const member of members) {
+    console.log(member);
+  }
+}
+
+try {
+  printMembers('영훈', '윤수', '동욱');
+} catch (err) {
+  alert('에러가 발생했습니다!');
+  console.error(err);
+} finally {
+  const end = new Date();
+  const msg = `코드 실행을 완료한 시각은 ${end.toLocaleString()}입니다.`;
+  console.log(msg);
+}
+위 코드 처럼 에러 유무와 관계없이 코드 실행 시각을 알고 싶을 때 활용할 수도 있겠죠?
+
+finally문에서의 에러 처리는?
+참고로 finally문에서 에러가 발생할 경우에는 다시 그 위에 있는 catch문으로 넘어가진 않습니다.
+만약 finally문에서도 에러 처리가 필요한 경우에는 아래 처럼 try catch문을 중첩해서 활용하는 방법이 있는데요.
+이런 부분도 잘 참고해 두셨다가 필요한 상황에 맞게 응용해 보세요!
+
+try {
+  try {
+    // 실행할 코드
+  } catch (err) {
+    // 에러가 발상했을 때 실행할 코드
+  } finally {
+    // 항상 실행할 코드
+  }
+} catch (err) {
+  // finall문에서 에러가 발생했을 때 실행할 코드
+}
+
+*22. 종합 정리
+
+조건부 연산자 (Conditional operator)
+삼항 연산자 (Ternary operator)라고도 불리는 이 연산자는 자바스크립트에서 세 개의 피연산자를 가지는 유일한 연산자 입니다. 
+if문과 같은 원리로 조건에 따라 값을 결정할 때 활용되는데요.
+
+const cutOff = 80;
+
+const passChecker = (score) => score > cutOff ? '합격입니다!' : '불합격입니다!';
+
+console.log(passChecker(75));
+간단한 조건식의 경우에는 if문 보다 훨씬 더 간결하게 표현할 수 있는 장점이 있지만 내부에 변수나 함수를 선언한다거나 반복문 같은 표현식이 아닌 문장은 작성할 수 없다는 한계가 있기 때문에 if문을 완벽하게 대체할 수는 없다는 점. 꼭 기억해 주세요!
+
+Spread 구문
+여러 개의 값을 묶어놓은 배열이나 객체와 같은 값은 바로 앞에 마침표 세 개를 붙여서 펼칠 수가 있습니다.
+
+const webPublishing = ['HTML', 'CSS'];
+const interactiveWeb = [...webPublishing, 'JavaScript'];
+
+console.log(webPublishing);
+console.log(interactiveWeb);
+
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+
+const arr3 = [...arr1, ...arr2];
+console.log(arr3);
+Spread 구문은 배열이나 객체를 복사하거나 혹은 복사해서 새로운 요소들을 추가할 때 유용하게 활용 될 수 있습니다.
+참고로 배열은 객체로 펼칠 수 있지만 객체는 배열로 펼칠 수 없다는 부분도 잘 기억해 두시면 좋을 것 같습니다.
+
+const members = ['태호', '종훈', '우재'];
+const newObject = { ...members };
+
+console.log(newObject); // {0: "태호", 1: "종훈", 2: "우재"}
+
+const topic = {
+  name: '모던 자바스크립트',
+  language: 'JavaScript', 
+}
+const newArray = [...topic]; // TypeError!
+모던한 프로퍼티 표기법
+ES2015 이후부터는 자바스크립트에서 변수나 함수룰 활용해서 프로퍼티를 만들 때 프로퍼티 네임과 변수나 함수 이름이 같다면 다음과 같이 축약해서 사용할 수 있습니다.
+
+function sayHi() {
+  console.log('Hi!');
+}
+
+const title = 'codeit';
+const birth = 2017;
+const job = '프로그래밍 강사';
+
+const user = {
+  title, 
+  birth, 
+  job, 
+  sayHi,
+};
+
+console.log(user); // {title: "codeit", birth: 2017, job: "프로그래밍 강사", sayHi: ƒ}
+그리고 메소드를 작성할 때도 다음과 같이 function 키워드를 생략할 수가 있습니다.
+
+const user = {
+  firstName: 'Tess',
+  lastName: 'Jang',
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+};
+
+console.log(user.getFullName()); // Tess Jang
+뿐만아니라 아래 코드와 같이 대괄호를 활용하면 다양한 표현식으로 프로퍼티 네임을 작성할 수도 있으니까 잘 기억해 두셨다가 유용하게 활용해 보세요!
+
+const propertyName = 'birth';
+const getJob = () => 'job';
+
+const codeit = {
+  ['topic' + 'name']: 'Modern JavaScript',
+  [propertyName]: 2017,
+  [getJob()]: '프로그래밍 강사',
+};
+
+console.log(codeit);
+구조 분해 Destructuring
+배열과 객체와 같이 내부에 여러 값을 담고 있는 데이터 타입을 다룰 때 Destructuring 문법을 활용하면, 배열의 요소나 객체의 프로퍼티 값들을 개별적인 변수에 따로 따로 할당해서 다룰 수가 있습니다.
+
+// Array Destructuring
+const members = ['코딩하는효준', '글쓰는유나', '편집하는민환'];
+const [macbook, ipad, coupon] = members;
+
+console.log(macbook); // 코딩하는효준
+console.log(ipad); // 글쓰는유나
+console.log(coupon); // 편집하는민환
+
+// Object Destructuring
+const macbookPro = {
+  title: '맥북 프로 16형',
+  price: 3690000,
+};
+
+const { title, price } = macbookPro;
+
+console.log(title); // 맥북 프로 16형
+console.log(price); // 3690000
+함수에서 default parater, rest parameter를 다루듯이 Destructuring 문법을 활용할 때도 기본값과 rest 문법을 활용할 수 있습니다.
+
+// Array Destructuring
+const members = ['코딩하는효준', '글쓰는유나', undefined, '편집하는민환', '촬영하는재하'];
+const [macbook, ipad, airpod = '녹음하는규식', ...coupon] = members;
+
+console.log(macbook); // 코딩하는효준
+console.log(ipad); // 글쓰는유나
+console.log(airpod); // 녹음하는규식
+console.log(coupon); // (2) ["편집하는민환", "촬영하는재하"]
+
+// Object Destructuring
+const macbookPro = {
+  title: '맥북 프로 16형',
+  price: 3690000,
+  memory: '16 GB 2667 MHz DDR4',
+  storage: '1TB SSD 저장 장치',
+};
+
+const { title, price, color = 'silver', ...rest } = macbookPro;
+
+console.log(title); // 맥북 프로 16형
+console.log(price); // 3690000
+console.log(color); // silver
+console.log(rest); // {memory: "16 GB 2667 MHz DDR4", storage: "1TB SSD 저장 장치"}
+에러와 에러 객체
+자바스크립트에서 에러를 다루는 일은 굉장히 중요하다고 할 수 있는데요.
+자바스크립트에서 에러가 발생하면 그 순간 프로그램 자체가 멈춰버리고 이후의 코드가 동작하지 않기 때문입니다.
+
+그리고 에러가 발생하면 에러에 대한 정보를 name과 message라는 프로퍼티로 담고 있는 에러 객체가 만들어지는데요.
+대표적인 에러 객체는 SyntaxError, ReferenceError, TypeError 입니다.
+
+에러 객체는 직접 만들 수도 있는데요.
+new 키워드와 에러 객체 이름을 딴 함수를 통해 에러 객체를 만들 수 있고, throw 키워드로 에러를 발생시킬 수 있습니다.
+
+throw new TypeError('타입 에러가 발생했습니다.');
+try catch문
+try catch문은 자바스크립트에서 대표적인 에러 처리 방법입니다.
+
+try {
+  // 실행할 코드
+} catch (error) {
+  // 에러 발생 시 동작할 코드
+}
+try문 안에서 실행할 코드를 작성하고, try문에서 에러가 발생한 경우에 실행할 코드를 catch 문 안에 작성하면 되는데요.
+이 때 try문에서 발생한 에러 객체가 catch문의 첫 번째 파라미터로 전달됩니다. 만약, try문에서 에러가 발생하지 않을 경우 catch문의 코드는 동작하지 않습니다.
+
+그리고 try catch문에서 에러의 유무와 상관없이 항상 동작해야할 코드가 필요하다면 finally문을 활용할 수 있습니다.
+
+try {
+  // 실행할 코드
+} catch (error) {
+  // 에러가 발상했을 때 실행할 코드
+} finally {
+  // 항상 실행할 코드
+}
+
+
+*01. 배열 메소드 I: forEach와 map
+// forEach와 map
+// forEach
+members.forEach( function (member) {
+  conosle.log(`${member}님이 입장하셨습니다.`);
+});
+
+members.forEach((member) => {
+  conosle.log(`${member}님이 입장하셨습니다.`);
+});
+
+members.forEach((member, i) => {
+  conosle.log(`${i} ${member}님이 입장하셨습니다.`);
+});
+
+members.forEach((member, i,arr) => {
+  conosle.log(`${i} ${member}님이 입장하셨습니다.`);
+});
+
+[배열].forEach((member, i,arr) => {
+  conosle.log(`${i} ${member}님이 입장하셨습니다.`);
+});
+
+// map
+firstNames.map((firstNames, i) => {
+  return lastNames[i] + firstNames;
+});
+
+
+*04. 배열 메소드 II: filter와 find
+// filter와 find
+// filter
+const apples = devices.filter((el) => el.brand === 'apple'); -> return 값: 조건에 만족하는 모든 값의 배열
+
+// find
+const apples = devices.find((el) => el.brand === 'apple'); -> return 값: 조건에 만족하는 하나의 값
+
+
+*07. 배열 메소드 III: some과 every
+// some과 every
+const numbers = [1, 3, 5, 7, 9];
+
+// some: 조건을 만족하는 요소가 1개 이상 있는지
+const someReturn = numbers.some((el) => el > 5);
+
+// every: 조건을 만족하지 않는 요소가 1개 이상 있는지
+const everyReturn = numbers.every((el) => el > 5);
+
+console.log('some:', someReturn); -> some: true
+console.log('every:', everyReturn); -> every: false
+
+*09. 배열 메소드 IV: reduce
+// reduce
+const numbers = [1, 2, 3, 4];
+
+const sumAll = numbers.reduce((acc, el, i) => {
+  console.log(`${i}번 index의 요소로 콜백함수가 동작중입니다.`);
+  console.log('acc:', acc);
+  console.log('el:', el);
+  console.log('----------');
+
+  return acc + el;
+}, 0);
+
+console.log('sumAll:', sumAll)
 
