@@ -3235,7 +3235,7 @@ console.log('every:', everyReturn); -> every: false
 // reduce
 const numbers = [1, 2, 3, 4];
 
-const sumAll = numbers.reduce((acc, el, i) => {
+const sumAll = numbers.reduce((acc, el, i, arr) => {
   console.log(`${i}번 index의 요소로 콜백함수가 동작중입니다.`);
   console.log('acc:', acc);
   console.log('el:', el);
@@ -3246,3 +3246,864 @@ const sumAll = numbers.reduce((acc, el, i) => {
 
 console.log('sumAll:', sumAll)
 
+
+*11. sort, reverse
+sort 메소드
+배열에서 sort라는 메소드를 활용하면 배열을 정렬할 수 있습니다.
+sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬됩니다.
+
+const letters = ['D', 'C', 'E', 'B', 'A'];
+const numbers = [1, 10, 4, 21, 36000];
+
+letters.sort();
+numbers.sort();
+
+console.log(letters); // (5) ["A", "B", "C", "D", "E"]
+console.log(numbers); // (5) [1, 10, 21, 36000, 4]
+그렇기 때문에 numbers에 sort 메소드를 사용한 것 처럼, 숫자를 정렬할 때는 우리가 상식적으로 이해하는 오름차순이나 내림차순 정렬이 되지 않습니다.
+
+그럴 땐 sort 메소드에 다음과 같은 콜백함수를 아규먼트로 작성해주면 되는데요.
+
+const numbers = [1, 10, 4, 21, 36000];
+
+// 오름차순 정렬
+numbers.sort((a, b) => a - b);
+console.log(numbers); // (5) [1, 4, 10, 21, 36000]
+
+// 내림차순 정렬
+numbers.sort((a, b) => b - a);
+console.log(numbers); // (5) [36000, 21, 10, 4, 1]
+sort 메소드를 사용할 때 한 가지 주의해야될 부분은 메소드를 실행하는 원본 배열의 요소들을 정렬한다는 점입니다.
+그래서 한 번 정렬하고 나면 정렬하기 전의 순서로 다시 되돌릴 수 없으니, 그런 경우에는 미리 다른 변수에 복사해두는 것이 좋겠죠!?
+
+reverse 메소드
+reverse 메소드는 말 그대로 배열의 순서를 뒤집어 주는 메소드 입니다.
+reverse 메소드는 별도의 파라미터가 존재하지 않기 때문에 단순이 메소드를 호출해주기만 하면 배열의 순서가 뒤집히는데요.
+sort 메소드와 마찬가지로 원본 배열의 요소들을 뒤집어 버린다는 점은 꼭 주의헤야 합니다.
+
+const letters = ['a', 'c', 'b'];
+const numbers = [421, 721, 353];
+
+letters.reverse();
+numbers.reverse();
+
+console.log(letters); // (3) ["b", "c", "a"]
+console.log(numbers); // (3) [353, 721, 421]
+
+
+*12. Map, Set
+-Map과 Set
+객체는 property name을 통해 이름이 있는 여러 값들을 묶을 때 활용할 수 있고,
+배열은 index를 통해 순서가 있는 여러 값들을 묶을 때 유용하게 활용할 수 있습니다.
+
+그런데 ES2015에서 객체와 비슷한 Map과 배열과 비슷한 Set이라는 데이터 구조가 새롭게 등장했는데요.
+각각 어떤 특징들을 가지고 있는지 간단하게 살펴보도록 합시다.
+
+-Map
+Map은 이름이 있는 데이터를 저장한다는 점에서 객체와 비슷합니다.
+하지만, 할당연산자를 통해 값을 추가하고 점 표기법이나 대괄호 표기법으로 접근하는 일반 객체와 다르게 
+Map은 메소드를 통해서 값을 추가하거나 접근할 수 있는데요.
+
+new 키워드를 통해서 Map을 만들 수 있고 아래와 같은 메소드를 통해 Map 안의 여러 값들을 다룰 수 있습니다.
+
+map.set(key, value): key를 이용해 value를 추가하는 메소드.
+map.get(key): key에 해당하는 값을 얻는 메소드. key가 존재하지 않으면 undefined를 반환.
+map.has(key): key가 존재하면 true, 존재하지 않으면 false를 반환하는 메소드.
+map.delete(key): key에 해당하는 값을 삭제하는 메소드.
+map.clear(): Map 안의 모든 요소를 제거하는 메소드.
+map.size: 요소의 개수를 반환하는 프로퍼티. (메소드가 아닌 점 주의! 배열의 length 프로퍼티와 같은 역할)
+// Map 생성
+const codeit = new Map();
+
+// set 메소드
+codeit.set('title', '문자열 key');
+codeit.set(2017, '숫자형 key');
+codeit.set(true, '불린형 key');
+
+// get 메소드
+console.log(codeit.get(2017)); // 숫자형 key
+console.log(codeit.get(true)); // 불린형 key
+console.log(codeit.get('title')); // 문자열 key
+
+// has 메소드
+console.log(codeit.has('title')); // true
+console.log(codeit.has('name')); // false
+
+// size 프로퍼티
+console.log(codeit.size); // 3
+
+// delete 메소드
+codeit.delete(true);
+console.log(codeit.get(true)); // undefined
+console.log(codeit.size); // 2
+
+// clear 메소드
+codeit.clear();
+console.log(codeit.get(2017)); // undefined
+console.log(codeit.size); // 0
+문자열과 심볼 값만 key(프로퍼티 네임)로 사용할 수 있는 일반 객체와는 다르게
+Map 객체는 메소드를 통해 값을 다루기 때문에, 다양한 자료형을 key로 활용할 수 있다는 장점이 있습니다.
+
+
+-Set
+Set은 여러 개의 값을 순서대로 저장한다는 점에서 배열과 비슷합니다.
+하지만, 배열의 메소드는 활용할 수 없고 Map과 비슷하게 Set만의 메소드를 통해서 값을 다루는 특징이 있는데요.
+
+Map과 마찬가지로 new 키워드로 Set을 만들 수 있고 아래와 같은 메소드를 통해 Set 안의 여러 값들을 다룰 수 있습니다.
+
+set.add(value): 값을 추가하는 메소드. (메소드를 호출한 자리에는 추가된 값을 가진 Set 자신을 반환.)
+set.has(value): Set 안에 값이 존재하면 true, 아니면 false를 반환하는 메소드.
+set.delete(value): 값을 제거하는 메소드. (메소드를 호출한 자리에는 셋 내에 값이 있어서 제거에 성공하면 true, 아니면 false를 반환.)
+set.clear(): Set 안의 모든 요소를 제거하는 메소드.
+set.size: 요소의 개수를 반환하는 프로퍼티. (메소드가 아닌 점 주의! 배열의 length 프로퍼티와 같은 역할)
+// Set 생성
+const members = new Set();
+
+// add 메소드
+members.add('영훈'); // Set(1) {"영훈"}
+members.add('윤수'); // Set(2) {"영훈", "윤수"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+
+// has 메소드
+console.log(members.has('동욱')); // true
+console.log(members.has('현승')); // false
+
+// size 프로퍼티
+console.log(members.size); // 4
+
+// delete 메소드
+members.delete('종훈'); // false
+console.log(members.size); // 4
+members.delete('태호'); // true
+console.log(members.size); // 3
+
+// clear 메소드
+members.clear();
+console.log(members.size); // 0
+한가지 특이한 점은 일반 객체는 프로퍼티 네임으로, Map은 get메소드로, 그리고 배열은 index를 통해서 개별 값에 접근할 수 있었는데요.
+한 가지 특이한 점은 Set에는 개별 값에 바로 접근하는 방법이 없다는 점입니다.
+
+// Set 생성
+const members = new Set();
+
+// add 메소드
+members.add('영훈'); // Set(1) {"영훈"}
+members.add('윤수'); // Set(2) {"영훈", "윤수"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+
+for (const member of members) {
+  console.log(member); // 영훈, 윤수, 동욱, 태호가 순서대로 한 줄 씩 콘솔에 출력됨.
+}
+그래서 위 코드와 같이 반복문을 통해서 전체요소를 한꺼번에 다룰 때 반복되는 그 순간에 개별적으로 접근할 수가 있습니다.
+그런데, 이런 특징을 가지고도 Set이 유용하게 사용되는 경우가 있는데요.
+바로, 중복을 허용하지 않는 값들을 모을 때입니다.
+
+Set은 중복되는 값을 허용하지 않는 독특한 특징이 있는데요.
+
+// Set 생성
+const members = new Set();
+
+// add 메소드
+members.add('영훈'); // Set(1) {"영훈"}
+members.add('윤수'); // Set(2) {"영훈", "윤수"}
+members.add('영훈'); // Set(2) {"영훈", "윤수"}
+members.add('영훈'); // Set(2) {"영훈", "윤수"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+members.add('동욱'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+최초에 추가된 순서를 유지하면서, 나중에 중복된 값을 추가하려고 하면 그 값은 무시하는 특징이 있습니다.
+
+처음 Set을 생성할 때 아규먼트로 배열을 전달할 수도 있는데요.
+이런 특징을 활용해서 배열 내에서 중복을 제거한 값들의 묶음을 만들 때 Set을 활용하기도 합니다.
+
+const numbers = [1, 3, 4, 3, 3, 3, 2, 1, 1, 1, 5, 5, 3, 2, 1, 4];
+const uniqNumbers = new Set(numbers);
+
+console.log(uniqNumbers); // Set(5) {1, 3, 4, 2, 5}
+
+
+*13. 종합 정리
+-forEach 메소드
+배열의 요소를 하나씩 살펴보면서 반복 작업을 하는 메소드입니다. forEach 메소드는 첫 번째 아규먼트로 콜백 함수를 전달받는데요. 콜백 함수의 파라미터에는 각각 배열의 요소, index, 메소드를 호출한 배열이 전달됩니다. (index와 array는 생략가능)
+
+const numbers = [1, 2, 3];
+
+numbers.forEach((element, index, array) => {
+  console.log(element); // 순서대로 콘솔에 1, 2, 3이 한 줄씩 출력됨.
+});
+
+
+-map 메소드
+forEach와 비슷하게 배열의 요소를 하나씩 살펴보면서 반복 작업을 하는 메소드 입니다. 단, 첫 번째 아규먼트로 전달하는 콜백 함수가 매번 리턴하는 값들을 모아서 새로운 배열을 만들어 리턴하는 특징이 있습니다.
+
+const numbers = [1, 2, 3];
+const twiceNumbers = numbers.map((element, index, array) => {
+  return element * 2;
+});
+
+console.log(twiceNumbers); // (3) [2, 4, 6]
+filter 메소드
+filter 메소드는 배열의 요소를 하나씩 살펴보면서 콜백함수가 리턴하는 조건과 일치하는 요소만 모아서 새로운 배열을 리턴하는 메소드입니다.
+
+const devices = [
+  {name: 'GalaxyNote', brand: 'Samsung'},
+  {name: 'MacbookPro', brand: 'Apple'},
+  {name: 'Gram', brand: 'LG'},
+  {name: 'SurfacePro', brand: 'Microsoft'},
+  {name: 'ZenBook', brand: 'Asus'},
+  {name: 'MacbookAir', brand: 'Apple'},
+];
+
+const apples = devices.filter((element, index, array) => {
+  return element.brand === 'Apple';
+});
+
+console.log(apples); // (2) [{name: "MacbookPro", brand: "Apple"}, {name: "MacbookAir", brand: "Apple"}]
+find 메소드
+find 메소드는 filter 메소드와 비슷하게 동작하지만, 배열의 요소들을 반복하는 중에 콜백함수가 리턴하는 조건과 일치하는 가장 첫번째 요소를 리턴하고 반복을 종료하는 메소드 입니다.
+
+const devices = [
+  {name: 'GalaxyNote', brand: 'Samsung'},
+  {name: 'MacbookPro', brand: 'Apple'},
+  {name: 'Gram', brand: 'LG'},
+  {name: 'SurfacePro', brand: 'Microsoft'},
+  {name: 'ZenBook', brand: 'Asus'},
+  {name: 'MacbookAir', brand: 'Apple'},
+];
+
+const myLaptop = devices.find((element, index, array) => {
+  console.log(index); // 콘솔에는 0, 1, 2까지만 출력됨.
+  return element.name === 'Gram';
+});
+
+console.log(myLaptop); // {name: "Gram", brand: "LG"}
+some 메소드
+some 메소드는 배열 안에 콜백함수가 리턴하는 조건을 만족하는 요소가 1개 이상 있는지를 확인하는 메소드 입니다. 배열을 반복하면서 모든 요소가 콜백함수가 리턴하는 조건을 만족하지 않는다면 false를 리턴하고, 배열을 반복하면서 콜백함수가 리턴하는 조건을 만족하는 요소가 등장한다면 바로 true를 리턴하고 반복을 종료합니다.
+
+const numbers = [1, 3, 5, 7, 9];
+
+// some: 조건을 만족하는 요소가 1개 이상 있는지
+const someReturn = numbers.some((element, index, array) => {
+  console.log(index); // 콘솔에는 0, 1, 2, 3까지만 출력됨.
+  return element > 5;
+});
+
+console.log(someReturn); // true;
+every 메소드
+every 메소드는 배열 안에 콜백 함수가 리턴하는 조건을 만족하지 않는 요소가 1개 이상 있는지를 확인하는 메소드 입니다.
+배열을 반복하면서 모든 요소가 콜백함수가 리턴하는 조건을 만족한다면 true를 리턴하고, 배열을 반복하면서 콜백함수가 리턴하는 조건을 만족하지 않는 요소가 등장한다면 바로 false를 리턴하고 반복을 종료합니다.
+
+const numbers = [1, 3, 5, 7, 9];
+
+// every: 조건을 만족하지 않는 요소가 1개 이상 있는지
+const everyReturn = numbers.every((element, index, array) => {
+  console.log(index); // 콘솔에는 0까지만 출력됨.
+  return element > 5;
+});
+
+console.log(everyReturn); // false;
+reduce 메소드
+reduce 메소드는 누적값을 계산할 때 활용하는 조금 독특한 메소드 입니다. reduce 메소드는 일반적으로 두 개의 파라미터를 활용하는데요.
+첫 번째는 반복동작할 콜백함수입니다. 매번 실행되는 콜백함수의 리턴값이 다음에 동작할 콜백함수의 첫번째 파라미터로 전달되는데요. 결과적으로 마지막 콜백함수가 리턴하는 값이 reduce 메소드의 최종 리턴값이 되는겁니다.
+이 때 reduce 메소드의 두 번째 파라미터로 전달한 초기값이 첫 번째로 실행될 콜백함수의 가장 첫 번째 파라미터로 전달되는 것이죠.
+
+const numbers = [1, 2, 3, 4];
+
+// reduce
+const sumAll = numbers.reduce((accumulator, element, index, array) => {
+  return accumulator + element;
+}, 0);
+
+console.log(sumAll); // 10
+처음에는 조금 복잡할 수 있지만, 원리를 잘 이해하고나면 유용하게 활용할 수 있으니 포기하지 마시고 잘 기억해 주세요!
+
+
+-sort 메소드
+배열에서 sort라는 메소드를 활용하면 배열을 정렬할 수 있습니다.
+sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬됩니다.
+
+const letters = ['D', 'C', 'E', 'B', 'A'];
+const numbers = [1, 10, 4, 21, 36000];
+
+letters.sort();
+numbers.sort();
+
+console.log(letters); // (5) ["A", "B", "C", "D", "E"]
+console.log(numbers); // (5) [1, 10, 21, 36000, 4]
+그렇기 때문에 numbers에 sort 메소드를 사용한 것 처럼, 숫자를 정렬할 때는 우리가 상식적으로 이해하는 오름차순이나 내림차순 정렬이 되지 않습니다. 그럴 땐 sort 메소드에 다음과 같은 콜백함수를 아규먼트로 작성해주면 되는데요.
+
+const numbers = [1, 10, 4, 21, 36000];
+
+// 오름차순 정렬
+numbers.sort((a, b) => a - b);
+console.log(numbers); // (5) [1, 4, 10, 21, 36000]
+
+// 내림차순 정렬
+numbers.sort((a, b) => b - a);
+console.log(numbers); // (5) [36000, 21, 10, 4, 1]
+sort 메소드를 사용할 때 한 가지 주의해야될 부분은 메소드를 실행하는 원본 배열의 요소들을 정렬한다는 점입니다. 그래서 한 번 정렬하고 나면 정렬하기 전의 순서로 다시 되돌릴 수 없으니까, 원본 배열의 순서가 필요하다면 미리 다른 변수에 복사해두는 것이 좋겠죠!?
+
+
+-reverse 메소드
+reverse 메소드는 말 그대로 배열의 순서를 뒤집어 주는 메소드 입니다. reverse 메소드는 별도의 파라미터가 존재하지 않기 때문에 단순이 메소드를 호출해주기만 하면 배열의 순서가 뒤집히는데요. sort 메소드와 마찬가지로 원본 배열의 요소들을 뒤집어 버린다는 점은 꼭 주의헤야 합니다.
+
+const letters = ['a', 'c', 'b'];
+const numbers = [421, 721, 353];
+
+letters.reverse();
+numbers.reverse();
+
+console.log(letters); // (3) ["b", "c", "a"]
+console.log(numbers); // (3) [353, 721, 421]
+
+
+-Map
+Map은 이름이 있는 데이터를 저장한다는 점에서 객체와 비슷합니다. 하지만, 할당연산자를 통해 값을 추가하고 점 표기법이나 대괄호 표기법으로 접근하는 일반 객체와 다르게 Map은 메소드를 통해서 값을 추가하거나 접근할 수 있는데요.
+new 키워드를 통해서 Map을 만들 수 있고 아래와 같은 메소드를 통해 Map 안의 여러 값들을 다룰 수 있습니다.
+
+map.set(key, value): key를 이용해 value를 추가하는 메소드.
+map.get(key): key에 해당하는 값을 얻는 메소드. key가 존재하지 않으면 undefined를 반환.
+map.has(key): key가 존재하면 true, 존재하지 않으면 false를 반환하는 메소드.
+map.delete(key): key에 해당하는 값을 삭제하는 메소드.
+map.clear(): Map 안의 모든 요소를 제거하는 메소드.
+map.size: 요소의 개수를 반환하는 프로퍼티. (메소드가 아닌 점 주의! 배열의 length 프로퍼티와 같은 역할)
+// Map 생성
+const codeit = new Map();
+
+// set 메소드
+codeit.set('title', '문자열 key');
+codeit.set(2017, '숫자형 key');
+codeit.set(true, '불린형 key');
+
+// get 메소드
+console.log(codeit.get(2017)); // 숫자형 key
+console.log(codeit.get(true)); // 불린형 key
+console.log(codeit.get('title')); // 문자열 key
+
+// has 메소드
+console.log(codeit.has('title')); // true
+console.log(codeit.has('name')); // false
+
+// size 프로퍼티
+console.log(codeit.size); // 3
+
+// delete 메소드
+codeit.delete(true);
+console.log(codeit.get(true)); // undefined
+console.log(codeit.size); // 2
+
+// clear 메소드
+codeit.clear();
+console.log(codeit.get(2017)); // undefined
+console.log(codeit.size); // 0
+문자열과 심볼 값만 key(프로퍼티 네임)로 사용할 수 있는 일반 객체와는 다르게 Map 객체는 메소드를 통해 값을 다루기 때문에, 다양한 자료형을 key로 활용할 수 있다는 장점이 있습니다.
+
+
+-Set
+Set은 여러 개의 값을 순서대로 저장한다는 점에서 배열과 비슷합니다. 하지만, 배열의 메소드는 활용할 수 없고 Map과 비슷하게 Set만의 메소드를 통해서 값을 다루는 특징이 있는데요.
+Map과 마찬가지로 new 키워드로 Set을 만들 수 있고 아래와 같은 메소드를 통해 Set 안의 여러 값들을 다룰 수 있습니다.
+
+set.add(value): 값을 추가하는 메소드. (메소드를 호출한 자리에는 추가된 값을 가진 Set 자신을 반환.)
+set.has(value): Set 안에 값이 존재하면 true, 아니면 false를 반환하는 메소드.
+set.delete(value): 값을 제거하는 메소드. (메소드를 호출한 자리에는 셋 내에 값이 있어서 제거에 성공하면 true, 아니면 false를 반환.)
+set.clear(): Set 안의 모든 요소를 제거하는 메소드.
+set.size: 요소의 개수를 반환하는 프로퍼티. (메소드가 아닌 점 주의! 배열의 length 프로퍼티와 같은 역할)
+// Set 생성
+const members = new Set();
+
+// add 메소드
+members.add('영훈'); // Set(1) {"영훈"}
+members.add('윤수'); // Set(2) {"영훈", "윤수"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+
+// has 메소드
+console.log(members.has('동욱')); // true
+console.log(members.has('현승')); // false
+
+// size 프로퍼티
+console.log(members.size); // 4
+
+// delete 메소드
+members.delete('종훈'); // false
+console.log(members.size); // 4
+members.delete('태호'); // true
+console.log(members.size); // 3
+
+// clear 메소드
+members.clear();
+console.log(members.size); // 0
+한가지 특이한 점은 일반 객체는 프로퍼티 네임으로, Map은 get메소드로, 그리고 배열은 index를 통해서 개별 값에 접근할 수 있었는데요. 한 가지 특이한 점은 Set에는 개별 값에 바로 접근하는 방법이 없다는 점입니다.
+
+// Set 생성
+const members = new Set();
+
+// add 메소드
+members.add('영훈'); // Set(1) {"영훈"}
+members.add('윤수'); // Set(2) {"영훈", "윤수"}
+members.add('동욱'); // Set(3) {"영훈", "윤수", "동욱"}
+members.add('태호'); // Set(4) {"영훈", "윤수", "동욱", "태호"}
+
+for (const member of members) {
+  console.log(member); // 영훈, 윤수, 동욱, 태호가 순서대로 한 줄 씩 콘솔에 출력됨.
+}
+그래서 위 코드와 같이 반복문을 통해서 전체요소를 한꺼번에 다룰 때 반복되는 그 순간에 개별적으로 접근할 수가 있습니다.
+그런데, 이런 특징을 가지고도 Set이 유용하게 사용되는 경우가 있는데요. 바로, 중복을 허용하지 않는 값들을 모을 때입니다.
+
+Set은 중복되는 값을 허용하지 않는 독특한 특징이 있는데요. Set 객체에 요소를 추가할 때 이미 Set 객체 안에 있는 값(중복된 값)을 추가하려고 하면 그 값은 무시되는 특징이 있습니다.
+처음 Set을 생성할 때 아규먼트로 배열을 전달할 수가 있는데요. 이런 특징을 활용해서 배열 내에서 중복을 제거한 값들의 묶음을 만들 때 Set을 활용할 수 있습니다.
+
+const numbers = [1, 3, 4, 3, 3, 3, 2, 1, 1, 1, 5, 5, 3, 2, 1, 4];
+const uniqNumbers = new Set(numbers);
+
+console.log(uniqNumbers); // Set(5) {1, 3, 4, 2, 5}
+
+
+*01. 모듈이란?
+Module: 코드를 효율적으로 관리할 수 있다! 다른 프로그램에서 재사용 할 수 있다!
+
+*02. 모듈 파일의 조건
+// 모듈 파일의 조건
+1. 모듈 스코프(Modeul Scope)를 가져야한다.
+
+*03. Live Server 설치하기
+
+
+*05. 모듈 문법
+파일 내보내기: export 
+파일 불러오기: import { 변수, 함수 } from '파일이름';
+
+
+*07. 이름 바꾸기
+// 이름 바꾸기
+import { 변수 as 변경하고자 하는 이름, 함수 } from './파일이름';
+
+*09. 한꺼번에 다루기
+1. import * as 새로운이름 from './파일이름';
+console.log(새로운이름.변수)
+*: 와일드카드 문자(Wildcard Character)
+
+2. export { 변수, 함수 };
+
+
+*11. default export
+// Default export
+export default -> 한 파일에서 한번만 사용 가능
+
+// Named export
+export { }; 
+
+
+*13. 복습과 활용
+그동안 배운 문법만 되돌아봐도 모듈 문법은 정말 다양한 방식으로 작성될 수가 있습니다.
+export를 할 때도 선언문을 export하거나
+
+export const title = 'Module';
+선언된 변수나 함수를 코드 블록으로 묶어서 export할 수도 있고,
+
+const printer = (value) => {
+  console.log(value);
+};
+
+const arrPrinter = (arr) => {
+  arr.forEach((el, i) => {
+    console.log(`${i + 1}. ${el}`);
+  })
+};
+
+export { printer, arrPrinter };
+때로는 as 키워드를 통해 이름을 변경해서 export를 할 수도 있었죠?
+
+const printer = (value) => {
+  console.log(value);
+};
+
+const arrPrinter = (arr) => {
+  arr.forEach((el, i) => {
+    console.log(`${i + 1}. ${el}`);
+  })
+};
+
+export { printer as namedPrinter, arrPrinter };
+그리고 default 키워드를 통해 표현식을 export하는 방법도 배우면서,
+
+const title = 'Module';
+
+export default title;
+위 코드 처럼 단순히 하나의 대상을 export하는 것뿐만 아니라 아래 코드처럼 여러 대상을 객체 값으로 모아 내보내는 방식도 가능하다는 것도 배웠습니다.
+
+const title = 'Module';
+
+const printer = (value) => {
+  console.log(value);
+};
+
+const arrPrinter = (arr) => {
+  arr.forEach((el, i) => {
+    console.log(`${i + 1}. ${el}`);
+  })
+};
+
+export default { title, printer, arrPrinter };
+그리고 import도 import 키워드 이후에 중괄호를 감싸면, 아래 코드 처럼 모듈 파일에서 export하는 항목들을 선택적으로 불러올 수 있고
+
+import { title, data } from './modules.js';
+as 키워드를 통해서 아래 코드 처럼 이름을 바꿀 수도 있었죠?
+
+import { title as moduleTitle, data } from './modules.js';
+뿐만 아니라 와일드카드 문자(*)를 통해서 아리 코드 처럼 export된 항목들을 모두 불러올 수도 있었습니다.
+
+import * as modules from './modules.js';
+그리고 아래 코드 처럼 default export된 대상을 import할 때는
+
+import { defult as modules } from './modules.js';
+아래 처럼 축약형으로 불러올 수 있다는 부분도 살펴봤었습니다.
+
+import modules from './modules.js';
+심지어 이러한 방식들을 잘 응용하면,
+
+// (modules.js)
+import module1 from './sub-module1.js';
+import module2 from './sub-module2.js';
+import module3 from './sub-module3.js';
+
+export { module1, module2, module3 };
+// index.js
+import { module1, module2, module3 } from 'modules.js';
+위 코드들 처럼 여러 개의 기능으로 잘게 나누어진 모듈을 import한 다음 다시 export하는 모듈 파일을 만들 수 있는데요. 비슷한 특징을 가진 여러 모듈 파일들을 다시 하나의 모듈 파일로 만들 수 있어서 파일 관리를 유용하게 할 수 있도록 도와줍니다.
+
+
+*15. 종합 정리
+-모듈
+모듈은 간단하게, 자바스크립트 파일 하나라고 할 수 있습니다.
+복잡하고 많은 양의 코드를 기능에 따라 각각의 파일로 나눠 관리하면
+
+코드를 좀 더 효율적으로 관리할 수 있고,
+비슷한 기능이 필요할 때 다른 프로그램에서 재사용 할 수도 있다는 장점이 있습니다.
+
+-모듈 스코프
+모듈 파일 안에서 선언한 변수는 외부에서 자유롭게 접근할 수 없도록 막아야 하는데요.
+다시 말해 모듈은 파일 안에서 모듈 파일만의 독립적인 스코프를 가지고 있어야 합니다.
+
+HTML파일에서 자바스크립트 파일을 불러올 때 모듈 스코프를 갖게 하려면
+script태그에 type속성을 module이라는 값으로 지정해 주어야 합니다.
+
+<body>
+  <script type="module" src="index.js"></script>
+</body>
+
+
+-모듈 문법
+자바스크립트의 모듈 문법은 기본적으로 export와 import 입니다.
+모듈 스코프를 가진 파일에서 외부로 내보내고자 하는 변수나 함수를 export 키워드를 통해 내보내고,
+모듈 파일에서 내보낸 변수나 함수들은 다른 파일에서 import 키워드를 통해 가져옵니다.
+
+// printer.js
+export const title = 'CodeitPrinter';
+
+export function print(value) {
+  console.log(value);
+};
+// index.js
+import { title, print } from './printer.js';
+
+print(title);
+
+
+-이름 바꿔 import 하기
+import 키워드를 통해 모듈을 불러올 때 as 키워드를 활용하면 import하는 대상들의 이름을 변경할 수 있습니다.
+import 할 변수나 함수 이름을 조금 더 간결한 이름으로 바꾸거나, 혹은 더 구체적으로 바꾸고 싶을 때 활용하면 좋겠죠?
+뿐만 아니라 이름을 바꿔서 import 하면 여러 파일에서 불러오는 대상들의 이름이 중복되는 문제를 해결할 수도 있습니다.
+
+import { title as printerTitle, print, printArr } from './printer.js';
+import { title, data as members } from './members.js';
+
+printer(title);
+arrPrinter(members);
+
+
+-한꺼번에 import 하기
+import할 때 와일드카드 문자(*)와 as를 활용하면 모듈 파일에서 export하는 모든 대상을 하나의 객체로 불러올 수 있습니다.
+
+import * as printerJS from './printer.js';
+
+console.log(printerJS.title); // CodeitPrinter
+console.log(printerJS.print); // ƒ print(value) { console.log(value); }
+
+
+-한꺼번에 export 하기
+변수나 함수 앞에 매번 export 키워드를 붙일 수도 있지만, 선언된 변수나 함수를 하나의 객체로 모아 한꺼번에 내보낼 수도 있습니다.
+이때 as 키워드를 활용하면 이름을 변경해서 export할 수도 있습니다.
+
+const title = 'CodeitPrinter';
+
+function print(value) {
+  console.log(value);
+}
+
+function printArr(arr) {
+  arr.forEach((el, i) => {
+    console.log(`${i + 1}. ${el}`);
+  });
+}
+
+export { title as printerTitle, print, printArr };
+
+
+-default export
+export를 할 때 default 키워드를 함께 사용하면 모듈 파일에서 기본적으로 export할 대상을 정할 수 있습니다.
+일반적으로 모듈 파일에서 export 대상이 하나라면, 이 default 키워드를 함께 활용하는 것이 조금 더 간결한 코드를 구성하는데 도움이 되는데요.
+
+const title = 'CodeitPrinter';
+
+function print(value) {
+  console.log(value);
+}
+
+export default print;
+default export는 import할 때 기본적으로 다음과 같이 불러올 수 있지만,
+
+import { default as printerJS } from './printer.js';
+
+console.log(printerJS.title); // CodeitPrinter
+console.log(printerJS.print); // ƒ print(value) { console.log(value); }
+다음과 같이 축약형 문법으로 import 할 수도 있기 때문입니다.
+
+import printerJS from './printer.js';
+
+console.log(printerJS.title); // CodeitPrinter
+console.log(printerJS.print); // ƒ print(value) { console.log(value); }
+
+
+#4-3. 자바스크립트 웹 개발 기본기
+*1-1. 이번 토픽에서 배울 내용
+웹브라우저와 서버 사이의 통신
+
+*1-2. fetch 함수 사용해보기
+fetch('https://www.google.com') -> 파라미터로 넘어온 url로 request를 보낸다.
+ .then((response) => response.text()) -> 서버의 리스폰스가 오면 실행되는 함수 (콜백함수)
+ .then((result) => { console.log(result); });
+then 메소드: 콜백을 등록하는 메소드
+
+*1-3. fetch 함수 살펴보기
+request: 웹브라우저가 서버로 보낸 요청
+response: 서버가 다시 보내준 응답
+fetch: 서버로 request를 보내고 response를 받는 함수
+then 메소드: 콜백을 등록하는 메소드
+
+*1-4. response 객체
+fetch('https://www.google.com')
+  .then((response) => response.text())
+  .then((result) => { console.log(result); });
+
+이전 영상에서는 fetch 함수로 리퀘스트를 보내고, 리스폰스를 받아서 그 내용을 출력해봤습니다. fetch 함수의 실행 원리를 다시 정리하자면,
+
+fetch 함수는 어떤 객체를 리턴하는데(Promise 객체, 챕터 3에서 배웁니다)
+이 객체의 then 메소드로, '리스폰스가 왔을 때 실행할 콜백'을 등록할 수 있습니다.
+이렇게 등록된 콜백들은 then 메소드로 등록한 순서대로 실행되고, 이때 이전 콜백의 리턴값을 이후 콜백이 넘겨받아서 사용할 수 있는데요.
+그런데 예리한 분들은 이 코드를 보고 이런 궁금증이 생겼을 수도 있습니다.
+
+위 코드처럼 적지 않고 그냥
+
+fetch('https://www.google.com')
+  .then((response) => { console.log(response); });
+
+'이렇게 코드를 적어도 리스폰스의 내용을 출력할 수 있지 않나요?' 라는 의문을 가지셨을 수도 있는데요.
+
+사실 이 response 파라미터로는 리스폰스의 실제 내용 자체가 넘어오는 게 아닙니다. response 파라미터에는, 리스폰스에 관한 각종 부가 정보들과, 실제 내용을 함께 갖고 있는 하나의 객체(object)가 넘어오는데요. 그래서 우리가 원하는 리스폰스의 실제 내용을 보려면,
+
+fetch('https://www.google.com')
+  .then((response) => response.text())
+  .then((result) => { console.log(result); });
+
+이렇게 reponse 객체의 text라는 메소드를 호출해야 합니다. 그리고 이 text 메소드의 리턴값이 바로 리스폰스의 실제 내용입니다.(사실은 실제 내용을 갖고 있는 Promise 객체이지만, 더 자세한 내용은 챕터 3에서 알아봅시다)
+
+*1-5. 개발자 도구에 관해 알아야할 내용
+1. 개발자 도구란?
+웹 브라우저에 내장된 개발자 도구는, 웹 브라우저가 내부적으로 어떤 동작을 하고 있는지 살펴보게 해주는 도구입니다. 사실 일반 사용자들에게는 필요 없는 도구이지만, 웹 페이지를 만드는 개발자 즉, '웹 프론트엔드 개발자'에게 이 개발자 도구는 정말 중요한 도구입니다. 왜냐하면 이 개발자 도구를 사용해서 자신이 작성한 코드를 브라우저가 어떻게 해석하고 실행하는지 자세하게 살펴볼 수 있기 때문인데요.
+
+그래서 웹 프론트엔드 개발자가 되고 싶은 분이라면, 이 개발자 도구의 기초적인 사용법을 익혀두는 게 좋습니다. 하지만 이번 토픽은 개발자 도구 사용법에 관한 토픽은 아니기 때문에 사용법을 별도로 배우지는 않습니다. 혹시 크롬의 개발자 도구를 별도로 공부해보고 싶은 분은 구글에서 제공하는 공식 설명을 참조하세요. 해당 링크를 방문했을 때 모든 내용이 영어라서 보기가 힘들다면,
+
+
+
+페이지 우측 상단의 버튼을 클릭해서 언어를 바꿔볼 수 있습니다. 참고로 개발자 도구 사용법을 몰라도 이번 토픽을 듣는 데는 아무 지장이 없습니다. 안심하세요.
+
+2. 개발자 도구를 여는 단축키
+자바스크립트를 실행하는 방법에는 여러 가지가 있습니다. 보통은 HTML 태그에서 자바스크립트 파일을 로드해서 실행하지만, 이번 토픽에서는 보다 빠르고 직관적인 결과 확인을 위해서, 개발자 도구에서 자바스크립트를 실행할 겁니다. 따라서 웹 브라우저에서 매번 마우스로 개발자 도구를 여는 것보다는 그 단축키를 알아두는 것이 효율적인데요. 크롬에서 개발자 도구를 여는 단축키는 다음과 같습니다.
+
+Mac : Command 키 + Option 키 + 알파벳 i 키
+Windows : Ctrl 키 + Shift 키 + 알파벳 i 키
+각자 자신의 환경에 맞는 단축키를 외우고, 활용해보세요.
+
+3. 개발자 도구 위치 설정
+개발자 도구를 처음 여는 분들은 개발자 도구 창이 전체 화면의 오른쪽에 떠 있을 수도 있습니다.
+
+
+
+만약 이전 영상에서 본 것처럼, 개발자 도구의 위치를 화면 하단으로 옮기고 싶다면, 위 이미지에서 보이는 빨간색 박스 안의 점 세 개 아이콘을 클릭하세요. 그럼 다음과 같이
+
+
+
+개발자 도구의 위치를 설정하는 탭을 볼 수 있습니다. 여기서 여러분이 원하는 위치를 자유롭게 선택하시면 됩니다.
+
+4. Console 탭의 출력 원리
+앞으로 여러분은 개발자 도구의 Console 탭에서 자바스크립트 코드를 실행하게 될 겁니다.
+
+
+
+그런데 Console 탭의 출력 결과에 관해 여러분이 알아둬야 할 내용이 있습니다. 잠깐 Console 탭 화면에서, 어떤 숫자를 합한 값을 리턴해주는 add라는 함수를 정의해보겠습니다. 함수를 정의하고 엔터를 치면
+
+
+
+이런 식으로 그 뒤에 undefined가 출력되는 것을 알 수 있습니다. 이 undefined는 왜 출력된 걸까요? 
+이번엔 잠깐 이 add 함수를 실행해봅시다.
+
+
+
+이번에는 add 함수가 리턴한 값인 3이 잘 출력되었습니다. 자, 이번엔 Hello라는 단어를 출력해보겠습니다.
+
+
+
+이번에는 Hello라는 단어가 출력되고, 그 밑에 또 undefined가 출력되었습니다. 이번에도 undefined가 등장했네요.
+자, 그럼 이제 add 함수를 여러 번 호출해볼까요?
+
+
+
+이렇게 코드를 여러 줄 연달아 작성하려면 Enter 말고 Shift + Enter를 사용하시면 됩니다.
+실행 결과를 보니 가장 마지막 add 함수의 리턴값인 201만 출력되네요.
+
+이때까지 본 것처럼 개발자 도구의 Console 탭은 해당 코드에서 최종적으로 리턴하는 값을 출력합니다. 만약 아무런 값도 리턴하지 않는 경우에는 undefined를 리턴한 것으로 간주하는데요. 그래서 위에서 봤던 것처럼 단순히
+
+(1) add 함수를 선언하거나, 
+(2) Hello라는 문자열을 출력하는 코드는
+
+어떤 값을 리턴하는 코드는 아니기 때문에 undefined를 리턴한 것으로 간주해서 undefined가 출력된 것입니다. 하지만
+
+add(1, 2) 
+처럼 실제로 어떤 값을 리턴하는 코드인 경우에는 undefined가 아닌 실제 리턴값 3이 출력됩니다. 그리고 위에서 add 함수를 여러 번 실행한 경우처럼, 여러 개의 리턴 값이 존재하는 경우에는, 가장 마지막 코드의 리턴값을 출력합니다.
+
+앞으로 Console 탭의 자바스크립트 코드를 실행하다보면,
+
+(1) 개발자 도구가 출력하는 undefined 때문에 당황하거나, 
+(2) 나의 코드에서 출력한 undefined와, 개발자 도구가 출력한 undefined가 섞여서 혼란스러울 수도 있는데요.
+그럴 때마다 방금 배운 내용에 유의하면서, Console 탭에서의 출력 결과를 해석하시면 됩니다.
+
+*1-6. 웹이란?
+웹(web) - world wide web
+웹브라우저를 통해 돌아다니는 가상의 연결망 세계
+웹페이지에 적혀있는 텍스트: HyperText 다른 텍스트에 대한 참조를 갖고있는 텍스트 HTML
+
+*1-7. URL이란?
+URL Uniform Resource Locator: 웹에 존재하는 특정 데이터를 나타내는 문자열
+Resource: 웹에서 우리가 찾고자 하는 데이터를 전문 용어로는 '리소스(Resource)'라고 표현한다.
+www.shopping.com -> 호스트(Host): 전 세계 서버 중 하나의 서버를 특정
+/clothes/shirts -> 경로(Path): 서버에 있는 데이터 중 원하는 데이터를 특정
+color=blue&size=m -> 쿼리(Query): 원하는 데이터에 관한 세부적인 요구사항
+
+*1-8. URL과 리퀘스트
+이전 영상에서는 웹에 존재하는 수많은 데이터 중에서 원하는 데이터를 특정하기 위해 URL을 사용한다는 사실을 배웠습니다. 그리고 URL은 크게
+
+호스트(host),
+패스(path),
+쿼리(query)
+로 이루어져있다는 걸 배웠는데요.(다른 구성 요소들도 있지만 일단은 일반적으로 보게 되는 것들만 배워봅시다.)
+이번 노트에서는 URL에 관한 또 다른 궁금증들을 해결해봅시다.
+
+1. 전 URL을 직접 입력한 적이 거의 없는데요?
+이전 영상에서 URL의 의미와 구조에 대해 배울 때, 여러분은 이런 의문을 가졌을 수도 있습니다.
+
+'내가 URL을 직접 입력한 적은 거의 없는데?'
+
+하는 의문 말이죠.
+
+굉장히 의미 있는 생각입니다. 여러분이 웹 서핑을 할 때를 생각해봅시다. 여러분은 보통 웹 브라우저의 주소창에 www.naver.com나 www.google.com 처럼, URL에서의 호스트(host) 부분까지만 입력하고, 어떤 서비스의 메인 페이지로 진입할 겁니다. 그리고 그 뒤로는 마우스로 화면에 있는 이미지나 버튼 등을 클릭할 뿐, 더이상 URL을 직접 입력할 일이 많지는 않은데요. 그 이유는 바로, 이미 여러분이 화면에서 클릭하는 버튼 등에 어느 URL로 새로운 리퀘스트를 보낼지, HTML 코드 또는 Javascript 코드로 다 작성이 되어있기 때문입니다. 예를 들어, 여러분이 화면에서 클릭하는 버튼은 이런 식의 HTML 코드로 작성되어 있습니다.
+
+<a href="https://www.nazer.com/blogs/codeitOfficial/120"...>...</a>
+<a href="/codeitCommunity/threads/731" ...>...</a> 
+(지금 두 번째 URL은 상대 URL입니다. 같은 서버 안에 존재하는 데이터의 경우 이렇게 path 이후의 부분만 표시해서 나타낼 수도 있습니다.)
+
+우리가 웹 페이지에서 버튼을 클릭하면 지금 보이는 것 같은 a 태그의 href 속성에 적힌 URL 주소로 웹 브라우저가 알아서 리퀘스트를 보내서 리스폰스를 받아 새로운 웹 페이지를 로드합니다. 이런 식으로 웹 페이지에 미리 모든 것이 세팅되어 있기 때문에 여러분은 해당 서비스의 서버에서 요구하는 path의 형식, query의 형식을 알 필요가 없습니다. 다만 의식하지 않는 상태에서 우리는 계속 URL을 사용하고 있는 겁니다.
+
+하지만 일반 사용자가 아닌 개발자라면, 이런 path에 관한 설계, query에 관한 설계를 직접 해야 하기 때문에 URL의 구조에 대해서 정확하게 알고 있어야 합니다.
+
+2. 리퀘스트를 보내면 일어나는 일
+우리가 웹 브라우저의 주소창에 URL을 입력하고 엔터를 치면, 실제로 어떤 일이 이루어지는 걸까요?
+잠깐 아래 그림을 봅시다.
+
+
+
+위 이미지에서 왼쪽 아이콘은 웹 브라우저를 나타내고, 오른쪽은 codeitshopping이라고 하는 서비스의 서버를 나타낸다고 가정해봅시다. 만약 우리가 위와 같은 URL을 입력하고 엔터를 치면 다음과 같은 일들이 순차적으로 발생합니다.
+
+(1) 웹 브라우저는 URL에서 호스트(host, 위 그림에서 www.codeitshopping.com에 해당하는 부분) 부분을 보고, 전 세계의 수많은 서버들 중에서 정확히 어느 서버와 통신을 해야 하는지를 찾습니다. 이때 호스트 부분에 적힌 www.codeitshopping.com 같은 것을 도메인 네임(Domain Name)이라고 하는데요. 특정 서버를, 외우기 어려운 IP 주소가 아니라 외우기 쉬운 문자열로 나타낸 것이 바로 도메인 네임입니다. 그럼 어떻게 웹 브라우저는 도메인 네임만으로 특정 서버를 식별할 수 있는 걸까요? 이를 위해서는 Domain Name Resolution이라고 하는 작업을 수행해야 합니다. 이 작업을 수행하면 해당 도메인 네임이 나타내는 특정 서버를 식별할 수 있는데요. 혹시 Domain Name Resolution이 뭔지 궁금한 분들은 코드잇의 또 다른 토픽에 있는 '도메인 네임과 IP 주소' 노트를 참조하세요.
+
+(2) (1)에서 어떤 서버와 통신해야 하는지를 식별하고 나면, 웹 브라우저는 해당 서버로 리퀘스트를 보냅니다. 이때 URL에서 path 이후의 부분들(보라색 표시한 부분, path와 query)을 리퀘스트에 담아서 보냅니다.
+
+(3) 리퀘스트를 받은 서버는 리퀘스트에 담긴 path 이후의 부분들을 보고, 그것이 의미하는 데이터를 찾고, 찾은 결과를 리스폰스에 담아서 보내줍니다.
+
+(4) 그럼 웹 브라우저는 받은 리스폰스의 내용을 갖고 사용자에게 보여줍니다. 이때 리스폰스의 내용이 HTML 코드, Javascript 코드 등에 해당하면 그에 맞는 예쁜 화면을 사용자에게 그려서 보여주는 것이구요. 리스폰스의 내용에는 다른 종류도 많은데요. 이건 챕터 2에서 배워봅시다.
+
+*1-9. HTTP란?
+https -> 스킴(Scheme): 프로토콜의 이름
+프로토콜(Protocol): 통신을 하는 두 주체가 지켜야 할 통신 규약
+http -> HyperText Transfer Protocol
+HyperText: 다른 텍스트에 대한 참조를 갖고 있는 텍스트
+https -> HyperText Transfer Protocol Secure: http에 보안성이 더해짐
+
+*1-10. 한 번의 접속, 여러 번의 Request
+우리가 어떤 웹 페이지를 보기 위해 URL을 입력하고 엔터를 치면 보통 한 번 이상의 리퀘스트와 리스폰스가 오고 갑니다. 딱 한 번의 리퀘스트와 리스폰스만 오고 가면 될 것 같은데, 이게 무슨 말일까요? 확인해보겠습니다.
+
+저는 지금 크롬의 개발자 도구를 열어두었습니다.
+
+
+
+그리고 개발자 도구에서 Network 탭이라고 하는 걸 클릭했는데요. 이 Network 탭에서는 브라우저가 구체적으로 어떻게 생긴 리퀘스트를 보내고, 어떻게 생긴 리스폰스를 받는지를 보여줍니다. 이 상태에서 웹 브라우저를 새로고침해보겠습니다.
+
+
+
+그럼 구글 메인 페이지로 재접속하게 되고, 이제 Network 탭에 여러 개의 줄(row)들이 뜨는데요. 이때 각각의 한 줄이, 하나의 '리퀘스트-리스폰스' 쌍이라고 보시면 됩니다. 전 딱 한 번 엔터를 쳤을 뿐인데 정말 많은 수의 리퀘스트와 리스폰스가 오고 갔죠? 화면 하단을 보면 총 19번의 리퀘스트가 전송된 것을 알 수 있는데요. 왜 이런 일이 발생하는 걸까요?
+
+사실 웹 브라우저가 처음으로 리퀘스트를 보내고, 서버로부터 받는 첫 리스폰스의 내용만으로 온전한 화면을 그릴 수 있는 경우는 많지 않습니다. 보통은 받은 첫 리스폰스의 내용에 적힌 '추가적으로 필요한 데이터'들을 재차 요청해야 하는 것이 더 일반적입니다. 예를 들어, 이런 식의 HTML 코드가 첫 리스폰스의 내용으로 왔다고 해봅시다.
+
+<html>
+<head></head>
+<body>
+    ...
+    <div>
+        <img src="https://www.server_A.com/a/b/exmaple.png".../>
+    </div>
+  ...
+<script src="http://www.server_B.com/c/d/main.js"></script>
+</body>
+</html>
+웹 브라우저는 당장 이 코드만으로는 완벽한 화면을 그릴 수 없습니다. 왜냐하면 새롭게 리퀘스트를 보내서 가져와야할 것들이 존재하기 때문이죠.
+
+예를 들어, 지금 여기서 이 img 태그의 src 속성에 있는 이미지를 그리려면
+
+<img src="https://www.server_A.com/a/b/exmaple.png".../> 
+img 태그의 src 속성에 적힌 URL로 다시 리퀘스트를 보내서 example.png에 해당하는 이미지를 받아와야 합니다.
+
+그리고
+
+<script src="http://www.server_B.com/c/d/main.js"></script>
+이 script 태그의 src 속성에 적힌 URL로도 리퀘스트를 보내서 main.js라는 자바스크립트 파일을 받아와야 하구요.
+
+벌써 이렇게 2번의 추가적인 리퀘스트가 필요한 겁니다.
+
+이런 식으로 보통 브라우저가 하나의 페이지를 그릴 때는 첫 리스폰스의 내용 안에서 또다시 요구되는, 여러 가지 다른 것들을 구하기 위해 다시 여러 개의 리퀘스트를 보내는 것이 일반적입니다. 게다가 그렇게 또 받은 리스폰스의 내용에 따라 또 새로운 리퀘스트를 보내야 할 수도 있습니다. 바로 이런 원리 때문에 여러분이 어떤 웹 페이지를 딱 한번 접속했다고 해도 그 사이에는 수많은 리퀘스트와 리스폰스가 발생하는 겁니다.
+
+예를 들어, 지금 Network 탭에 보이는 하나의 줄(하나의 '리퀘스트-리스폰스 쌍')을 클릭해보면
+
+https://bakey-api.codeit.kr/api/files/resource?root=static&seqId=4340&directory=Untitled%202.png&name=Untitled+2.png
+
+이렇게 Google 로고 이미지를 받기 위해 추가적인 리퀘스트를 보내고, 이 이미지를 받아온 것을 확인할 수 있습니다.
+
+이렇게 우리가 웹 브라우저로 특정 페이지에 접속할 때, 보통 한 번 이상의 리퀘스트-리스폰스가 오고간다는 사실, 잘 기억하세요.
+
+
+*2-1. JSON이란?
