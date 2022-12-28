@@ -7197,11 +7197,9 @@ PowerShell을 처음 사용한다면 도움말을 업데이트하는 것을 추�
 
 윈도우 메뉴에 'powershell'을 검색하고 관리자로 실행해 주세요.
 
-
 이게 PowerShell인데요. 여기 Update-Help라고 입력한 다음 엔터를 누르세요.
 
 Update-Help
-
 
 위와 같은 오류가 발생할 수도 있는데요. 무시하시고 넘어가셔도 괜찮습니다.
 
@@ -7210,9 +7208,7 @@ PowerShell 사용해보기
 
 기존의 PowerShell 창을 닫고 일반 사용자로 PowerShell을 실행해 주세요.
 
-
 PowerShell의 배경색이나 글자색, 글자 크기 등을 바꾸고 싶다면 환경 설정으로 들어가면 됩니다.
-
 
 PowerShell은 기본 유닉스 커맨드를 지원한다고 했는데요. 어떤 커맨드를 지원하는지 알아보겠습니다.
 
@@ -7261,7 +7257,6 @@ man -Full ls
 ls
 PowerShell에서 ls를 하면 파일/폴더 이름뿐만이 아닌 다양한 정보가 나옵니다. .으로 시작하는 파일들도 보이고요.
 
-
 유닉스의 ls -al과 비슷하죠?
 
 touch
@@ -7279,7 +7274,6 @@ mv
 bash/zsh에서 mv를 했을 때 목적지에 똑같은 이름의 파일/폴더가 있으면 그걸 덮어써버립니다. 하지만 PowerShell에서는 파일이 이미 존재한다는 오류가 납니다.
 
 mv testfile.txt testfile2.txt # 오류
-
 
 만약 파일을 덮어쓰고 싶다면 -Force 옵션을 사용하면 됩니다.
 
@@ -7314,3 +7308,192 @@ PyCharm의 터미널
 
 IDE 안에서 코드 작성과 커맨드 실행을 동시에 할 수 있는 거죠. PowerShell에서 기본 유닉스 커맨드를 실행할 수 있기 때문에 아주 편리할 겁니다.
 
+
+#step6. React 프론트엔드 개발
+*6-1-1. 리액트의 탄생
+페이스북의 개발자 마크 주커버그가 개발함. 
+
+*6-1-2. 개발 환경 세팅하기 (Windows)
+
+*6-1-4. 나의 첫 리액트 프로젝트
+커맨드 요약
+-create-react-app으로 리액트 프로젝트 생성
+npm init react app <폴더이름> 혹은 vs code로 열고 터미널에서 npm init react app .
+
+개발 모드 실행
+npm run start
+
+개발 모드 종료
+Ctrl + C
+
+*6-1-5. 리액트 개발자 도구 살펴보기
+리액트 개발자 도구 -> 개발자 도구에서 components 클릭.
+
+*6-2-1. 프로젝트 소개
+주사위 프로젝트, 가위바위보 프로젝트 만들기
+
+*6-2-2. 리액트 최신 버전에 대한 안내
+2022년 3월 8일 이후로 리액트의 18 버전이 나왔습니다. 그래서 수업에서 소개하는 내용 중 index.js 파일에서 코드를 쓰는 방식이 조금 바뀌었는데요.
+
+수업에 소개된 방법으로 프로젝트를 생성하면 최신 버전의 리액트가 설치될 겁니다. index.js 파일을 보시면 ReactDOM.render 가 아니라  ReactDOM.createRoot라는 함수를 사용하는 코드가 만들어지는데요. 수업에서 나오는 코드를 그대로 쓰게 되면 아래와 같은 경고 메시지가 개발자 도구 콘솔창에 나올 수 있습니다.
+
+Warning: ReactDOM.render is no longer supported in React 18
+
+이런 경우 index.js 파일의 코드를 아래처럼 수정하시면 됩니다.
+
+import ReactDOM from 'react-dom/client';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<h1>안녕 리액트!</h1>);
+이후 레슨에서 index.js 파일을 수정하면서 여러 가지를 배우게 될텐데요. 수업에서는 ReactDOM.render() 함수 안에서 코드를 작성하는데, 최신 버전을 사용하시는 분들은 root.render() 함수 안에서 작성하시면 됩니다.
+
+
+*6-2-6. JSX
+자바스크립트와 html을 섞어서 쓸 수 있는 자바스크립트의 확장된 문법
+class -> className
+for -> htmlFor
+
+*6-2-7. 프래그먼트
+리액트에서 한개 이상의 태그를 사용하려면 프래그먼트로 감싸주어야한다.
+<Fragment> </Fragment>
+<></>
+
+*6-2-9. JSX에서 자바스크립트 사용하기
+jsx 문법에서 자바스크립트 코드를 활용하려면 중괄호로 감싸주면 된다.
+{변수이름}
+중괄호 안에서 메소드를 호출할 수도 있다.
+덧셈 연산자를 사용할 수도 있다.
+
+-이벤트 등록하기
+태그의 속성(ex) onclick)에 ={}를 붙여주고 중괄호안에 함수를 할당해준다.
+
+*6-2-11. JSX 문법
+JSX란?
+JSX는 자바스크립트의 확장 문법인데요. 리액트로 코드를 작성할 때 HTML 문법과 비슷한 이 JSX 문법을 활용하면 훨씬 더 편리하게 화면에 나타낼 코드를 작성할 수가 있게 됩니다.
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(<h1>안녕 리액트!</h1>, document.getElementById('root'));
+JSX 문법
+JSX는 자바스크립트로 HTML과 같은 문법을 사용할 수 있도록 만들어주는 편리한 문법이지만, 그만큼 꼭 지켜야 할 규칙들도 있습니다.
+
+HTML과 다른 속성명
+1. 속성명은 카멜 케이스로 작성하기!
+JSX 문법에서도 태그에 속성을 지정해 줄 수 있습니다. 단, 여러 단어가 조합된 몇몇 속성들을 사용할 때는 반드시 카멜 케이스(Camel Case)로 작성해야 합니다.
+사실 여러 단어가 조합된 HTML 속성들이 많진 않지만, 예를 들면 onclick, onblur, onfocus 등과 같은 이벤트 속성이나, tabindex 같은 속성들이 있습니다.
+이런 속성들은 모두 onClick, onBlur, onFocus, onMouseDown, onMouseOver, tabIndex 처럼 작성하는 것이죠!
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <button onClick= ... >클릭!</button>,
+  document.getElementById('root')
+);
+단, 예외적으로 HTML에서 비표준 속성을 다룰 때 활용하는 data-* 속성은 카멜 케이스(Camel Case)가 아니라 기존의 HTML 문법 그대로 작성하셔야 합니다.
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <div>
+    상태 변경: 
+    <button className="btn" data-status="대기중">대기중</button>
+    <button className="btn" data-status="진행중">진행중</button>
+    <button className="btn" data-status="완료">완료</button>
+  </div>,
+  document.getElementById('root')
+);
+2. 자바스크립트 예약어와 같은 속성명은 사용할 수 없다!
+JSX 문법도 결국은 자바스크립트 문법이기 때문에, for나 class처럼 자바스크립트의 문법에 해당하는 예약어와 똑같은 이름의 속성명은 사용할 수 없습니다.
+그래서 HTML의 for의 경우에는 자바스크립트의 반복문 키워드 for와 겹치기 때문에 htmlFor로, HTML의 class 속성도 자바스크립트의 클래스 키워드 class와 겹치기 때문에 className으로 작성해 주어야 합니다.
+
+React 공식 문서 - 어트리뷰트의 차이
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <form>
+    <label htmlFor="name">이름</label>
+    <input id="name" className="name-input" type="text" />
+  </form>,
+  document.getElementById('root')
+);
+반드시 하나의 요소로 감싸기 - Fragment
+JSX 문법을 활용할 때는 반드시 하나의 요소로 감싸주어야 합니다. 그래서 아래 코드처럼 여러 개의 요소를 작성하면 오류가 발생하는데요.
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <p>안녕</p>
+  <p>리액트!</p>,
+  document.getElementById('root')
+);
+이럴 때는 아래 코드처럼 여러 태그를 감싸는 부모 태그를 만들어 하나의 요소로 만들어 주어야 합니다.
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <div>
+    <p>안녕</p>
+    <p>리액트!</p>
+  </div>,
+  document.getElementById('root')
+);
+하지만 이렇게 작성한다면 때로는 꼭 필요하지 않은 부모 태그가 작성될 수 있겠죠? 그럴 땐 Fragment로 감싸주면 의미 없는 부모 태그를 만들지 않아도 여러 요소를 작성할 수 있습니다.
+
+import { Fragment } from 'react';
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <Fragment>
+    <p>안녕</p>
+    <p>리액트!</p>
+  </Fragment>,
+  document.getElementById('root')
+);
+참고로 Fragment는 아래 코드처럼 빈 태그로 감싸는 단축 문법으로 활용할 수도 있습니다.
+
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <>
+    <p>안녕</p>
+    <p>리액트!</p>
+  </>,
+  document.getElementById('root')
+);
+자바스크립트 표현식 넣기
+JSX 문법에서 중괄호({})를 활용하면 자바스크립트 표현식을 넣을 수 있습니다.
+
+import ReactDOM from 'react-dom';
+
+const product = '맥북';
+
+ReactDOM.render(
+  <h1>나만의 {product} 주문하기</h1>,
+  document.getElementById('root')
+);
+이런 부분들을 잘 활용하면, 아래 코드처럼 중괄호 안에서 문자열을 조합할 수도 있고 변수에 이미지 주소를 할당해서 img 태그의 src 속성값을 전달해 줄 수도 있고, 이벤트 핸들러를 좀 더 편리하게 등록할 수도 있습니다.
+
+import ReactDOM from 'react-dom';
+
+const product = 'MacBook';
+const model = 'Air';
+const imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/MacBook_with_Retina_Display.png/500px-MacBook_with_Retina_Display.png'
+
+function handleClick(e) {
+  alert('곧 도착합니다!');
+}
+
+ReactDOM.render(
+  <>
+    <h1>{product + ' ' + model} 주문하기</h1>
+    <img src={imageUrl} alt="제품 사진" />
+    <button onClick={handleClick}>확인</button>
+  </>,
+  document.getElementById('root')
+);
+단, JSX 문법에서 중괄호는 자바스크립트 표현식을 다룰 때 활용하기 때문에, 중괄호 안에서 for, if문 등의 문장은 다룰 수 없다는 점은 꼭 기억해 주세요.
+그런데도 만약 JSX 문법을 활용할 때 조건문이 꼭 필요하다면 조건 연산자를, 반복문이 꼭 필요하다면 배열의 반복 메소드를 활용해 볼 수는 있겠죠?
+
+
+*6-2-13. 컴포넌트
