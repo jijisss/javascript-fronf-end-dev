@@ -7497,3 +7497,218 @@ ReactDOM.render(
 
 
 *6-2-13. 컴포넌트
+리액트 컴포넌트: 함수 이름의 첫글자를 대문자로 써야하고, 반드시 jsx 문법으로 만든 리액트 엘리먼트를 리턴해줘야 한다.
+
+
+*6-2-15. 컴포넌트 문법
+리액트 엘리먼트
+JSX 문법으로 작성한 요소는 결과적으로 자바스크립트 객체가 됩니다.
+
+import ReactDOM from 'react-dom';
+
+const element = <h1>안녕 리액트!</h1>;
+console.log(element);
+ReactDOM.render(element, document.getElementById('root'));
+{$$typeof: Symbol(react.element), type: "h1", key: null, ref: null, props: {…}, …}
+이런 객체를 리액트 엘리먼트라고 부르는데요.
+
+이 리액트 엘리먼트를 ReactDOM.render 함수의 아규먼트로 전달하게 되면, 리액트가 객체 형태의 값을 해석해서 HTML 형태로 브라우저에 띄워주는 것이죠.
+
+리액트 엘리먼트는 리액트로 화면을 그려내는데 가장 기본적인 요소입니다.
+
+리액트 컴포넌트
+리액트 컴포넌트는 리액트 엘리먼트를 조금 더 자유롭게 다루기 위한 하나의 문법입니다.
+
+컴포넌트를 만드는 가장 간단한 방법은 자바스크립트의 함수를 활용하는 건데요. 
+아래 코드에서 JSX 문법으로 작성된 하나의 요소를 리턴하는 Hello 함수가 바로 하나의 컴포넌트입니다.
+
+이렇게 요소를 컴포넌트로 작성하게 되면 다양한 장점들이 있는데,
+자세한 내용은 이후의 개념들을 하나씩 배워나가면서 차차 알아보도록 합시다!
+
+import ReactDOM from 'react-dom';
+
+function Hello() {
+  return <h1>안녕 리액트</h1>;
+}
+
+const element = (
+  <>
+    <Hello />
+    <Hello />
+    <Hello />
+  </>
+);
+
+ReactDOM.render(element, document.getElementById('root'));
+그리고 이렇게 컴포넌트를 작성하면,
+위 코드에서 element 변수 안의 JSX 코드에서 볼 수 있듯 컴포넌트 함수 이름을 통해 하나의 태그처럼 활용할 수가 있습니다.
+
+이런 특성을 모듈 문법으로 활용하면 훨씬 더 독립적으로 컴포넌트 특성에 집중해서 코드를 작성할 수가 있습니다.
+
+Dice.js
+
+import diceBlue01 from './assets/dice-blue-1.svg';
+
+function Dice() {
+  return <img src={diceBlue01} alt="주사위" />;
+}
+
+export default Dice;
+App.js
+
+import Dice from './Dice';
+
+function App() {
+  return (
+    <div>
+      <Dice />
+    </div>
+  );
+}
+
+export default App;
+한 가지 주의해야 할 부분은, 리액트 컴포넌트의 이름은 반드시 첫 글자를 대문자로 작성해야 한다는 것입니다.
+컴포넌트 이름의 첫 글자가 소문자라면 오류가 발생하니깐 꼭 주의해 주세요!
+
+*6-2-16. Props
+Props: 컴포넌트에 지정한 속성 프로퍼티스의 줄임말.
+각각의 속성은 프롭이라고 부른다.
+
+
+*6-2-19. children
+props를 전달할 때 값이 하나면 children을 써서 값을 전달해준다.
+function Button ({ children }){
+  <button>{children}</button>
+}
+
+function App() {
+  <button>하하하</button>
+  <button>호호호</button>
+}
+
+
+*6-2-21. Props 정리하기
+Props
+JSX 문법에서 컴포넌트를 작성할 때 컴포넌트에도 속성을 지정할 수 있는데요. 리액트에서 이렇게 컴포넌트에 지정한 속성들을 Props라고 부릅니다.
+
+Props는 Properties의 약자인데요. 컴포넌트에 속성을 지정해주면 각 속성이 하나의 객체로 모여서 컴포넌트를 정의한 함수의 첫 번째 파라미터로 전달됩니다.
+
+App.js
+
+import Dice from './Dice';
+
+function App() {
+  return (
+    <div>
+      <Dice color="blue" />
+    </div>
+  );
+}
+
+export default App;
+Dice.js
+
+import diceBlue01 from './assets/dice-blue-1.svg';
+
+function Dice(props) {
+  console.log(props)
+  return <img src={diceBlue01} alt="주사위" />;
+}
+
+export default Dice;
+위 코드들 처럼 App 함수에서 사용하는 Dice 컴포넌트에 color라는 속성을 blue로 지정해주고, Dice 함수 내부에서 props라는 파라미터를 하나 만들어 출력해보면 브라우저 콘솔에는 다음과 같은 출력 결과가 나타나게 됩니다.
+
+{ color: "blue" }
+그래서 컴포넌트를 활용할 때 속성값을 다양하게 전달하고 이 props 값을 활용하면, 똑같은 컴포넌트라도 전달된 속성값에 따라 서로 다른 모습을 그려낼 수도 있게 됩니다.
+
+App.js
+
+import Dice from './Dice';
+
+function App() {
+  return (
+    <div>
+      <Dice color="red" num={2} />
+    </div>
+  );
+}
+
+export default App;
+Dice.js
+
+import diceBlue01 from './assets/dice-blue-1.svg';
+import diceBlue02 from './assets/dice-blue-2.svg';
+// ...
+import diceRed01 from './assets/dice-red-1.svg';
+import diceRed02 from './assets/dice-red-2.svg';
+// ...
+
+const DICE_IMAGES = {
+  blue: [diceBlue01, diceBlue02],
+  red: [diceRed01, diceRed02],
+};
+
+function Dice(props) {
+  const src = DICE_IMAGES[props.color][props.num - 1];
+  const alt = `${props.color} ${props.num}`;
+  return <img src={src} alt={alt} />;
+}
+
+export default Dice;
+참고로, 이렇게 props가 객체 형태를 띠고 있으니 Destructuring 문법을 활용해서 조금 더 간결하게 코드를 작성할 수도 있겠죠?
+
+import diceBlue01 from './assets/dice-blue-1.svg';
+import diceBlue02 from './assets/dice-blue-2.svg';
+// ...
+import diceRed01 from './assets/dice-red-1.svg';
+import diceRed02 from './assets/dice-red-2.svg';
+// ...
+
+const DICE_IMAGES = {
+  blue: [diceBlue01, diceBlue02],
+  red: [diceRed01, diceRed02],
+};
+
+function Dice({ color = 'blue', num = 1 }) {
+  const src = DICE_IMAGES[color][num - 1];
+  const alt = `${color} ${num}`;
+  return <img src={src} alt={alt} />;
+}
+
+export default Dice;
+Children
+props에는 children이라는 조금 특별한 프로퍼티(prop, 프롭)가 있습니다.
+
+JSX 문법으로 컴포넌트를 작성할 때 컴포넌트를 단일 태그가 아니라 여는 태그와 닫는 태그의 형태로 작성하면, 그 안에 작성된 코드가 바로 이 children 값에 담기게 됩니다.
+
+Button.js
+
+function Button({ children }) {
+  return <button>{children}</button>;
+}
+
+export default Button;
+App.js
+
+import Button from './Button';
+import Dice from './Dice';
+
+function App() {
+  return (
+    <div>
+      <div>
+        <Button>던지기</Button>
+        <Button>처음부터</Button>
+      </div>
+      <Dice color="red" num={2} />
+    </div>
+  );
+}
+
+export default App;
+그래서 JSX 문법으로 컴포넌트를 작성할 때 어떤 정보를 전달할 때는 일반적인 props의 속성값을 주로 활용하고, 화면에 보여질 모습을 조금 더 직관적인 코드로 작성하고자 할 때 children 값을 활용할 수가 있습니다.
+
+참고로 이 children을 활용하면 단순히 텍스트만 작성하는 걸 넘어서 컴포넌트 안에 컴포넌트를 작성할 수도 있고, 컴포넌트 안에 복잡한 태그들을 더 작성할 수도 있으니깐 이 값을 어떻게 활용하면 좋을지 여러분도 한번 고민해 보시면 좋을 것 같습니다!
+
+
+*6-2-23. State
