@@ -7712,3 +7712,104 @@ export default App;
 
 
 *6-2-23. State
+
+
+*6-2-25. 참조형 State
+.join() -> 아규먼트로 전달한 값을 배열의 각 요소들 사이사이에 넣어서 결과적으로는 하나의 문자열로 만들어주는 메소드
+
+
+*6-2-28. State 정리하기
+으로 변경하는 것이 아니라 이 setter 함수를 활용해야 하는데요. setter 함수는 호출할 때 전달하는 아규먼트 값으로 state 값을 변경해 줍니다.
+
+그래서 아래 코드처럼 setter 함수를 활용해서 이벤트 핸들러를 등록해두면, 이벤트가 발생할 때마다 상태가 변하면서 화면이 새로 그려지는 것이죠!
+
+import { useState } from 'react';
+import Button from './Button';
+import Dice from './Dice';
+
+function App() {
+  const [num, setNum] = useState(1);
+
+  const handleRollClick = () => {
+    setNum(3); // num state를 3으로 변경!
+  };
+
+  const handleClearClick = () => {
+    setNum(1); // num state를 1로 변경!
+  };
+
+  return (
+    <div>
+      <Button onClick={handleRollClick}>던지기</Button>
+      <Button onClick={handleClearClick}>처음부터</Button>
+      <Dice color="red" num={num} />
+    </div>
+  );
+}
+
+export default App;
+참조형 State
+자바스크립트의 자료형은 크게 기본형(Primitive type)과 참조형(Reference type)로 나눌 수 있다는 사실, 모두 알고 계시죠?
+
+특히 참조형 값들은 조금 독특한 특성을 가지고 있어서 변수로 다룰 때도 조금 주의해야 할 부분들이 있었는데요. state를 활용할 때도 마찬가지입니다!
+
+// ... 
+
+  const [gameHistory, setGameHistory] = useState([]);
+
+  const handleRollClick = () => {
+    const nextNum = random(6);
+    gameHistory.push(nextNum);
+    setGameHistory(gameHistory); // state가 제대로 변경되지 않는다!
+  };
+
+// ...
+위 코드에서 볼 수 있듯 배열 값을 가진 gameHistory에 push 메소드를 이용해서 배열의 값을 변경한 다음, 변경된 배열을 setter 함수로 state를 변경하려고 하면 코드가 제대로 동작하지 않습니다.
+
+gameHistory state는 배열 값 자체를 가지고 있는 게 아니라 그 배열의 주솟값을 참조하고 있는 건데요. 때문에 push 메소드로 배열 안에 요소를 변경했다고 하더라도 결과적으로 참조하는 배열의 주솟값은 변경된 것이 아니게 됩니다.
+
+결과적으로 리액트 입장에서는 gameHistory state가 참조하는 주솟값은 여전히 똑같기 때문에 상태(state)가 바뀌었다고 판단하지 않는 것이죠!
+
+그래서 참조형 state를 활용할 때는 반드시 새로운 참조형 값을 만들어 state를 변경해야 합니다.
+
+가장 간단한 방법은 Spread 문법(...) 을 활용하는 것이겠죠?
+
+// ... 
+
+  const [gameHistory, setGameHistory] = useState([]);
+
+  const handleRollClick = () => {
+    const nextNum = random(6);
+    setGameHistory([...gameHistory, nextNum]); // state가 제대로 변경된다!
+  };
+
+// ...
+이 참조형 state의 특성을 이해하지 못하면, 간혹 state가 제대로 변경되지 않는 버그가 발생했을 때 원인을 제대로 찾지 못하는 경우가 발생할 수도 있는데요.
+
+참조형 state를 활용할 땐 반드시 새로운 참조형 값을 만들어서 state를 변경해야 한다는 점. 꼭 기억해 두세요!
+
+
+*6-2-30. 컴포넌트가 좋은 이유
+Component(부품): 리액트의 핵심 개념
+
+컴포넌트의 장점
+1. 반복적인 개발이 줄어든다.
+2. 오류를 고치기 쉽다.
+3. 일을 쉽게 나눌 수 있다. (협업하기 좋음)
+
+
+*6-2-31. 컴포넌틑 재사용하기
+
+*6-2-32. 코드 정리하기
+
+*6-2-33. 리액트가 렌더링하는 방식
+state가 바뀔 때 리액트가 렌더링하는 방식
+
+아무 변화 없는 요소들도 매번 다시 렌더링 되는 문제
+-Virtual DOM(가상 DOM)
+:효율적으로 화면을 처리할 수 있다!
+
+*6-2-34. 인라인 스타일
+
+*6-2-36. CSS 클래스네임
+
