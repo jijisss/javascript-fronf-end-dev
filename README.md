@@ -8967,5 +8967,423 @@ Timer 컴포넌트에서는 useEffect 에서 타이머를 시작하고, 정리 �
 
 \*6-2-18. 별점 컴포넌트 만들기
 
-
 \*6-2-19. 나만의 별점 인풋 만들기
+
+\*6-2-01. 글 작성하기
+
+\*6-2-02. 리스폰스 데이터 반영하기
+
+\*6-2-04. 글 수정하기 I
+
+\*6-2-05. 글 수정하기 II
+
+\*6-2-06. 푸드잇: 글 수정하기
+
+\*6-2-07. 글 삭제하기
+
+\*6-2-09. 리액트 Hook
+리액트 Hook -> use~
+
+-프로그래밍에서 Hook
+내가 작성한 코드를 다른 프로그램에 연결해서 그 값이나 기능을 사용하는 것!
+
+-리액트 Hook
+리액트가 제공하는 기능에 연결해서 그 값이나 기능을 이용하는 함수!
+
+\*6-2-10. 리액트 Hook의 규칙
+반드시 리액트 컴포넌트 안에서 써야하고, 반복문, 조건문 안에서는 리액트 Hook을 사용할 수 없다.
+
+\*6-2-11. 나만의 Hook으로 코드 정리하기
+
+\*6-2-12. useCallback
+함수를 매번 새로 만들지 않고 재사용하게 해주는 Hook이다.
+
+\*6-2-13. 빠짐없는 디펜던시 (exhaustive-deps)
+이번 레슨에선 앞에서 봤던 react-hooks/exhaustive-deps 라는 경고 메시지에 대해서 자세히 살펴보겠습니다.
+
+exhaustive-deps 규칙
+아래 코드는 num 버튼을 누르면 num 스테이트 값이 증가되고,
+
+count 버튼을 누르면 count 스테이트 값을 증가시키는 컴포넌트입니다.
+
+이때 count 스테이트 값을 증가시키면서 콘솔에는 num 스테이트 값을 출력합니다.
+
+useEffect Hook에서는 1초마다 addCount 함수를 실행하는 타이머를 실행하는데요.
+
+import { useEffect, useState } from 'react';
+
+function App() {
+const [count, setCount] = useState(0);
+const [num, setNum] = useState(0);
+
+const addCount = () => {
+setCount(c => c + 1);
+console.log(`num: ${num}`);
+}
+
+const addNum = () => setNum(n => n + 1);
+
+useEffect(() => {
+console.log('timer start');
+const timerId = setInterval(() => {
+addCount();
+}, 1000);
+
+    return () => {
+      clearInterval(timerId);
+      console.log('timer end');
+    };
+
+}, []);
+
+return (
+
+<div>
+<button onClick={addCount}>count: {count}</button>
+<button onClick={addNum}>num: {num}</button>
+</div>
+);
+}
+
+export default App;
+이 코드를 실행해보면 1초마다 count 값이 증가하는데,
+
+버튼을 클릭해서 num 스테이트의 값이 바뀌더라도
+
+콘솔 출력에서는 숫자가 바뀌지 않고 0만 계속 출력된다는 문제가 있습니다.
+
+그 이유는 useEffect 안에서 addCount 라는 함수를 사용하는데,
+
+이 함수에서는 num 스테이트 값을 잘못 참조하기 때문입니다.
+
+과거의 num 스테이트 값을 계속해서 참조하고 있기 때문이죠.
+
+이런 문제점을 경고해주는 규칙이 react-hooks/exhaustive-deps 라는 규칙인데요.
+
+리액트에서는 Prop이나 State와 관련된 값은 되도록이면 빠짐없이 디펜던시에 추가해서
+
+항상 최신 값으로 useEffect 나 useCallback 을 사용하도록 권장하고 있습니다.
+
+그럼 addCount 함수를 디펜던시 리스트로 추가해볼까요?
+
+import { useEffect, useState } from "react";
+
+function App() {
+const [count, setCount] = useState(0);
+const [num, setNum] = useState(0);
+
+const addCount = () => {
+setCount((c) => c + 1);
+console.log(`num: ${num}`);
+};
+
+const addNum = () => setNum((n) => n + 1);
+
+useEffect(() => {
+console.log('timer start');
+const timerId = setInterval(() => {
+addCount();
+}, 1000);
+
+    return () => {
+      clearInterval(timerId);
+      console.log('timer end');
+    };
+
+}, [addCount]);
+
+return (
+
+<div>
+<button onClick={addCount}>count: {count}</button>
+<button onClick={addNum}>num: {num}</button>
+</div>
+);
+}
+
+export default App;
+하지만 이렇게 하면 한 가지 문제가 있습니다.
+
+위 코드에서 타이머를 시작할 때 콘솔을 출력하고
+
+타이머를 정리할 때 콘솔을 출력하는 코드가 보이시나요?
+
+실행해서 콘솔을 확인해보면 count 가 바뀔 때마다
+
+타이머를 새로 시작하고 종료하는 걸 반복한다는 걸 알 수 있을 겁니다.
+
+addCount 라는 함수는 렌더링 할 때마다 새로 만들어지는데,
+
+이걸 디펜던시 리스트에 추가했기 때문에
+
+useEffect 의 콜백이 매번 불필요하게 실행되는 버그가 있는 거죠.
+
+useCallback으로 함수 재사용하기
+import { useCallback, useEffect, useState } from "react";
+
+function App() {
+const [count, setCount] = useState(0);
+const [num, setNum] = useState(0);
+
+const addCount = useCallback(() => {
+setCount((c) => c + 1);
+console.log(`num: ${num}`);
+}, [num]);
+
+const addNum = () => setNum((n) => n + 1);
+
+useEffect(() => {
+console.log('timer start');
+const timerId = setInterval(() => {
+addCount();
+}, 1000);
+
+    return () => {
+      clearInterval(timerId);
+      console.log('timer end');
+    };
+
+}, [addCount]);
+
+return (
+
+<div>
+<button onClick={addCount}>count: {count}</button>
+<button onClick={addNum}>num: {num}</button>
+</div>
+);
+}
+
+export default App;
+앞에서처럼 디펜던시 리스트에 추가한 함수가 매번 바뀌는 문제를 해결하려면
+
+함수를 useCallback 으로 감싸주면 됩니다.
+
+useCallback 을 사용하면 함수를 매번 생성하는 게 아니라
+
+리액트에다 함수를 기억해둘 수 있는데요.
+
+이때 리액트는 useCallback 의 디펜던시 리스트 값이 바뀔 때만 함수를 새로 만들어줍니다.
+
+addCount 함수에서는 num 이라는 스테이트를 참조하고 있으니까
+
+이 값을 디펜던시 리스트에 추가했는데요.
+
+이렇게하면 리액트는 num 값이 바뀔 때만 addCount 함수를 새로 만들 겁니다.
+
+useEffect 의 디펜던시로 addCount 가 들어가 있으니까,
+
+결론적으로 useEffect 의 콜백은 num 값이 바뀔 때만 새로 실행되겠죠?
+
+이런 식으로 컴포넌트 안에서 만든 함수를 디펜던시 리스트에 사용할 때는
+
+useCallback 훅으로 매번 함수를 새로 생성하는 걸 막을 수 있습니다.
+
+되도록이면 파라미터를 활용하자
+마지막으로 이 코드를 좀 더 개선할 방법은 없을까요?
+
+사실 addCount 라는 함수에서 num 값을 꼭 직접 참조할 필요는 없습니다.
+
+그래서 useCallback 을 쓰지 않고, 아래처럼 파라미터로 받아오게 할 수 있는데요.
+
+이렇게 하면 addCount 함수 자체만 놓고 보면
+
+바깥에 있는 스테이트 값을 직접적으로 참조하지 않기 때문에
+
+오래된 스테이트 값을 참조할 염려가 없습니다.
+
+import { useEffect, useState } from "react";
+
+function App() {
+const [count, setCount] = useState(0);
+const [num, setNum] = useState(0);
+
+const addCount = (log) => {
+setCount((c) => c + 1);
+console.log(log);
+}
+
+const addNum = () => setNum((n) => n + 1);
+
+useEffect(() => {
+console.log('timer start');
+const timerId = setInterval(() => {
+addCount(`num ${num}`);
+}, 1000);
+
+    return () => {
+      clearInterval(timerId);
+      console.log('timer end');
+    };
+
+}, [num]);
+
+return (
+
+<div>
+<button onClick={addCount}>count: {count}</button>
+<button onClick={addNum}>num: {num}</button>
+</div>
+);
+}
+
+export default App;
+그리고 디펜던시 리스트를 이렇게 바꾸면
+
+num 값이 바뀔 때마다 타이머를 재시작한다는 게 좀 더 명확해졌죠?
+
+Prop이나 State 값을 사용할 때는 이렇게 되도록이면 파라미터로 넘겨서 사용하면,
+
+어떻게 사용되는지 코드에서 명확하게 보여줄 수 있습니다.
+
+\*6-2-14. 리액트 Hook 정리
+이번 레슨에서는 여태까지 배운 모든 리액트 Hook을 문법 위주로만 정리해보고,
+
+Custom Hook에 대해 정리해보겠습니다.
+
+Hook의 규칙
+반드시 리액트 컴포넌트 함수(Functional Component) 안에서 사용해야 함
+컴포넌트 함수의 최상위에서만 사용 (조건문, 반복문 안에서 못 씀)
+useState
+State 사용하기
+const [state, setState] = useState(initialState);
+콜백으로 초깃값 지정하기
+초깃값을 계산하는 코드가 복잡한 경우에 활용
+
+const [state, setState] = useState(() => {
+// ...
+return initialState;
+});
+State 변경
+setState(nextState);
+이전 State를 참조해서 State 변경
+비동기 함수에서 최신 State 값을 가져와서 새로운 State 값을 만들 때
+
+setState((prevState) => {
+// ...
+return nextState
+});
+useEffect
+컴포넌트 함수에서 사이드 이펙트(리액트 외부의 값이나 상태를 변경할 때)에 활용하는 함수
+
+처음 렌더링 후에 한 번만 실행
+useEffect(() => {
+// ...
+}, []);
+렌더링 후에 특정 값이 바뀌었으면 실행
+참고로 처음 렌더링 후에도 한 번 실행됨
+useEffect(() => {
+// ...
+}, [dep1, dep2, dep3, ...]);
+사이드 이펙트 정리(Cleanup)하기
+useEffect(() => {
+// 사이드 이펙트
+
+return () => {
+// 정리
+}
+}, [dep1, dep2, dep3, ...]);
+useRef
+생성하고 DOM 노드에 연결하기
+const ref = useRef();
+
+// ...
+
+return <div ref={ref}>안녕 리액트!</div>;
+DOM 노드 참조하기
+const node = ref.current;
+if (node) {
+// node를 사용하는 코드
+}
+useCallback
+함수를 매번 새로 생성하는 것이 아니라 디펜던시 리스트가 변경될 때만 함수를 생성
+
+const handleLoad = useCallback((option) => {
+// ...
+}, [dep1, dep2, dep3, ...]);
+Custom Hook
+자주 사용하는 Hook 코드들을 모아서 함수로 만들 수 있었는데요.
+
+이때 useOOO 처럼 반드시 맨 앞에 use 라는 단어를 붙여서
+
+다른 개발자들이 Hook이라는 걸 알 수 있게 해줘야 합니다.
+
+useHooks 나 streamich/react-hooks 라는 사이트를 보시면
+
+다양한 Custom Hook이 소개되어 있는데요.
+
+이 사이트들에서 다른 리액트 개발자들은 어떻게 사용하는지 살펴보시면 재미있을 겁니다.
+
+여기선 간단한 예시만 몇 개 살펴보겠습니다.
+
+useAsync
+비동기 함수의 로딩, 에러 처리를 하는 데 사용할 수 있는 함수입니다.
+
+함수를 asyncFunction 이라는 파라미터로 추상화해서
+
+wrappedFunction 이라는 함수를 만들어 사용하는 방식을 눈여겨보시면 좋을 것 같습니다.
+
+function useAsync(asyncFunction) {
+const [pending, setPending] = useState(false);
+const [error, setError] = useState(null);
+
+const wrappedFunction = useCallback(async (...args) => {
+setPending(true);
+setError(null);
+try {
+return await asyncFunction(...args);
+} catch (error) {
+setError(error);
+} finally {
+setPending(false);
+}
+}, [asyncFunction]);
+
+return [pending, error, wrappedFunction];
+}
+useToggle
+toggle 함수를 호출할 때마다 value 값이 참/거짓으로 번갈아가며 바뀝니다.
+
+ON/OFF 스위치 같은 걸 만들 때 유용하겠죠?
+
+function useToggle(initialValue = false) {
+const [value, setValue] = useState(initialValue);
+const toggle = () => setValue((prevValue) => !prevValue);
+return [value, toggle];
+}
+useTimer
+start 를 실행하면 callback 이라는 파라미터로 넘겨 준 함수를
+
+timeout 밀리초 마다 실행하고, stop 을 실행하면 멈춥니다.
+
+setInterval 이란 함수는 웹 브라우저에 함수를 등록해서
+
+일정한 시간 간격마다 실행하는데요.
+
+실행할 때마다 사이드 이펙트를 만들고, 사용하지 않으면 정리를 해줘야 합니다.
+
+clearInterval 이라는 함수를 실행해서
+
+사이드 이펙트를 정리하는 부분을 눈여겨 보시면 좋을 것 같습니다.
+
+Custom Hook을 만들어서 이렇게 사이드 이펙트 정리를 빼먹지 않고 할 수 있겠죠?
+
+function useTimer(callback, timeout) {
+const [isRunning, setIsRunning] = useState(false);
+
+const start = () => setIsRunning(true);
+
+const stop = () => setIsRunning(false);
+
+useEffect(() => {
+if (!isRunning) return;
+
+    const timerId = setInterval(callback, timeout); // 사이드 이펙트 발생
+    return () => {
+      clearInterval(timerId); // 사이드 이펙트 정리
+    };
+
+}, [isRunning, callback, timeout]);
+
+return [start, stop];
+}
